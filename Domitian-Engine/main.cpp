@@ -4,6 +4,9 @@
 #include <allegro5\allegro_ttf.h>
 
 //allegro-5.0.10-monolith-md-debug.lib
+
+
+
 int main()
 {
 	//FPS
