@@ -14,7 +14,7 @@ public:
 	Component(std::string, Entity*);
 	std::string getName();
 	
-	 inline Component* getComponent(std::string);
+	 Component* getComponent(std::string);
 
 private:
 	std::string name;
