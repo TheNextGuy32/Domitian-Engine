@@ -10,8 +10,6 @@ class PositionComp : public Component
 {
 public:
 	PositionComp(Vector3,float,Entity*);
-	
-	void update(float);
 
 	Vector3 getPosition()
 	{

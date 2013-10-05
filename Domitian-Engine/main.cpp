@@ -5,6 +5,8 @@
 
 //allegro-5.0.10-monolith-md-debug.lib
 
+#include "Domitian-Engine.h"
+
 int main()
 {
 	//FPS

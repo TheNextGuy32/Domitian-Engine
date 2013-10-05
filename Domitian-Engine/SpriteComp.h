@@ -2,7 +2,8 @@
 #define DSpriteComp_H
 
 #include "Component.h"
-#include <allegro5\bitmap.h>
+#include <allegro5/bitmap.h>
+
 
 
 //Try including the game object in the cpp file
