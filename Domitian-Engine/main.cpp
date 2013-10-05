@@ -52,11 +52,16 @@ int main()
 #pragma region GameWorld
 
 	Entity player;
-	PositionComp player_position (Vector3 (10,10,10), 0, &player);
+	PositionComp player_position (Vector3 (10,10,0), 0, &player);
 	player.addEntity(&player_position);
 
 	SpriteComp player_sprite (player_bitmap, &player);
 	player.addEntity(&player_sprite);
+
+	PhysicsComp player_physics (100,&player);
+	player.addEntity(&player_physics);
+
+	player_physics.addForce(Vector2(10,10));
 
 #pragma endregion
 
@@ -89,7 +94,7 @@ int main()
 			accumulator -= dt;
 			current_timestamp += dt;
 		}
-		//player.update(dt);
+		player.update(dt);
 		
 		//INPUT
 		al_get_keyboard_state(&new_keyboard_state);
