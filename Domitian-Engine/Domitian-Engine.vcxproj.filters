@@ -13,20 +13,23 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Base Classes">
-      <UniqueIdentifier>{37cad735-b2cf-45ec-ab51-30a9f5587ca0}</UniqueIdentifier>
+    <Filter Include="Source Files\Domitian-Engine">
+      <UniqueIdentifier>{3072204c-4225-42b1-9788-9771ce407f78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components">
-      <UniqueIdentifier>{8dc1c4f4-c31f-41c6-8f8d-e35ba9e4afba}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Helper">
+    <Filter Include="Source Files\Domitian-Engine\Helper">
       <UniqueIdentifier>{c00b427c-00bf-4f6c-af6c-3b7d041ee284}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components\Graphics">
+    <Filter Include="Source Files\Domitian-Engine\Components">
+      <UniqueIdentifier>{8dc1c4f4-c31f-41c6-8f8d-e35ba9e4afba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Domitian-Engine\Components\Graphics">
       <UniqueIdentifier>{8de6ef68-7aff-4bdc-9a4f-7fd3795c2aeb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Components\Infastructure">
+    <Filter Include="Source Files\Domitian-Engine\Components\Infastructure">
       <UniqueIdentifier>{cd8dd2bc-dd7a-42c9-b5cd-7d4e7f1afed8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Domitian-Engine\Base Classes">
+      <UniqueIdentifier>{37cad735-b2cf-45ec-ab51-30a9f5587ca0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,60 +37,57 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Source Files\Base Classes</Filter>
+      <Filter>Source Files\Domitian-Engine\Base Classes</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Base Classes</Filter>
+      <Filter>Source Files\Domitian-Engine\Base Classes</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComp.cpp">
-      <Filter>Source Files\Components\Graphics</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedComp.cpp">
-      <Filter>Source Files\Components\Graphics</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="CollisionComp.cpp">
-      <Filter>Source Files\Components\Infastructure</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsComp.cpp">
-      <Filter>Source Files\Components\Infastructure</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
     <ClCompile Include="PositionComp.cpp">
-      <Filter>Source Files\Components\Infastructure</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
-      <Filter>Source Files\Base Classes</Filter>
+      <Filter>Source Files\Domitian-Engine\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>Source Files\Base Classes</Filter>
+      <Filter>Source Files\Domitian-Engine\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
-      <Filter>Source Files\Helper</Filter>
+      <Filter>Source Files\Domitian-Engine\Helper</Filter>
     </ClInclude>
     <ClInclude Include="Vector3.h">
-      <Filter>Source Files\Helper</Filter>
-    </ClInclude>
-    <ClInclude Include="HealthComp.h">
-      <Filter>Source Files\Components</Filter>
+      <Filter>Source Files\Domitian-Engine\Helper</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComp.h">
-      <Filter>Source Files\Components\Graphics</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedComp.h">
-      <Filter>Source Files\Components\Graphics</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="CollisionComp.h">
-      <Filter>Source Files\Components\Infastructure</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsComp.h">
-      <Filter>Source Files\Components\Infastructure</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
     <ClInclude Include="PositionComp.h">
-      <Filter>Source Files\Components\Infastructure</Filter>
+      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
-    <ClInclude Include="Dominitian-Engine.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Domitian-Engine.h">
+      <Filter>Source Files\Domitian-Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

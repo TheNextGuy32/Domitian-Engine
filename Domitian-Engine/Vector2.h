@@ -1,3 +1,6 @@
+#ifndef DVector2_H
+#define DVector2_H
+
 class Vector2
 {
 public:
@@ -9,14 +12,8 @@ public:
 	}
 	static bool Equals(Vector2 first, Vector2 second)
 	{
-		if(first.x==second.x)
-		{
-			if(first.y==second.y)
-			{
-				return true;
-			}
-		}
-		return false;
+		return (first.x==second.x && first.y==second.y);
 	}
 
 };
+#endif

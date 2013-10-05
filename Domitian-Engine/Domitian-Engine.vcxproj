@@ -76,9 +76,8 @@
     <ClInclude Include="AnimatedComp.h" />
     <ClInclude Include="CollisionComp.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="Dominitian-Engine.h" />
+    <ClInclude Include="Domitian-Engine.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="HealthComp.h" />
     <ClInclude Include="PhysicsComp.h" />
     <ClInclude Include="PositionComp.h" />
     <ClInclude Include="SpriteComp.h" />
