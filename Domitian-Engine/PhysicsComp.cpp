@@ -26,8 +26,8 @@ void PhysicsComp::update(float dt)
 	acceleration.y = total_force.y/mass;
 	velocity.x += acceleration.x * dt;
 	velocity.y += acceleration.y * dt;
-	posComp->setPositionX(posComp->getPosition().x + total_force.x*dt);
-	posComp->setPositionY(posComp->getPosition().y + total_force.y*dt);
+	posComp->setPositionX(posComp->getPosition().x - velocity.x*dt);
+	posComp->setPositionY(posComp->getPosition().y - velocity.y*dt);
 }
 
 void PhysicsComp::addForce(float myRadianDirection, float myNewtons)

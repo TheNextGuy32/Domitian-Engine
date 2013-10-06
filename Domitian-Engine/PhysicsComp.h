@@ -13,6 +13,11 @@ public:
 	void addForce(float myRadianDirection, float myNewtons);
 	void addDisplacedForce(Vector2 myDisplacement, float myRadianDirection,float myNewtons);
 
+	void setVelocity(Vector2 myVelocity)
+	{
+		velocity = myVelocity;
+	}
+
 	float getMass()
 	{
 		return mass;	
