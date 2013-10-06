@@ -10,10 +10,8 @@ public:
 
     void update(float);
 
-	void addForce(Vector2 myForce)
-	{
-		total_force+=myForce;
-	}
+	void addForce(float myRadianDirection, float myNewtons);
+	void addDisplacedForce(Vector2 myDisplacement, float myRadianDirection,float myNewtons);
 
 	float getMass()
 	{
@@ -26,11 +24,13 @@ public:
 
 private:
 	float mass;
-	Vector2 total_force;
 
+	Vector2 total_force;
 	Vector2 velocity;
-	float rotational_velocity;
 	Vector2 acceleration;
+
+	float total_torque;
+	float rotational_velocity;
 	float rotational_acceleration;
 };
 #endif

@@ -61,7 +61,7 @@ int main()
 	PhysicsComp player_physics (100,&player);
 	player.addEntity(&player_physics);
 
-	player_physics.addForce(Vector2(10,10));
+	player_physics.addForce(3.145926,200);
 
 #pragma endregion
 

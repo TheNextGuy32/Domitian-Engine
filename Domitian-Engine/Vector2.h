@@ -11,11 +11,20 @@ public:
 		x = myX;
 		y = myY;
 	}
-	static bool Equals(Vector2 first, Vector2 second)
+
+	bool Equals(Vector2 first, Vector2 second)
 	{
 		return (first.x==second.x && first.y==second.y);
 	}
-	
+	float Vector2ToRadian(Vector2 myVector)
+	{
+		return atan2(myVector.x,myVector.y);
+	};
+	Vector2 RadianToVector2(float angle)
+	{
+		return Vector2 (cos(angle), sin(angle));
+	};
+
 	Vector2 &operator+=(Vector2 other)
 	{
 		x += other.x;
