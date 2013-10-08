@@ -7,7 +7,7 @@
 #include <locale>
 #include <sstream>
 
-//allegro-5.0.10-monolith-md-debug.lib
+//allegrxo-5.0.10-monolith-md-debug.lib
 
 #include "Domitian-Engine.h"
 
@@ -45,14 +45,14 @@ int main()
 
 #pragma region LoadContent
 	ALLEGRO_FONT* font24 = al_load_font("arial.ttf", 24, 0);
-	ALLEGRO_BITMAP* player_bitmap = al_load_bitmap("player.png");
+	ALLEGRO_BITMAP* player_bitmap = al_load_bitmap("fighter.png");
 
 #pragma endregion 
 
 #pragma region GameWorld
 
 	Entity player;
-	PositionComp player_position (Vector3 (10,10,0), 0, &player);
+	PositionComp player_position (Vector3 (100,100,0), 0, &player);
 	player.addEntity(&player_position);
 
 	SpriteComp player_sprite (player_bitmap, &player);
@@ -67,10 +67,12 @@ int main()
 #pragma endregion
 
 #pragma region GameLoop
+
 	boolean done = false;
 	while(!done)
 	{
-		//FPS
+		#pragma region FPS
+
 		total_frames++;
 		double current_timestamp = al_get_time();
 		double seconds_since_last_tick = current_timestamp - previous_tick_timestamp;
@@ -82,6 +84,10 @@ int main()
 			elapsed_time--;
 			total_frames = 0;	
 		}
+
+		#pragma endregion
+
+		#pragma region Updating
 
 		accumulator+=seconds_since_last_tick;
 		if ( seconds_since_last_tick > 0.25 )
@@ -97,26 +103,36 @@ int main()
 		}
 		player.update(dt);
 		
-		//INPUT
+        #pragma endregion
+
+		#pragma region Input
+
 		al_get_keyboard_state(&new_keyboard_state);
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_ESCAPE))
 		{
 			done = true;
 		}
 
-		//Drawing FPS
-		al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, ("FPS: "+std::to_string(FPS)).c_str());
+		#pragma endregion
 
+		#pragma region Drawing_GUI
 		
+		//al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, ("FPS: "+std::to_string(FPS)).c_str());
+		
+		#pragma endregion
+
 		al_flip_display();
 		al_clear_to_color(al_map_rgb(0,0,0));
 	}
+		
 #pragma endregion
 
 #pragma region ReleaseContent
+
 	al_destroy_font(font24);
 	al_destroy_bitmap(player_bitmap);
 	al_destroy_display(display);
+
 #pragma endregion
 
 	return 0;

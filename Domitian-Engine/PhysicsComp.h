@@ -16,7 +16,11 @@ public:
 	void setVelocity(Vector2 myVelocity)
 	{
 		velocity = myVelocity;
-	}
+	};
+	void setRotationalVelocity(float myRot)
+	{
+		rotational_velocity = myRot;
+	};
 
 	float getMass()
 	{

@@ -3,7 +3,7 @@
 
 PhysicsComp::PhysicsComp(float myMass, Entity* myParent):Component("Physics",myParent),mass(myMass)
 {
-
+	rotational_velocity = 0;
 }
 
 
@@ -19,7 +19,7 @@ void PhysicsComp::update(float dt)
 	*/
 	//rotational_acceleration = total_torque/moment_of_inertia;
 	//rotatonal_velocity += rotational_acceleration*dt;
-	//posComp->setRotation(posComp->getRotation() + rotation_velocity*dt);
+	posComp->setRotation(posComp->getRotation() + rotational_velocity*dt);
 
 	//Planar Movement
 	acceleration.x = total_force.x/mass;

@@ -5,7 +5,7 @@
 
 SpriteComp::SpriteComp(ALLEGRO_BITMAP* myBitmap,Entity* myParent):Component("Sprite",myParent),bitmap(myBitmap)
 {
-
+	offset = Vector2 (al_get_bitmap_width(bitmap)/2,al_get_bitmap_height(bitmap)/2);
 }
 
 void SpriteComp::update(float dt)
@@ -16,7 +16,7 @@ void SpriteComp::update(float dt)
 
 	al_draw_rotated_bitmap(	bitmap,
 							position.x,position.y,
-							al_get_bitmap_width(bitmap)/2,al_get_bitmap_height(bitmap)/2,
+							offset.x,offset.y,
 							positionComp->getRotation(),
 							0);
 	

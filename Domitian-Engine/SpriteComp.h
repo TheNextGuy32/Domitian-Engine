@@ -15,6 +15,6 @@ public:
 	void update(float);
 private:
 	ALLEGRO_BITMAP* bitmap;
-	
+	Vector2 offset;
 };
 #endif
