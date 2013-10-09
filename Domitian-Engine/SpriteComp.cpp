@@ -1,7 +1,7 @@
 #include "SpriteComp.h"
-#include "PositionComp.h"
 
-#include <allegro5/bitmap_draw.h>
+
+
 
 SpriteComp::SpriteComp(ALLEGRO_BITMAP* myBitmap,Entity* myParent):Component("Sprite",myParent),bitmap(myBitmap)
 {
