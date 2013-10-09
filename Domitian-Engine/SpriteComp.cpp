@@ -14,11 +14,8 @@ void SpriteComp::update(float dt)
 
 	Vector3 position = positionComp->getPosition();
 
-	al_draw_rotated_bitmap(	bitmap,
-							position.x,position.y,
-							offset.x,offset.y,
-							positionComp->getRotation(),
-							0);
+	al_draw_rotated_bitmap(	bitmap,offset.x,offset.y,position.x,position.y,
+							positionComp->getRotation(), 0);
 	
-	
+	//al_draw_bitmap(	bitmap, position.x - offset.x, position.y - offset.y, 0);
 }

@@ -1,6 +1,8 @@
 #ifndef DVector2_H
 #define DVector2_H
 
+#include <cmath>
+
 class Vector2
 {
 public:
@@ -16,11 +18,11 @@ public:
 	{
 		return (first.x==second.x && first.y==second.y);
 	}
-	float Vector2ToRadian(Vector2 myVector)
+	static float Vector2ToRadian(Vector2 myVector)
 	{
 		return atan2(myVector.x,myVector.y);
 	};
-	Vector2 RadianToVector2(float angle)
+	static Vector2 RadianToVector2(float angle)
 	{
 		return Vector2 (cos(angle), sin(angle));
 	};

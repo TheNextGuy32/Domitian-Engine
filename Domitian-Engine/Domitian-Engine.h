@@ -16,7 +16,10 @@ as a parementer, or as a return type: B MyFunction(B myb);
 #include "AnimatedComp.h"
 
 #include "PositionComp.h"
+
 #include "PhysicsComp.h"
+#include "Force.h"
+
 #include "CollisionComp.h"
 
 #include "Vector2.h"

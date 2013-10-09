@@ -67,6 +67,7 @@
     <ClCompile Include="CollisionComp.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Force.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsComp.cpp" />
     <ClCompile Include="PositionComp.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Domitian-Engine.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="Force.h" />
     <ClInclude Include="PhysicsComp.h" />
     <ClInclude Include="PositionComp.h" />
     <ClInclude Include="SpriteComp.h" />
