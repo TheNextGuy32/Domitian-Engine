@@ -26,10 +26,7 @@ private:
 	bool animating;
 
 	ALLEGRO_BITMAP* bitmap;
-	 
-	float frame_interval;
-	float current_time;
-
+	
 	Vector2 dimensions;
 	Vector2 frame;
 	Vector2 offset;

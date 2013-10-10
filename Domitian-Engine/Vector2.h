@@ -51,10 +51,5 @@ public:
 		ret -= other;
 		return ret;
 	}
-
-	static float getDistanceBetween(Vector2 first, Vector2 second)
-	{
-		return sqrt( (second.x-first.x)*(second.x-first.x) + (second.y-first.y)*(second.y-first.y));
-	}
 };
 #endif

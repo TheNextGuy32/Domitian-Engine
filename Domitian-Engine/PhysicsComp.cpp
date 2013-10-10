@@ -46,7 +46,7 @@ void PhysicsComp::addDisplacedForce(Force myForce)
 	float distance = getDistanceBetween(0,0,myForce.getDisplacement().x,myForce.getDisplacement().x);
 
 	float radian_from_center_mass = Vector2::Vector2ToRadian(myForce.getDisplacement());
-	float radian_to_center_mass = radian_from_center_mass; //+ 3.14;
+	float radian_to_center_mass = radian_from_center_mass + 3.145926;
 
 	float attached_direction_displacement = myForce.getRadianDirection() - radian_to_center_mass;
 
