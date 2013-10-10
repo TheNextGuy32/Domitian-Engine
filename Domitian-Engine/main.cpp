@@ -16,7 +16,7 @@
 
 int main()
 {
-
+	
 #pragma region FPS
 
 	double FPS=0;
@@ -53,7 +53,7 @@ int main()
 #pragma endregion 
 
 #pragma region GameWorld
-
+	
 	Entity player;
 	PositionComp player_position (Vector3 (100,100,10), 0, &player);
 	player.addEntity(&player_position);
@@ -67,14 +67,14 @@ int main()
 	player_physics.addForce(Force(3,100000));
 	player_physics.addDisplacedForce(Force(Vector2(10,0),0.5,10));
 
-
+	
 	Entity animation;
 	PositionComp animation_position (Vector3(200,200,12),0,&animation);
 	animation.addEntity(&animation_position);
-
+	
 	AnimatedComp animation_animation (animation_bitmap,Vector2(50,50),&animation);
 	animation.addEntity(&animation_animation);
-
+	
 #pragma endregion
 
 #pragma region GameLoop
@@ -150,6 +150,6 @@ int main()
 	al_destroy_display(display);
 
 #pragma endregion
-
+	
 	return 0;
 }
