@@ -3,22 +3,26 @@
 PositionComp::PositionComp(Vector3 myPosition, float myRotation, Entity* myParent) 
 	: Component("Position",myParent), position(myPosition), rotation(myRotation)
 {
-	
 }
+
+
 
 void PositionComp::setPosition(float myX,float myY)
 {
 	position.x = myX;
 	position.y = myY;
+
 }
 
 void PositionComp::setPositionX(float myX)
 {
 	position.x = myX;
+
 }
 void PositionComp::setPositionY(float myY)
 {
 	position.y = myY;
+
 }
 
 void PositionComp::setDepth(float myDepth)

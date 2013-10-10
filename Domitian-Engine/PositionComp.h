@@ -20,6 +20,11 @@ public:
 	void setPositionY(float);
 	void setDepth(float);
 
+	Vector2 getBucket()
+	{
+		return Vector2(  floor(position.x / 200), floor(position.y / 200) );
+	};
+
 	float getRotation()
 	{
 		return rotation;

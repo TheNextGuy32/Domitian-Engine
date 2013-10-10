@@ -6,13 +6,14 @@
 #include <iomanip>
 #include <locale>
 #include <sstream>
-
-//#define PI 3.14159265
-//#define deg2rad( a ) a * (PI/180)
-
-//allegro-5.0.10-monolith-md-debug.lib
-
 #include "Domitian-Engine.h"
+
+#pragma region Preproccessor
+
+#define PI 3.14159265
+#define deg2rad( a ) a * (PI/180)
+
+#pragma endregion
 
 int main()
 {
@@ -31,7 +32,8 @@ int main()
 #pragma endregion
 
 #pragma region Allegro
-	al_init();
+
+	al_init(); //allegro-5.0.10-monolith-md-debug.lib
 
 	int screen_width = 800;
 	int screen_height = 600;
@@ -44,12 +46,15 @@ int main()
 	al_init_ttf_addon();
 	al_install_keyboard();
 	ALLEGRO_KEYBOARD_STATE new_keyboard_state,old_keyboard_state;
+
 #pragma endregion
 
 #pragma region LoadContent
+	
 	ALLEGRO_FONT* font24 = al_load_font("arial.ttf", 24, 0);
 	ALLEGRO_BITMAP* player_bitmap = al_load_bitmap("fighter.png");
 	ALLEGRO_BITMAP* animation_bitmap = al_load_bitmap("animation.png");
+
 #pragma endregion 
 
 #pragma region GameWorld
@@ -64,9 +69,8 @@ int main()
 	PhysicsComp player_physics (100,&player);
 	player.addEntity(&player_physics);
 
-	player_physics.addForce(Force(3,100000));
-	player_physics.addDisplacedForce(Force(Vector2(10,0),0.5,10));
-
+	player_physics.addForce(Force((2*PI/8)*5,100000));
+	player_physics.addDisplacedForce(Force(Vector2(10,0),1,10));
 	
 	Entity animation;
 	PositionComp animation_position (Vector3(200,200,12),0,&animation);
@@ -134,6 +138,15 @@ int main()
 		#pragma region Drawing_GUI
 		
 		//al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, ("FPS: "+std::to_string(FPS)).c_str());
+		/*al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, ("X: "	+ std::to_string(player_position.getBucket().x) + 
+															" Y: "	+ std::to_string(player_position.getBucket().y))
+															.c_str());*/
+		//al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, "f");
+
+		al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, (std::to_string(player_position.getBucket().x)).c_str());
+		
+		
+		//al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, (std::string ("bob")).c_str());
 		
 		#pragma endregion
 
