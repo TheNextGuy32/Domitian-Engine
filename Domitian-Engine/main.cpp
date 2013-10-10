@@ -2,11 +2,6 @@
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
-//#include <iostream>
-//#include <iomanip>
-//#include <locale>
-//#include <sstream>
-#include <string>
 #include "Domitian-Engine.h"
 
 #pragma region Preproccessor
@@ -16,11 +11,8 @@
 
 #pragma endregion
 
-using namespace std;
-
 int main()
 {
-	//std::to_string(0.0);
 	
 #pragma region FPS
 
@@ -34,7 +26,7 @@ int main()
 	double accumulator = 0.0;
 
 #pragma endregion
-
+	
 #pragma region Allegro
 
 	al_init(); //allegro-5.0.10-monolith-md-debug.lib
@@ -52,7 +44,7 @@ int main()
 	ALLEGRO_KEYBOARD_STATE new_keyboard_state;//,old_keyboard_state;
 
 #pragma endregion
-
+	
 #pragma region LoadContent
 	
 	ALLEGRO_FONT* font24 = al_load_font("arial.ttf", 24, 0);
@@ -60,7 +52,7 @@ int main()
 	ALLEGRO_BITMAP* animation_bitmap = al_load_bitmap("animation.png");
 
 #pragma endregion 
-
+	
 #pragma region GameWorld
 
 	Entity player;
@@ -84,7 +76,7 @@ int main()
 	animation.addEntity(&animation_animation);
 	
 #pragma endregion
-
+	
 #pragma region GameLoop
 
 	boolean done = false;
@@ -150,7 +142,7 @@ int main()
 	}
 		
 #pragma endregion
-
+	
 #pragma region ReleaseContent
 
 	al_destroy_font(font24);
@@ -158,6 +150,6 @@ int main()
 	al_destroy_display(display);
 
 #pragma endregion
-	//std::to_string(0);
+	
 	return 0;
 }

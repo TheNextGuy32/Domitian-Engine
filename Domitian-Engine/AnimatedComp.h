@@ -6,8 +6,6 @@
 #include <allegro5/bitmap_draw.h>
 #include <allegro5/bitmap.h>
 
-//Try including the game object in the cpp file
-
 class AnimatedComp : public Component
 {
 public:
