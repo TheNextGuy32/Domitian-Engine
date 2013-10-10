@@ -49,7 +49,7 @@ int main()
 #pragma region LoadContent
 	ALLEGRO_FONT* font24 = al_load_font("arial.ttf", 24, 0);
 	ALLEGRO_BITMAP* player_bitmap = al_load_bitmap("fighter.png");
-
+	ALLEGRO_BITMAP* animation_bitmap = al_load_bitmap("animation.png");
 #pragma endregion 
 
 #pragma region GameWorld
@@ -66,6 +66,14 @@ int main()
 
 	player_physics.addForce(Force(3,100000));
 	player_physics.addDisplacedForce(Force(Vector2(10,0),deg2rad(30),10));
+
+
+	Entity animation;
+	PositionComp animation_position (Vector3(200,200,12),deg2rad(0),&animation);
+	animation.addEntity(&animation_position);
+
+	AnimatedComp animation_animation (animation_bitmap,Vector2(50,50),&animation);
+	animation.addEntity(&animation_animation);
 
 #pragma endregion
 
@@ -105,6 +113,7 @@ int main()
 			current_timestamp += dt;
 		}
 		player.update(dt);
+		animation.update(dt);
 		
         #pragma endregion
 
