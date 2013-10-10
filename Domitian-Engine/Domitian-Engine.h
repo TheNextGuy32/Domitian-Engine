@@ -10,18 +10,21 @@ as a parementer, or as a return type: B MyFunction(B myb);
 - #include "b.h" if: A contains a B object: B myb;
 */
 
+//Game Objects
 #include "Entity.h"
 
+//Graphics
 #include "SpriteComp.h"
 #include "AnimatedComp.h"
 
+//Infastructure
 #include "PositionComp.h"
 
 #include "PhysicsComp.h"
 #include "Force.h"
-
 #include "CollisionComp.h"
 
+//Utility
 #include "Vector2.h"
 #include "Vector3.h"
 

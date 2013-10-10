@@ -7,10 +7,10 @@
 #include <locale>
 #include <sstream>
 
-#define PI 3.14159265
-#define deg2rad( a ) a * (PI/180)
+//#define PI 3.14159265
+//#define deg2rad( a ) a * (PI/180)
 
-//allegrxo-5.0.10-monolith-md-debug.lib
+//allegro-5.0.10-monolith-md-debug.lib
 
 #include "Domitian-Engine.h"
 
@@ -55,7 +55,7 @@ int main()
 #pragma region GameWorld
 
 	Entity player;
-	PositionComp player_position (Vector3 (100,100,10), deg2rad(30), &player);
+	PositionComp player_position (Vector3 (100,100,10), 0, &player);
 	player.addEntity(&player_position);
 
 	SpriteComp player_sprite (player_bitmap, &player);
@@ -65,11 +65,11 @@ int main()
 	player.addEntity(&player_physics);
 
 	player_physics.addForce(Force(3,100000));
-	player_physics.addDisplacedForce(Force(Vector2(10,0),deg2rad(30),10));
+	player_physics.addDisplacedForce(Force(Vector2(10,0),0.5,10));
 
 
 	Entity animation;
-	PositionComp animation_position (Vector3(200,200,12),deg2rad(0),&animation);
+	PositionComp animation_position (Vector3(200,200,12),0,&animation);
 	animation.addEntity(&animation_position);
 
 	AnimatedComp animation_animation (animation_bitmap,Vector2(50,50),&animation);
@@ -126,7 +126,7 @@ int main()
 		}
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
 		{
-			player_physics.addDisplacedForce(Force(Vector2(10,0),deg2rad(30),10));
+			player_physics.addDisplacedForce(Force(Vector2(10,0),0.5,10));
 		}
 
 		#pragma endregion
