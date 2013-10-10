@@ -5,13 +5,15 @@ PositionComp::PositionComp(Vector3 myPosition, float myRotation, Entity* myParen
 {
 }
 
-
-
 void PositionComp::setPosition(float myX,float myY)
 {
 	position.x = myX;
 	position.y = myY;
 
+}
+float PositionComp::getRotation()
+{
+	return rotation;
 }
 
 void PositionComp::setPositionX(float myX)

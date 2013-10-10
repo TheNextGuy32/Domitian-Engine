@@ -2,10 +2,11 @@
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
-#include <iostream>
-#include <iomanip>
-#include <locale>
-#include <sstream>
+//#include <iostream>
+//#include <iomanip>
+//#include <locale>
+//#include <sstream>
+#include <string>
 #include "Domitian-Engine.h"
 
 #pragma region Preproccessor
@@ -15,8 +16,11 @@
 
 #pragma endregion
 
+using namespace std;
+
 int main()
 {
+	//std::to_string(0.0);
 	
 #pragma region FPS
 
@@ -45,7 +49,7 @@ int main()
 	al_init_font_addon();
 	al_init_ttf_addon();
 	al_install_keyboard();
-	ALLEGRO_KEYBOARD_STATE new_keyboard_state,old_keyboard_state;
+	ALLEGRO_KEYBOARD_STATE new_keyboard_state;//,old_keyboard_state;
 
 #pragma endregion
 
@@ -58,7 +62,7 @@ int main()
 #pragma endregion 
 
 #pragma region GameWorld
-	
+
 	Entity player;
 	PositionComp player_position (Vector3 (100,100,10), 0, &player);
 	player.addEntity(&player_position);
@@ -137,19 +141,10 @@ int main()
 
 		#pragma region Drawing_GUI
 		
-		//al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, ("FPS: "+std::to_string(FPS)).c_str());
-		/*al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, ("X: "	+ std::to_string(player_position.getBucket().x) + 
-															" Y: "	+ std::to_string(player_position.getBucket().y))
-															.c_str());*/
-		//al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, "f");
+		
 
-		al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, (std::to_string(player_position.getBucket().x)).c_str());
-		
-		
-		//al_draw_text(font24, al_map_rgb(255,0,255),0,50,0, (std::string ("bob")).c_str());
-		
 		#pragma endregion
-
+		
 		al_flip_display();
 		al_clear_to_color(al_map_rgb(0,0,0));
 	}
@@ -163,6 +158,6 @@ int main()
 	al_destroy_display(display);
 
 #pragma endregion
-	
+	//std::to_string(0);
 	return 0;
 }

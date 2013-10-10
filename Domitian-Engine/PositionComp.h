@@ -25,10 +25,7 @@ public:
 		return Vector2(  floor(position.x / 200), floor(position.y / 200) );
 	};
 
-	float getRotation()
-	{
-		return rotation;
-	};
+	float getRotation();
 	void setRotation(float);
 
 private:

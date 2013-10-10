@@ -51,7 +51,7 @@
     <node id="n2">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="30.0" width="72.0390625" x="186.85546875" y="211.0"/>
+          <y:Geometry height="30.0" width="72.0390625" x="186.85546875" y="228.0"/>
           <y:Fill color="#FFCC00" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="18.701171875" modelName="custom" textColor="#000000" visible="true" width="66.0390625" x="3.0" y="5.6494140625">Component<y:LabelModel>
@@ -202,7 +202,6 @@
       </data>
     </node>
     <node id="n11">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="30.0" width="85.357421875" x="422.1962890625" y="224.0"/>
@@ -469,7 +468,6 @@
       </data>
     </edge>
     <edge id="e18" source="n11" target="n2">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="-15.0" tx="0.0" ty="-15.0">
@@ -483,7 +481,6 @@
       </data>
     </edge>
     <edge id="e19" source="n1" target="n11">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="15.0" tx="0.0" ty="-15.0">
@@ -499,7 +496,6 @@
       </data>
     </edge>
     <edge id="e20" source="n11" target="n3">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="-15.0" tx="-42.67895312500002" ty="0.0">
@@ -514,7 +510,6 @@
       </data>
     </edge>
     <edge id="e21" source="n8" target="n3">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="43.68100000000004" sy="0.0" tx="-42.67895312500002" ty="0.0">
