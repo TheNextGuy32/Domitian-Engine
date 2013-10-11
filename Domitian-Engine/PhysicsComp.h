@@ -33,18 +33,13 @@ public:
 	void setMass(float myMass)
 	{
 		mass = myMass;
-	}
-
-	float getDistanceBetween(float x, float y, float x1, float y1)
-	{
-		return sqrt((x1-x)*(x1-x) + (y1-y)*(y1-y));
 	};
 
 private:
 	float mass;
+	float moment_of_inertia;
 
 	Vector2 total_translational_force;
-	std::vector<Force> displaced_forces;
 	Vector2 velocity;
 	Vector2 acceleration;
 

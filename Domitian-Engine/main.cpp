@@ -13,7 +13,7 @@
 
 int main()
 {
-	
+	//std::to_string(float (0));
 #pragma region FPS
 
 	double FPS=0;
@@ -30,18 +30,24 @@ int main()
 #pragma region Allegro
 
 	al_init(); //allegro-5.0.10-monolith-md-debug.lib
-
+	
+	//Anti Aliasing
+	al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
+	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
+	
+	//Creating screen
 	int screen_width = 800;
 	int screen_height = 600;
 	ALLEGRO_DISPLAY* display = al_create_display(screen_width,screen_height);
 	al_set_window_position(display,0,0);
 	al_set_window_title(display, "Domitian Engine");
 
+	//Initializing Addons
 	al_init_image_addon();
 	al_init_font_addon();
 	al_init_ttf_addon();
 	al_install_keyboard();
-	ALLEGRO_KEYBOARD_STATE new_keyboard_state;//,old_keyboard_state;
+	ALLEGRO_KEYBOARD_STATE new_keyboard_state,old_keyboard_state;
 
 #pragma endregion
 	
@@ -55,6 +61,8 @@ int main()
 	
 #pragma region GameWorld
 
+	std::list<Entity*> npentities;
+
 	Entity player;
 	PositionComp player_position (Vector3 (100,100,10), 0, &player);
 	player.addEntity(&player_position);
@@ -65,15 +73,8 @@ int main()
 	PhysicsComp player_physics (100,&player);
 	player.addEntity(&player_physics);
 
-	player_physics.addForce(Force((2*PI/8)*5,100000));
-	player_physics.addDisplacedForce(Force(Vector2(10,0),1,10));
-	
-	Entity animation;
-	PositionComp animation_position (Vector3(200,200,12),0,&animation);
-	animation.addEntity(&animation_position);
-	
-	AnimatedComp animation_animation (animation_bitmap,Vector2(50,50),&animation);
-	animation.addEntity(&animation_animation);
+	player_physics.addForce(Force(deg2rad(30),100000));
+	//player_physics.addDisplacedForce(Force(Vector2(-100,0),0,100));
 	
 #pragma endregion
 	
@@ -113,7 +114,7 @@ int main()
 			current_timestamp += dt;
 		}
 		player.update(dt);
-		animation.update(dt);
+		//animation.update(dt);
 		
         #pragma endregion
 
@@ -126,14 +127,32 @@ int main()
 		}
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
 		{
-			player_physics.addDisplacedForce(Force(Vector2(10,0),0.5,10));
+			//player_physics.addDisplacedForce(Force(Vector2(10,0),0.5,10));
+			if(!al_key_down(&old_keyboard_state,ALLEGRO_KEY_W))
+			{
+				//player_position.setRotation(player_position.getRotation() + (deg2rad(10));
+			}
 		}
+
+		old_keyboard_state = new_keyboard_state;
 
 		#pragma endregion
 
 		#pragma region Drawing_GUI
 		
-		
+		al_draw_text(font24,al_map_rgb(255,255,255),0,0,0, (std::to_string(player_position.getRotation())).c_str());
+
+		for(int y= 0 ; y<100; y++)
+		{
+			for(int x= 0 ; x<100; x++)
+			{
+				al_draw_pixel(x*200+1,y*200,al_map_rgb(	 200,200,200));
+				al_draw_pixel(x*200-1,y*200,al_map_rgb(  200,200,200));
+				al_draw_pixel(x*200,  y*200+1,al_map_rgb(200,200,200));
+				al_draw_pixel(x*200,  y*200-1,al_map_rgb(200,200,200));
+				al_draw_pixel(x*200,  y*200,al_map_rgb(  200,200,200));
+			}
+		}
 
 		#pragma endregion
 		
