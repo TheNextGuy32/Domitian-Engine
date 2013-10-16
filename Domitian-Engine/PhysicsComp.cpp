@@ -39,12 +39,12 @@ void PhysicsComp::update(float dt)
 
 void PhysicsComp::addForce(Force myForce)
 {
-	/*float radian_from_center_mass = Vector2::Vector2ToMathRadian(myForce.getDisplacement());
-	float radian_to_center_mass = radian_from_center_mass + 3.1459;*/
+	//float radian_from_center_mass = Vector2::Vector2ToMathRadian(myForce.getDisplacement());
+	float radian_to_center_mass = myForce.getMathRadianToForce() + 3.1459;
 
-	//float attached_direction_displacement = myForce.getForceDirection() - radian_to_center_mass;
+	float attached_direction_displacement = myForce.getForceMathRadian() - radian_to_center_mass;
 
-	total_torque += radius *  myForce.getForce() * sin(myForce.getMathRadianToForce());
+	total_torque += radius *  myForce.getForce() * sin(attached_direction_displacement);
 
 	Vector2 force = Vector2::MathRadianToVector2(myForce.getForceMathRadian());
 	force.x = force.x * myForce.getForce();
