@@ -64,7 +64,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedComp.cpp" />
-    <ClCompile Include="CollisionComp.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Force.cpp" />
@@ -75,11 +74,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedComp.h" />
-    <ClInclude Include="CollisionComp.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Domitian-Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Force.h" />
+    <ClInclude Include="Radian.h" />
     <ClInclude Include="PhysicsComp.h" />
     <ClInclude Include="PositionComp.h" />
     <ClInclude Include="SpriteComp.h" />

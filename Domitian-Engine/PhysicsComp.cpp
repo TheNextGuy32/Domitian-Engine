@@ -1,7 +1,7 @@
 #include "PhysicsComp.h"
+#include "Radian.h"
 
-
-PhysicsComp::PhysicsComp(float myMass, Entity* myParent):Component("Physics",myParent),mass(myMass)
+PhysicsComp::PhysicsComp(float myMass,float myRadius, Entity* myParent):Component("Physics",myParent),mass(myMass),radius(myRadius)
 {
 	total_translational_force=Vector2(0,0);
 	velocity=Vector2(0,0);
@@ -17,7 +17,7 @@ void PhysicsComp::update(float dt)
 	PositionComp* pos_comp = (PositionComp*) getComponent("Position");
 
 	//Rotational Movement
-	moment_of_inertia = mass;
+	moment_of_inertia = (2/5) * mass * (radius *radius);
 	rotational_acceleration = total_torque / moment_of_inertia; //TODO: Calc total torque and moment of inertia
 																//moment_of_inertia += attached_physics->getMass()*(distance*distance);
 	rotational_velocity += rotational_acceleration*dt;
@@ -39,7 +39,7 @@ void PhysicsComp::update(float dt)
 
 void PhysicsComp::addForce(Force myForce)
 {
-	Vector2 force = Vector2::RadianToVector2(myForce.getRadianDirection());
+	Vector2 force = Vector2::MathRadianToVector2(	Radian::convertToMath(	myForce.getRadianDirection()	)	);
 	force.x = force.x * myForce.getForce();
 	force.y = force.y * myForce.getForce();
 	total_translational_force+=force;
@@ -48,12 +48,28 @@ void PhysicsComp::addDisplacedForce(Force myForce)
 {
 	float distance = Vector2::getDistanceBetween(Vector2(0,0),myForce.getDisplacement());
 
-	float radian_from_center_mass = Vector2::Vector2ToRadian(myForce.getDisplacement());
+	float radian_from_center_mass = Vector2::Vector2ToMathRadian(myForce.getDisplacement());
 	float radian_to_center_mass = radian_from_center_mass + 3.1459;
 
-	float attached_direction_displacement = myForce.getRadianDirection() - radian_to_center_mass;
+	float attached_direction_displacement = Radian::convertToMath(myForce.getRadianDirection()) - radian_to_center_mass;
 
-	total_torque += distance *  myForce.getForce() * -sin(myForce.getRadianDirection());
+	total_torque += distance *  myForce.getForce() * sin(Radian::convertToMath(attached_direction_displacement));
 
 	addForce(myForce);
+}
+
+bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
+{
+	PositionComp* first_pos_comp = (PositionComp*) first->getComponent("Position");
+	Vector2 first_pos = Vector2(first_pos_comp->getPosition().x,first_pos_comp->getPosition().y);
+
+	PositionComp* second_pos_comp = (PositionComp*) second->getComponent("Position");
+	Vector2 second_pos = Vector2(second_pos_comp->getPosition().x,second_pos_comp->getPosition().y);
+
+	if( Vector2::getDistanceBetween(first_pos,second_pos) < (first->getRadius()+second->getRadius()))
+	{
+		return true;
+	}
+
+	return false;
 }

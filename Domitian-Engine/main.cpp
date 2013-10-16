@@ -23,6 +23,7 @@ int main()
 	double old_time=0;
 
 	const double dt = 0.05;
+	const double doubledt = dt*5;
 	double accumulator = 0.0;
 
 #pragma endregion
@@ -61,21 +62,23 @@ int main()
 	
 #pragma region GameWorld
 
-	std::list<Entity*> npentities;
+	std::vector<Entity*> entities;
 
-	Entity player;
+	Entity player; 
+	entities.push_back(&player);
+	
 	PositionComp player_position (Vector3 (100,100,10), 0, &player);
 	player.addEntity(&player_position);
 
 	SpriteComp player_sprite (player_bitmap, &player);
 	player.addEntity(&player_sprite);
 
-	PhysicsComp player_physics (100,&player);
+	PhysicsComp player_physics (100,al_get_bitmap_width(player_bitmap),&player);
 	player.addEntity(&player_physics);
 
-	player_physics.addForce(Force(deg2rad(30),100000));
-	//player_physics.addDisplacedForce(Force(Vector2(-100,0),0,100));
-	
+	player_physics.addForce(Force((PI/4),100000));
+	//player_physics.addDisplacedForce(Force(Vector2(-100,0),1,100));
+
 #pragma endregion
 	
 #pragma region GameLoop
@@ -99,25 +102,6 @@ int main()
 
 		#pragma endregion
 
-		#pragma region Updating
-
-		accumulator+=seconds_since_last_tick;
-		if ( seconds_since_last_tick > 0.25 )
-		{
-			seconds_since_last_tick = 0.25;	
-		}
-		
-		//Do this before drawing
-		while ( accumulator >= dt )
-		{
-			accumulator -= dt;
-			current_timestamp += dt;
-		}
-		player.update(dt);
-		//animation.update(dt);
-		
-        #pragma endregion
-
 		#pragma region Input
 
 		al_get_keyboard_state(&new_keyboard_state);
@@ -137,6 +121,29 @@ int main()
 		old_keyboard_state = new_keyboard_state;
 
 		#pragma endregion
+
+		#pragma region Updating
+
+		accumulator+=seconds_since_last_tick;
+		if ( seconds_since_last_tick > 0.25 )
+		{
+			seconds_since_last_tick = 0.25;	
+		}
+		
+		//Do this before drawing
+		while ( accumulator >= dt )
+		{
+			accumulator -= dt;
+			current_timestamp += dt;
+		}
+		
+		//Update the entities
+		for(std::vector<Entity*>::size_type i = 0; i != entities.size(); i++) 
+		{
+			entities[i]->update(dt);
+		}
+		
+        #pragma endregion
 
 		#pragma region Drawing_GUI
 		

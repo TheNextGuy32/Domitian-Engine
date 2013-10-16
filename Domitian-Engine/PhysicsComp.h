@@ -10,7 +10,7 @@
 class PhysicsComp : public Component
 {
 public:
-	PhysicsComp(float, Entity*);
+	PhysicsComp(float,float, Entity*);
 
     void update(float);
 
@@ -34,10 +34,18 @@ public:
 	{
 		mass = myMass;
 	};
+	float getRadius()
+	{
+		return radius;
+	}
+
+	bool checkCollision(PhysicsComp* first, PhysicsComp* second);
 
 private:
 	float mass;
 	float moment_of_inertia;
+
+	float radius;
 
 	Vector2 total_translational_force;
 	Vector2 velocity;
