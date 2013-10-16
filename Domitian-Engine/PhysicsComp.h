@@ -16,6 +16,11 @@ public:
 
 	void addForce(Force myForce);
 
+	Vector2 getVelocity()
+	{
+		return velocity;
+	};
+
 	void setVelocity(Vector2 myVelocity)
 	{
 		velocity = myVelocity;
@@ -38,7 +43,7 @@ public:
 		return radius;
 	}
 
-	bool checkCollision(PhysicsComp* first, PhysicsComp* second);
+	static bool checkCollision(PhysicsComp* first, PhysicsComp* second);
 
 private:
 	float mass;

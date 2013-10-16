@@ -73,10 +73,24 @@ int main()
 	SpriteComp player_sprite (player_bitmap, &player);
 	player.addEntity(&player_sprite);
 
-	PhysicsComp player_physics (100,al_get_bitmap_width(player_bitmap),&player);
+	PhysicsComp player_physics (100,al_get_bitmap_width(player_bitmap)/2 -15,&player);
 	player.addEntity(&player_physics);
 
-	player_physics.addForce(Force(-(PI/2), PI/2, 100000));
+	player_physics.addForce(Force(-(PI/4)*3, (PI/4), 100000));
+
+	Entity collider; 
+	entities.push_back(&collider);
+	
+	PositionComp collider_position (Vector3 (300,300,10), -(PI/2), &collider);
+	collider.addEntity(&collider_position);
+
+	SpriteComp collider_sprite (player_bitmap, &collider);
+	collider.addEntity(&collider_sprite);
+
+	PhysicsComp collider_physics (100,al_get_bitmap_width(player_bitmap)/2 - 15,&collider);
+	collider.addEntity(&collider_physics);
+
+	collider_physics.addForce(Force((PI/4), -(PI/4)*3, 100000));
 
 #pragma endregion
 	
@@ -140,6 +154,14 @@ int main()
 		for(std::vector<Entity*>::size_type i = 0; i != entities.size(); i++) 
 		{
 			entities[i]->update(dt);
+		}
+		if(PhysicsComp::checkCollision(&player_physics,&collider_physics))
+		{
+			Vector2 displacement = Vector2(player_position.getPosition().x - collider_position.getPosition().x,player_position.getPosition().y - collider_position.getPosition().y);
+			float mathRadianDirectionTo = Vector2::Vector2ToMathRadian(displacement);
+
+			player_physics.addForce(Force(mathRadianDirectionTo,Vector2::Vector2ToMathRadian(collider_physics.getVelocity()),10000));
+			collider_physics.addForce(Force(mathRadianDirectionTo + PI,Vector2::Vector2ToMathRadian(player_physics.getVelocity()),10000));
 		}
 		
         #pragma endregion

@@ -60,7 +60,10 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	PositionComp* second_pos_comp = (PositionComp*) second->getComponent("Position");
 	Vector2 second_pos = Vector2(second_pos_comp->getPosition().x,second_pos_comp->getPosition().y);
 
-	if( Vector2::getDistanceBetween(first_pos,second_pos) < (first->getRadius()+second->getRadius()))
+	float distanceBetween = Vector2::getDistanceBetween(first_pos,second_pos);
+	float addingRadii = first->getRadius()+second->getRadius();
+
+	if( distanceBetween < addingRadii)
 	{
 		return true;
 	}
