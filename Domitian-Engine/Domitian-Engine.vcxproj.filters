@@ -16,9 +16,6 @@
     <Filter Include="Source Files\Domitian-Engine">
       <UniqueIdentifier>{3072204c-4225-42b1-9788-9771ce407f78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Domitian-Engine\Helper">
-      <UniqueIdentifier>{c00b427c-00bf-4f6c-af6c-3b7d041ee284}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Domitian-Engine\Components">
       <UniqueIdentifier>{8dc1c4f4-c31f-41c6-8f8d-e35ba9e4afba}</UniqueIdentifier>
     </Filter>
@@ -30,6 +27,9 @@
     </Filter>
     <Filter Include="Source Files\Domitian-Engine\Base Classes">
       <UniqueIdentifier>{37cad735-b2cf-45ec-ab51-30a9f5587ca0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Domitian-Engine\Utility">
+      <UniqueIdentifier>{c00b427c-00bf-4f6c-af6c-3b7d041ee284}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -66,10 +66,10 @@
       <Filter>Source Files\Domitian-Engine\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
-      <Filter>Source Files\Domitian-Engine\Helper</Filter>
+      <Filter>Source Files\Domitian-Engine\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Vector3.h">
-      <Filter>Source Files\Domitian-Engine\Helper</Filter>
+      <Filter>Source Files\Domitian-Engine\Utility</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComp.h">
       <Filter>Source Files\Domitian-Engine\Components\Graphics</Filter>
@@ -90,7 +90,7 @@
       <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
     <ClInclude Include="Radian.h">
-      <Filter>Source Files\Domitian-Engine\Helper</Filter>
+      <Filter>Source Files\Domitian-Engine\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

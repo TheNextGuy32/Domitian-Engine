@@ -19,7 +19,6 @@ as a parementer, or as a return type: B MyFunction(B myb);
 
 //Infastructure
 #include "PositionComp.h"
-
 #include "PhysicsComp.h"
 #include "Force.h"
 

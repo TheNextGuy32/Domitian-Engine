@@ -3,7 +3,7 @@
 
 #include "Vector2.h"
 
-static class Radian
+class Radian
 {
 public:
 	static float convertToGame(float myMathRadian)

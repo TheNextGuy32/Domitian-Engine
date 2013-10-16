@@ -76,7 +76,7 @@ int main()
 	PhysicsComp player_physics (100,al_get_bitmap_width(player_bitmap),&player);
 	player.addEntity(&player_physics);
 
-	player_physics.addForce(Force((PI/4),100000));
+	player_physics.addForce(Force((PI/4),100));
 	//player_physics.addDisplacedForce(Force(Vector2(-100,0),1,100));
 
 #pragma endregion
