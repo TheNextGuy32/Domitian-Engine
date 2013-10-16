@@ -81,7 +81,7 @@ int main()
 	Entity collider; 
 	entities.push_back(&collider);
 	
-	PositionComp collider_position (Vector3 (300,300,10), -(PI/2), &collider);
+	PositionComp collider_position (Vector3 (300,425,10), -(PI/2), &collider);
 	collider.addEntity(&collider_position);
 
 	SpriteComp collider_sprite (player_bitmap, &collider);
@@ -90,7 +90,7 @@ int main()
 	PhysicsComp collider_physics (100,al_get_bitmap_width(player_bitmap)/2 - 15,&collider);
 	collider.addEntity(&collider_physics);
 
-	collider_physics.addForce(Force((PI/4), -(PI/4)*3, 100000));
+	collider_physics.addForce(Force((PI/2), -(PI/2), 100000));
 
 #pragma endregion
 	
