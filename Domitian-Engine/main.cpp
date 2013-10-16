@@ -67,7 +67,7 @@ int main()
 	Entity player; 
 	entities.push_back(&player);
 	
-	PositionComp player_position (Vector3 (100,100,10), 0, &player);
+	PositionComp player_position (Vector3 (100,100,10), -(PI/2), &player);
 	player.addEntity(&player_position);
 
 	SpriteComp player_sprite (player_bitmap, &player);
@@ -76,7 +76,7 @@ int main()
 	PhysicsComp player_physics (100,al_get_bitmap_width(player_bitmap),&player);
 	player.addEntity(&player_physics);
 
-	//player_physics.addForce(Force((PI/2)*3, PI/2, 100));
+	player_physics.addForce(Force(-(PI/2), PI/2, 100000));
 
 #pragma endregion
 	

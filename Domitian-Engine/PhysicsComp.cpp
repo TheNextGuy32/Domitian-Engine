@@ -17,11 +17,11 @@ void PhysicsComp::update(float dt)
 	PositionComp* pos_comp = (PositionComp*) getComponent("Position");
 
 	//Rotational Movement
-	moment_of_inertia = (2/5) * mass * (radius *radius);
+	moment_of_inertia = (2.0/5.0) * mass * (radius *radius);
 	rotational_acceleration = total_torque / moment_of_inertia; //TODO: Calc total torque and moment of inertia
 																//moment_of_inertia += attached_physics->getMass()*(distance*distance);
 	rotational_velocity += rotational_acceleration*dt;
-	//pos_comp->setRotation(pos_comp->getRotation() + rotational_velocity*dt);
+	pos_comp->setRotation(pos_comp->getRotation() + rotational_velocity*dt);
 
 	//Whetehr or not it moves translationally depends on its moment of inertia, forget tangents, period.
 
@@ -44,7 +44,7 @@ void PhysicsComp::addForce(Force myForce)
 
 	//float attached_direction_displacement = myForce.getForceDirection() - radian_to_center_mass;
 
-	//total_torque += radius *  myForce.getForce() * sin(myForce.getMathRadianToForce());
+	total_torque += radius *  myForce.getForce() * sin(myForce.getMathRadianToForce());
 
 	Vector2 force = Vector2::MathRadianToVector2(myForce.getForceMathRadian());
 	force.x = force.x * myForce.getForce();
