@@ -10,6 +10,9 @@ as a parementer, or as a return type: B MyFunction(B myb);
 - #include "b.h" if: A contains a B object: B myb;
 */
 
+//All radians are passed in user side by allegro standards and are 
+//converted to math rads for inner logic then put back to game rads for allegro interfacing
+
 //Game Objects
 #include "Entity.h"
 

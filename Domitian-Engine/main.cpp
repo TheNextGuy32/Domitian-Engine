@@ -76,8 +76,7 @@ int main()
 	PhysicsComp player_physics (100,al_get_bitmap_width(player_bitmap),&player);
 	player.addEntity(&player_physics);
 
-	player_physics.addForce(Force((PI/4),100));
-	//player_physics.addDisplacedForce(Force(Vector2(-100,0),1,100));
+	//player_physics.addForce(Force((PI/2)*3, PI/2, 100));
 
 #pragma endregion
 	
@@ -147,8 +146,6 @@ int main()
 
 		#pragma region Drawing_GUI
 		
-		al_draw_text(font24,al_map_rgb(255,255,255),0,0,0, (std::to_string(player_position.getRotation())).c_str());
-
 		for(int y= 0 ; y<100; y++)
 		{
 			for(int x= 0 ; x<100; x++)

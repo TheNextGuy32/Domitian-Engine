@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "PositionComp.h"
+#include "Radian.h"
 #include <allegro5/bitmap_draw.h>
 #include <allegro5/bitmap.h>
 

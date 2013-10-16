@@ -1,13 +1,8 @@
 #include "Force.h"
 
-Force::Force(Vector2 myDisplacement,float myDirection, float myForce)
+
+Force::Force(float myDirectionToForce,float myForceDirection, float myForce) : force(myForce)
 {
-	displacement = myDisplacement;
-	radian_direction = myDirection;
-	force = myForce;
-}
-Force::Force(float myDirection, float myForce)
-{
-	radian_direction = myDirection;
-	force = myForce;
+	direction_to_force = myDirectionToForce;
+	force_direction = myForceDirection;
 }

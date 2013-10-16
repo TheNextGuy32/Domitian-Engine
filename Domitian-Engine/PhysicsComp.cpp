@@ -21,7 +21,7 @@ void PhysicsComp::update(float dt)
 	rotational_acceleration = total_torque / moment_of_inertia; //TODO: Calc total torque and moment of inertia
 																//moment_of_inertia += attached_physics->getMass()*(distance*distance);
 	rotational_velocity += rotational_acceleration*dt;
-	pos_comp->setRotation(pos_comp->getRotation() + rotational_velocity*dt);
+	//pos_comp->setRotation(pos_comp->getRotation() + rotational_velocity*dt);
 
 	//Whetehr or not it moves translationally depends on its moment of inertia, forget tangents, period.
 
@@ -39,23 +39,17 @@ void PhysicsComp::update(float dt)
 
 void PhysicsComp::addForce(Force myForce)
 {
-	Vector2 force = Vector2::MathRadianToVector2(	Radian::convertToMath(	myForce.getRadianDirection()	)	);
+	/*float radian_from_center_mass = Vector2::Vector2ToMathRadian(myForce.getDisplacement());
+	float radian_to_center_mass = radian_from_center_mass + 3.1459;*/
+
+	//float attached_direction_displacement = myForce.getForceDirection() - radian_to_center_mass;
+
+	//total_torque += radius *  myForce.getForce() * sin(myForce.getMathRadianToForce());
+
+	Vector2 force = Vector2::MathRadianToVector2(myForce.getForceMathRadian());
 	force.x = force.x * myForce.getForce();
 	force.y = force.y * myForce.getForce();
 	total_translational_force+=force;
-}
-void PhysicsComp::addDisplacedForce(Force myForce)
-{
-	float distance = Vector2::getDistanceBetween(Vector2(0,0),myForce.getDisplacement());
-
-	float radian_from_center_mass = Vector2::Vector2ToMathRadian(myForce.getDisplacement());
-	float radian_to_center_mass = radian_from_center_mass + 3.1459;
-
-	float attached_direction_displacement = Radian::convertToMath(myForce.getRadianDirection()) - radian_to_center_mass;
-
-	total_torque += distance *  myForce.getForce() * sin(Radian::convertToMath(attached_direction_displacement));
-
-	addForce(myForce);
 }
 
 bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)

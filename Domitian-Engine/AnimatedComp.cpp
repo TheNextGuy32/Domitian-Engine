@@ -42,6 +42,7 @@ void AnimatedComp::update(float dt)
 
 	Vector3 position = positionComp->getPosition();
 
+	//Whatafuck we dont handle rotation
 	al_draw_bitmap_region(	bitmap, 
 							frame.x * dimensions.x, frame.y * dimensions.y,//Where to start within bitmap
 							dimensions.x, dimensions.y,//Width of piece of bitmap

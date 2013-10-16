@@ -2,21 +2,21 @@
 #define DForce
 
 #include "Vector2.h"
+#include "Radian.h"
 
 class Force
 {
 public:
-	Force(Vector2,float,float);
-	Force(float, float);
+	Force(float,float,float);
 
-	Vector2 getDisplacement()
+	float getMathRadianToForce()
 	{
-		return displacement;
+		return direction_to_force;
 	};
 
-	float getRadianDirection()
+	float getForceMathRadian()
 	{
-		return radian_direction;
+		return force_direction;
 	};
 
 	float getForce()
@@ -25,8 +25,8 @@ public:
 	};
 
 private:
-	Vector2 displacement;
-	float radian_direction;
+	float direction_to_force;
+	float force_direction;
 	float force;
 
 };

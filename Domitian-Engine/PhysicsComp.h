@@ -15,7 +15,6 @@ public:
     void update(float);
 
 	void addForce(Force myForce);
-	void addDisplacedForce(Force myForce);
 
 	void setVelocity(Vector2 myVelocity)
 	{
