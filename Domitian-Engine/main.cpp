@@ -91,6 +91,21 @@ int main()
 	collider.addEntity(&collider_physics);
 
 	collider_physics.addForce(Force((PI/2), -(PI/2), 100000));
+	
+	Entity other; 
+	entities.push_back(&other);
+	
+	PositionComp other_position (Vector3 (225,375,10), -(PI/2), &other);
+	other.addEntity(&other_position);
+
+	SpriteComp other_sprite (player_bitmap, &other);
+	other.addEntity(&other_sprite);
+
+	PhysicsComp other_physics (100,al_get_bitmap_width(player_bitmap)/2 - 15,&other);
+	other.addEntity(&other_physics);
+
+	other_physics.addForce(Force((PI/2), -(PI/2), 100000));
+
 
 #pragma endregion
 	
@@ -155,7 +170,10 @@ int main()
 		{
 			entities[i]->update(dt);
 		}
+
 		PhysicsComp::checkCollision(&player_physics,&collider_physics);
+		PhysicsComp::checkCollision(&player_physics,&other_physics);
+		PhysicsComp::checkCollision(&other_physics,&collider_physics);
 		
         #pragma endregion
 

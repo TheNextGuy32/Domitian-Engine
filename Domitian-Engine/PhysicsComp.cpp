@@ -69,8 +69,8 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			first_pos_comp->getPosition().y - second_pos_comp->getPosition().y);
 		float mathRadianDirectionTo = Vector2::Vector2ToMathRadian(displacement);
 
-		first->addForce(Force(mathRadianDirectionTo,Vector2::Vector2ToMathRadian(second->getVelocity()),10000));
-		second->addForce(Force(mathRadianDirectionTo + 3.1459 , Vector2::Vector2ToMathRadian(first->getVelocity()),10000));
+		first->addForce(Force(mathRadianDirectionTo,Vector2::Vector2ToMathRadian(second->getVelocity()),100000));
+		second->addForce(Force(mathRadianDirectionTo + 3.1459 , Vector2::Vector2ToMathRadian(first->getVelocity()),100000));
 
 		first_pos_comp->setPosition( first_pos_comp->getPosition().x + displacement.x/50, 
 		first_pos_comp->getPosition().y + displacement.y/50);
