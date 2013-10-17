@@ -19,7 +19,7 @@ void PhysicsComp::update(float dt)
 	//Rotational Movement
 	moment_of_inertia = (2.0/5.0) * mass * (radius *radius);
 	rotational_acceleration = total_torque / moment_of_inertia; //TODO: Calc total torque and moment of inertia
-																//moment_of_inertia += attached_physics->getMass()*(distance*distance);
+	//moment_of_inertia += attached_physics->getMass()*(distance*distance);
 	rotational_velocity += rotational_acceleration*dt;
 	pos_comp->setRotation(pos_comp->getRotation() + rotational_velocity*dt);
 
@@ -65,6 +65,19 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 
 	if( distanceBetween < addingRadii)
 	{
+		Vector2 displacement = Vector2(	first_pos_comp->getPosition().x - second_pos_comp->getPosition().x,
+			first_pos_comp->getPosition().y - second_pos_comp->getPosition().y);
+		float mathRadianDirectionTo = Vector2::Vector2ToMathRadian(displacement);
+
+		first->addForce(Force(mathRadianDirectionTo,Vector2::Vector2ToMathRadian(second->getVelocity()),10000));
+		second->addForce(Force(mathRadianDirectionTo + 3.1459 , Vector2::Vector2ToMathRadian(first->getVelocity()),10000));
+
+		first_pos_comp->setPosition( first_pos_comp->getPosition().x + displacement.x/50, 
+		first_pos_comp->getPosition().y + displacement.y/50);
+
+		second_pos_comp->setPosition(second_pos_comp->getPosition().x - displacement.x/50,
+		second_pos_comp->getPosition().y - displacement.y/50);
+
 		return true;
 	}
 

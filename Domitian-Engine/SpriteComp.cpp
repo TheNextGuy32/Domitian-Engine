@@ -12,11 +12,9 @@ void SpriteComp::update(float dt)
 {
 	PositionComp* positionComp = (PositionComp*) getComponent("Position");
 
-	Vector3 position = positionComp->getPosition();
-
 	al_draw_rotated_bitmap(	bitmap,
 							offset.x,offset.y,
-							position.x,position.y,
+							positionComp->getPosition().x,positionComp->getPosition().y,
 							Radian::convertToGame(positionComp->getRotation()), 
 							0);
 	

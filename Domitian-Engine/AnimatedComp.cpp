@@ -37,16 +37,13 @@ void AnimatedComp::update(float dt)
 	}
 	current_time+=dt;
 
-
 	PositionComp* positionComp = (PositionComp*) getComponent("Position");
-
-	Vector3 position = positionComp->getPosition();
 
 	//Whatafuck we dont handle rotation
 	al_draw_bitmap_region(	bitmap, 
 							frame.x * dimensions.x, frame.y * dimensions.y,//Where to start within bitmap
 							dimensions.x, dimensions.y,//Width of piece of bitmap
-							position.x - offset.x, position.y - offset.y,//Where to draw it
+							positionComp->getPosition().x - offset.x, positionComp->getPosition().y - offset.y,//Where to draw it
 							0);	
 	
 

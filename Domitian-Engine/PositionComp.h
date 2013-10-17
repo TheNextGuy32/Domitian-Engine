@@ -11,9 +11,9 @@ class PositionComp : public Component
 public:
 	PositionComp(Vector3,float,Entity*);
 
-	Vector3 getPosition()
+	Vector2 getPosition()
 	{
-		return position;
+		return Vector2(position.x,position.y);
 	};
 	void setPosition(float,float);
 	void setPositionX(float);

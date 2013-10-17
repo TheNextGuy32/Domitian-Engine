@@ -155,14 +155,7 @@ int main()
 		{
 			entities[i]->update(dt);
 		}
-		if(PhysicsComp::checkCollision(&player_physics,&collider_physics))
-		{
-			Vector2 displacement = Vector2(player_position.getPosition().x - collider_position.getPosition().x,player_position.getPosition().y - collider_position.getPosition().y);
-			float mathRadianDirectionTo = Vector2::Vector2ToMathRadian(displacement);
-
-			player_physics.addForce(Force(mathRadianDirectionTo,Vector2::Vector2ToMathRadian(collider_physics.getVelocity()),10000));
-			collider_physics.addForce(Force(mathRadianDirectionTo + PI,Vector2::Vector2ToMathRadian(player_physics.getVelocity()),10000));
-		}
+		PhysicsComp::checkCollision(&player_physics,&collider_physics);
 		
         #pragma endregion
 
