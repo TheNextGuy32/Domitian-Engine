@@ -18,11 +18,11 @@ public:
 	{
 		return (first.x==second.x && first.y==second.y);
 	}
-	static float Vector2ToMathRadian(Vector2 myVector)
+	static float ToMathRadian(Vector2 myVector)
 	{
 		return atan2(myVector.y,myVector.x);
 	};
-	static Vector2 MathRadianToVector2(float angle)
+	static Vector2 ToVector2(float angle)
 	{
 		return Vector2 (cos(angle), sin(angle));
 	};

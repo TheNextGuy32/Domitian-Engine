@@ -18,8 +18,7 @@ void PhysicsComp::update(float dt)
 
 	//Rotational Movement
 	moment_of_inertia = (2.0/5.0) * mass * (radius *radius);
-	rotational_acceleration = total_torque / moment_of_inertia; //TODO: Calc total torque and moment of inertia
-	//moment_of_inertia += attached_physics->getMass()*(distance*distance);
+	rotational_acceleration = total_torque / moment_of_inertia; 
 	rotational_velocity += rotational_acceleration*dt;
 	pos_comp->setRotation(pos_comp->getRotation() + rotational_velocity*dt);
 
@@ -39,14 +38,13 @@ void PhysicsComp::update(float dt)
 
 void PhysicsComp::addForce(Force myForce)
 {
-	//float radian_from_center_mass = Vector2::Vector2ToMathRadian(myForce.getDisplacement());
 	float radian_to_center_mass = myForce.getMathRadianToForce() + 3.1459;
 
 	float attached_direction_displacement = myForce.getForceMathRadian() - radian_to_center_mass;
 
 	total_torque += radius *  myForce.getForce() * sin(attached_direction_displacement);
 
-	Vector2 force = Vector2::MathRadianToVector2(myForce.getForceMathRadian());
+	Vector2 force = Vector2::ToVector2(myForce.getForceMathRadian());
 	force.x = force.x * myForce.getForce();
 	force.y = force.y * myForce.getForce();
 	total_translational_force+=force;
@@ -54,6 +52,23 @@ void PhysicsComp::addForce(Force myForce)
 
 bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 {
+	/*
+	1/2 * m * v^2 = kinetic energy for mass m
+	to see if energy is conserved
+	right before a collision happens, calculate
+
+	1/2 * m * v^2 for alle objects
+	then after the collision
+	do it again
+	with the new velocities
+	and see if the numbers are equal
+	oh and i forgot to say that you need to sum up all the energies to get total energy
+	//float initialEnergy += 0.5 * first->getMass() * Vector2::ToMathRadian(first->getVelocity())*Vector2::ToMathRadian(first->getVelocity());
+	//initialEnergy += 0.5 * second->getMass() * Vector2::ToMathRadian(second->getVelocity())*Vector2::ToMathRadian(second->getVelocity());
+
+	the v^2 outputs a scalar so it works for any number of components
+	*/
+
 	PositionComp* first_pos_comp = (PositionComp*) first->getComponent("Position");
 	Vector2 first_pos = Vector2(first_pos_comp->getPosition().x,first_pos_comp->getPosition().y);
 
@@ -63,30 +78,31 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	float distanceBetween = Vector2::getDistanceBetween(first_pos,second_pos);
 	float addingRadii = first->getRadius()+second->getRadius();
 
+	//Collision
 	if( distanceBetween < addingRadii)
 	{
-		Vector2 displacement = Vector2(	first_pos_comp->getPosition().x - second_pos_comp->getPosition().x,
-			first_pos_comp->getPosition().y - second_pos_comp->getPosition().y);
+		//Magnitude is multiplied by ratio
+		Vector2 displacement = Vector2(	second_pos_comp->getPosition().x - first_pos_comp->getPosition().x,
+			 second_pos_comp->getPosition().y - first_pos_comp->getPosition().y);
 
-		//Vector2 collision_push = Vector2(displacement.x/5,displacement.y/5);
-		Vector2 collision_push = Vector2(0,0);
+		float mathRadianDirectionTo = Vector2::ToMathRadian(displacement);
 		
+		//The force applied to second = magnitude of speed of first * its mass
 		float first_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity()) * first->getMass();
 		float second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
+		float net_force = first_force_exerted+second_force_exerted;
 
-		float mathRadianDirectionTo = Vector2::Vector2ToMathRadian(displacement);
-
-		Force first_force (mathRadianDirectionTo,Vector2::Vector2ToMathRadian(second->getVelocity()),first_force_exerted * 10);
-		Force second_force (mathRadianDirectionTo + 3.1459 , Vector2::Vector2ToMathRadian(first->getVelocity()),second_force_exerted*10);
-
+		Force first_force (mathRadianDirectionTo,Vector2::ToMathRadian(second->getVelocity()),net_force);
+		Force second_force (mathRadianDirectionTo+3.1459, Vector2::ToMathRadian(first->getVelocity()),net_force);
+		
 		first->addForce(first_force);
 		second->addForce(second_force);
 
-		first_pos_comp->setPosition( first_pos_comp->getPosition().x + collision_push.x, 
-			first_pos_comp->getPosition().y + collision_push.y);
+		first_pos_comp->setPosition( first_pos_comp->getPosition().x - displacement.x/10, 
+			first_pos_comp->getPosition().y - displacement.y/10);
 
-		second_pos_comp->setPosition(second_pos_comp->getPosition().x - collision_push.x,
-		second_pos_comp->getPosition().y - collision_push.y);
+		second_pos_comp->setPosition(second_pos_comp->getPosition().x + displacement.x/10,
+			second_pos_comp->getPosition().y+displacement.y/10);
 
 		return true;
 	}

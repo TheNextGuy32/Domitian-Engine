@@ -56,6 +56,7 @@ int main()
 	
 	ALLEGRO_FONT* font24 = al_load_font("arial.ttf", 24, 0);
 	ALLEGRO_BITMAP* player_bitmap = al_load_bitmap("fighter.png");
+	ALLEGRO_BITMAP* player_maroon_bitmap = al_load_bitmap("fightermaroon.png");
 	ALLEGRO_BITMAP* animation_bitmap = al_load_bitmap("animation.png");
 
 #pragma endregion 
@@ -67,7 +68,7 @@ int main()
 	Entity player; 
 	entities.push_back(&player);
 	
-	PositionComp player_position (Vector3 (100,100,10), -(PI/2), &player);
+	PositionComp player_position (Vector3 (200,-200,10), -(PI/2), &player);
 	player.addEntity(&player_position);
 
 	SpriteComp player_sprite (player_bitmap, &player);
@@ -76,21 +77,21 @@ int main()
 	PhysicsComp player_physics (100,al_get_bitmap_width(player_bitmap)/2 -15,&player);
 	player.addEntity(&player_physics);
 
-	player_physics.addForce(Force(-(PI/4)*3, (PI/4), 100000));
+	player_physics.addForce(Force(PI, 0, 0));
 
 	Entity collider; 
 	entities.push_back(&collider);
 	
-	PositionComp collider_position (Vector3 (300,300,10), -(PI/2), &collider);
+	PositionComp collider_position (Vector3 (400,-400,10), -(PI/2), &collider);
 	collider.addEntity(&collider_position);
 
-	SpriteComp collider_sprite (player_bitmap, &collider);
+	SpriteComp collider_sprite (player_maroon_bitmap, &collider);
 	collider.addEntity(&collider_sprite);
 
-	PhysicsComp collider_physics (100,al_get_bitmap_width(player_bitmap)/2 - 15,&collider);
+	PhysicsComp collider_physics (120,al_get_bitmap_width(player_bitmap)/2 - 15,&collider);
 	collider.addEntity(&collider_physics);
 
-	collider_physics.addForce(Force((PI/4),-(PI/4)*3 , 100000));
+	collider_physics.addForce(Force(-(PI/4)*3,(PI/4) , 100000));
 	
 	/*Entity other; 
 	entities.push_back(&other);
@@ -172,8 +173,6 @@ int main()
 		}
 
 		PhysicsComp::checkCollision(&player_physics,&collider_physics);
-		//PhysicsComp::checkCollision(&player_physics,&other_physics);
-		//PhysicsComp::checkCollision(&other_physics,&collider_physics);
 		
         #pragma endregion
 
