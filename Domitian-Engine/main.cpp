@@ -82,7 +82,7 @@ int main()
 	Entity collider; 
 	entities.push_back(&collider);
 	
-	PositionComp collider_position (Vector3 (400,-400,10), -(PI/2), &collider);
+	PositionComp collider_position (Vector3 (200,-400,10), -(PI/2), &collider);
 	collider.addEntity(&collider_position);
 
 	SpriteComp collider_sprite (player_maroon_bitmap, &collider);
@@ -91,7 +91,7 @@ int main()
 	PhysicsComp collider_physics (120,al_get_bitmap_width(player_bitmap)/2,&collider);
 	collider.addEntity(&collider_physics);
 
-	collider_physics.addForce(Force(-(PI/4),(PI/4)*3 , 100000));
+	collider_physics.addForce(Force(-(PI/2),(PI/2) , 100000));
 	
 	/*Entity other; 
 	entities.push_back(&other);
