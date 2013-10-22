@@ -15,7 +15,7 @@ void SpriteComp::update(float dt)
 	al_draw_rotated_bitmap(	bitmap,
 							offset.x,offset.y,
 							positionComp->getPosition().x,-positionComp->getPosition().y,
-							positionComp->getRotation()-(3.1459/2), 
+							Radian::convertToGame(positionComp->getRotation()), 
 							0);
 	
 }
