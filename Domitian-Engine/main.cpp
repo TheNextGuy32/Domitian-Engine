@@ -68,16 +68,16 @@ int main()
 	Entity player; 
 	entities.push_back(&player);
 	
-	PositionComp player_position (Vector3 (200,-200,10), -(PI/2), &player);
+	PositionComp player_position (Vector3 (200,-200,10), (PI/2), &player);
 	player.addEntity(&player_position);
 
 	SpriteComp player_sprite (player_bitmap, &player);
 	player.addEntity(&player_sprite);
 
-	PhysicsComp player_physics (100,al_get_bitmap_width(player_bitmap)/2 -15,&player);
+	PhysicsComp player_physics (100,al_get_bitmap_width(player_bitmap)/2,&player);
 	player.addEntity(&player_physics);
 
-	player_physics.addForce(Force(PI, 0, 0));
+	player_physics.addForce(Force((PI/4)*3, -(PI/4) , 10000));
 
 	Entity collider; 
 	entities.push_back(&collider);
@@ -88,10 +88,10 @@ int main()
 	SpriteComp collider_sprite (player_maroon_bitmap, &collider);
 	collider.addEntity(&collider_sprite);
 
-	PhysicsComp collider_physics (120,al_get_bitmap_width(player_bitmap)/2 - 15,&collider);
+	PhysicsComp collider_physics (120,al_get_bitmap_width(player_bitmap)/2,&collider);
 	collider.addEntity(&collider_physics);
 
-	collider_physics.addForce(Force(-(PI/4)*3,(PI/4) , 100000));
+	collider_physics.addForce(Force(-(PI/4),(PI/4)*3 , 100000));
 	
 	/*Entity other; 
 	entities.push_back(&other);

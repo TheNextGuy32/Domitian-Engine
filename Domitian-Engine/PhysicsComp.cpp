@@ -17,7 +17,7 @@ void PhysicsComp::update(float dt)
 	PositionComp* pos_comp = (PositionComp*) getComponent("Position");
 
 	//Rotational Movement
-	moment_of_inertia = (2.0/5.0) * mass * (radius *radius);
+	moment_of_inertia = (2.0/5.0) * mass * (radius * radius);
 	rotational_acceleration = total_torque / moment_of_inertia; 
 	rotational_velocity += rotational_acceleration*dt;
 	pos_comp->setRotation(pos_comp->getRotation() + rotational_velocity*dt);
@@ -88,21 +88,18 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 		float mathRadianDirectionTo = Vector2::ToMathRadian(displacement);
 		
 		//The force applied to second = magnitude of speed of first * its mass
-		float first_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity()) * first->getMass();
+		float first_force_exerted = (Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity())) * first->getMass();
 		float second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
 		float net_force = first_force_exerted+second_force_exerted;
 
-		Force first_force (mathRadianDirectionTo,Vector2::ToMathRadian(second->getVelocity()),net_force);
-		Force second_force (mathRadianDirectionTo+3.1459, Vector2::ToMathRadian(first->getVelocity()),net_force);
+		Force first_force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity())     ,net_force);
+		Force second_force (mathRadianDirectionTo+3.1459, 3.1459+Vector2::ToMathRadian(first->getVelocity()),net_force);
 		
 		first->addForce(first_force);
 		second->addForce(second_force);
 
-		first_pos_comp->setPosition( first_pos_comp->getPosition().x - displacement.x/10, 
-			first_pos_comp->getPosition().y - displacement.y/10);
-
-		second_pos_comp->setPosition(second_pos_comp->getPosition().x + displacement.x/10,
-			second_pos_comp->getPosition().y+displacement.y/10);
+		//first->setVelocity(Vector2(0,0));
+		//second->setVelocity(Vector2(0,0));
 
 		return true;
 	}
