@@ -78,6 +78,7 @@ int main()
 	player.addEntity(&player_physics);
 
 	player_physics.addForce(Force((PI/4)*3, -(PI/4) , 10000));
+	
 
 	Entity collider; 
 	entities.push_back(&collider);
