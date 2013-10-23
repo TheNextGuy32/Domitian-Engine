@@ -45,7 +45,18 @@ public:
 
 	static bool checkCollision(PhysicsComp* first, PhysicsComp* second);
 
+	bool getCollided()
+	{
+		return collided;
+	};
+	void setCollided(bool myCollided)
+	{
+		collided = myCollided;
+	};
+
 private:
+	bool collided;
+	
 	float mass;
 	float moment_of_inertia;
 

@@ -13,6 +13,7 @@
 
 int main()
 {
+	std::srand( time(NULL) );
 	//std::to_string(float (0));
 #pragma region FPS
 
@@ -63,40 +64,59 @@ int main()
 
 	ALLEGRO_BITMAP* astronaut_bitmap = al_load_bitmap("astronaut.png");
 
+	ALLEGRO_BITMAP* asteroid_bitmap = al_load_bitmap("asteroid.png");
+
 #pragma endregion 
 
 #pragma region GameWorld
 
 	std::vector<Entity*> entities;
+	std::vector<Entity*> physics_entities;
 
-	Entity player; 
-	entities.push_back(&player);
+	//Player
+	Entity* player = new Entity(); 
+	entities.push_back(player);
+	physics_entities.push_back(player);
 
-	PositionComp player_position (Vector3 (200,-200,10), 0, &player);
-	player.addEntity(&player_position);
+	PositionComp player_position (Vector3 (200,-200,10), 0, player);
+	player->addEntity(&player_position);
 
-	SpriteComp player_sprite (astronaut_bitmap, &player);
-	player.addEntity(&player_sprite);
+	SpriteComp player_sprite (astronaut_bitmap, player);
+	player->addEntity(&player_sprite);
 
-	PhysicsComp player_physics (10,al_get_bitmap_width(astronaut_bitmap)/2,&player);
-	player.addEntity(&player_physics);
+	PhysicsComp player_physics (10,al_get_bitmap_width(astronaut_bitmap)/2,player);
+	player->addEntity(&player_physics);
 
-	//player_physics.addForce(Force((PI/4)*3, -(PI/4) , 1000));
+	//Collider
+	Entity* collider  = new Entity(); 
+	//entities.push_back(collider);
+	//physics_entities.push_back(collider);
 
+	PositionComp collider_position (Vector3 (200,-400,10), 0, collider);
+	collider->addEntity(&collider_position);
 
-	Entity collider; 
-	entities.push_back(&collider);
+	SpriteComp collider_sprite (maroon_ball, collider);
+	collider->addEntity(&collider_sprite);
 
-	PositionComp collider_position (Vector3 (200,-400,10), 0, &collider);
-	collider.addEntity(&collider_position);
+	PhysicsComp collider_physics (120,al_get_bitmap_width(red_ball)/2,collider);
+	collider->addEntity(&collider_physics);
 
-	SpriteComp collider_sprite (maroon_ball, &collider);
-	collider.addEntity(&collider_sprite);
+	collider_physics.addForce(Force(-(PI/2),(PI/2) , 100000));
 
-	PhysicsComp collider_physics (120,al_get_bitmap_width(red_ball)/2,&collider);
-	collider.addEntity(&collider_physics);
+	Entity *ball;
+	for(int e = 0 ; e < 3 ; e++)
+	{
+		ball = new Entity(); 
+		entities.push_back(ball);
+		physics_entities.push_back(ball);
 
-	collider_physics.addForce(Force(-(PI/2),(PI/2) , 10000));
+		float x = std::rand()%700+50;
+		float y = -(std::rand()%500+50);
+
+		ball->addEntity(new PositionComp(Vector3 (x,y,10), 0, ball));		
+		ball->addEntity(new SpriteComp (asteroid_bitmap, ball));
+		ball->addEntity(new PhysicsComp (50,al_get_bitmap_width(asteroid_bitmap)/2,ball));
+	}
 
 #pragma endregion
 
@@ -130,7 +150,7 @@ int main()
 		}
 		/*if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
 		{
-			player_position.setRotation(player_position.getRotation()+0.01);
+		player_position.setRotation(player_position.getRotation()+0.01);
 		}*/
 
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
@@ -178,7 +198,20 @@ int main()
 			entities[i]->update(dt);
 		}
 
-		PhysicsComp::checkCollision(&player_physics,&collider_physics);
+		//CHECKING COLLISION
+		for(int i = 0; i != physics_entities.size(); i++) 
+		{
+			PhysicsComp* phys = (PhysicsComp*) physics_entities[i]->getComponent("Physics");
+
+			for(int q = 0; q != physics_entities.size(); q++) 
+			{
+				if(i!=q)
+				{
+					PhysicsComp* collider = (PhysicsComp*) physics_entities[q]->getComponent("Physics");
+					PhysicsComp::checkCollision(phys,collider);
+				}
+			}
+		}
 
 #pragma endregion
 
@@ -208,7 +241,17 @@ int main()
 
 	al_destroy_font(font24);
 	al_destroy_bitmap(red_ball);
+	al_destroy_bitmap(animation_bitmap);
+	al_destroy_bitmap(maroon_ball);
+	al_destroy_bitmap(astronaut_bitmap);
+	al_destroy_bitmap(asteroid_bitmap );
 	al_destroy_display(display);
+
+
+	for(int p = 0 ; p < entities.size(); p++)
+	{
+		delete(entities[p]);
+	}
 
 #pragma endregion
 
