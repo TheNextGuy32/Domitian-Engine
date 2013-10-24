@@ -2,6 +2,8 @@
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_font.h>
 #include <allegro5\allegro_ttf.h>
+#include <allegro5\allegro_audio.h>
+#include <allegro5\allegro_acodec.h>
 #include "Domitian-Engine.h"
 
 #pragma region Preproccessor
@@ -38,8 +40,8 @@ int main()
 	al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
 
 	//Creating screen
-	int screen_width = 800;
-	int screen_height = 600;
+	int screen_width = 1350;
+	int screen_height = 690;
 	ALLEGRO_DISPLAY* display = al_create_display(screen_width,screen_height);
 	al_set_window_position(display,0,0);
 	al_set_window_title(display, "Domitian Engine");
@@ -49,6 +51,11 @@ int main()
 	al_init_font_addon();
 	al_init_ttf_addon();
 	al_install_keyboard();
+	al_install_audio();
+	al_init_acodec_addon();
+
+	al_reserve_samples(10);
+
 	ALLEGRO_KEYBOARD_STATE new_keyboard_state,old_keyboard_state;
 
 #pragma endregion
@@ -65,6 +72,21 @@ int main()
 	ALLEGRO_BITMAP* astronaut_bitmap = al_load_bitmap("astronaut.png");
 
 	ALLEGRO_BITMAP* asteroid_bitmap = al_load_bitmap("asteroid.png");
+
+	ALLEGRO_SAMPLE* co2_sample = al_load_sample("co2.wav");
+	ALLEGRO_SAMPLE_INSTANCE* co2_sample_instance = al_create_sample_instance(co2_sample);
+	al_set_sample_instance_playmode(co2_sample_instance, ALLEGRO_PLAYMODE_LOOP);
+	al_attach_sample_instance_to_mixer(co2_sample_instance,al_get_default_mixer());
+
+	ALLEGRO_SAMPLE* co2_left_sample = al_load_sample("leftco2.wav");
+	ALLEGRO_SAMPLE_INSTANCE* co2_left_sample_instance = al_create_sample_instance(co2_left_sample);
+	al_set_sample_instance_playmode(co2_left_sample_instance, ALLEGRO_PLAYMODE_ONCE);
+	al_attach_sample_instance_to_mixer(co2_left_sample_instance,al_get_default_mixer());
+
+	ALLEGRO_SAMPLE* co2_right_sample = al_load_sample("rightco2.wav");
+	ALLEGRO_SAMPLE_INSTANCE* co2_right_sample_instance =al_create_sample_instance(co2_right_sample);
+	al_set_sample_instance_playmode(co2_right_sample_instance, ALLEGRO_PLAYMODE_ONCE);
+	al_attach_sample_instance_to_mixer(co2_right_sample_instance,al_get_default_mixer());
 
 #pragma endregion 
 
@@ -84,7 +106,7 @@ int main()
 	SpriteComp player_sprite (astronaut_bitmap, player);
 	player->addEntity(&player_sprite);
 
-	PhysicsComp player_physics (10,al_get_bitmap_width(astronaut_bitmap)/2,player);
+	PhysicsComp player_physics (20,al_get_bitmap_width(astronaut_bitmap)/2,player);
 	player->addEntity(&player_physics);
 
 	//Collider
@@ -104,18 +126,18 @@ int main()
 	collider_physics.addForce(Force(-(PI/2),(PI/2) , 100000));
 
 	Entity *ball;
-	for(int e = 0 ; e < 3 ; e++)
+	for(int e = 0 ; e < 15 ; e++)
 	{
 		ball = new Entity(); 
 		entities.push_back(ball);
 		physics_entities.push_back(ball);
 
-		float x = std::rand()%700+50;
-		float y = -(std::rand()%500+50);
+		float x = std::rand()%(screen_width-100)+50;
+		float y = -(std::rand()%(screen_height-100)+50);
 
 		ball->addEntity(new PositionComp(Vector3 (x,y,10), 0, ball));		
 		ball->addEntity(new SpriteComp (asteroid_bitmap, ball));
-		ball->addEntity(new PhysicsComp (50,al_get_bitmap_width(asteroid_bitmap)/2,ball));
+		ball->addEntity(new PhysicsComp (20,al_get_bitmap_width(asteroid_bitmap)/2,ball));
 	}
 
 #pragma endregion
@@ -148,28 +170,56 @@ int main()
 		{
 			done = true;
 		}
-		/*if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
-		{
-		player_position.setRotation(player_position.getRotation()+0.01);
-		}*/
 
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
 		{
 			player_physics.addForce(Force(player_position.getRotation()+3.1459,player_position.getRotation(),1000));
+			if(!al_get_sample_instance_playing(co2_sample_instance))
+			{
+				al_play_sample_instance(co2_sample_instance);
+			}		
+		}
+		else
+		{
+			al_stop_sample_instance(co2_sample_instance);
 		}
 
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_S))
 		{
 			player_physics.addForce(Force(player_position.getRotation(),player_position.getRotation()+3.1459,1000));
 		}
-
+			/*if(!al_get_sample_instance_playing(co2_sample_instance))
+			{
+				al_play_sample_instance(co2_sample_instance);
+			}		
+		}
+		else
+		{
+			al_stop_sample_instance(co2_sample_instance);
+		}*/
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_D))
 		{
-			player_physics.addForce(Force(player_position.getRotation()-(3.1459/2.0),player_position.getRotation(),100));
+			player_physics.addForce(Force(player_position.getRotation()-(3.1459/2.0),player_position.getRotation(),1000));
+			if(!al_get_sample_instance_playing(co2_right_sample_instance))
+			{
+				al_play_sample_instance(co2_right_sample_instance);
+			}		
+		}
+		else
+		{
+			al_stop_sample_instance(co2_right_sample_instance);
 		}
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_A))
 		{
-			player_physics.addForce(Force(player_position.getRotation()+(3.1459/2.0),player_position.getRotation(),100));
+			player_physics.addForce(Force(player_position.getRotation()+(3.1459/2.0),player_position.getRotation(),1000));
+			if(!al_get_sample_instance_playing(co2_sample_instance))
+			{
+				al_play_sample_instance(co2_left_sample_instance);
+			}		
+		}
+		else
+		{
+			al_stop_sample_instance(co2_left_sample_instance);
 		}
 
 
@@ -213,6 +263,35 @@ int main()
 			}
 		}
 
+		for(int i = 0; i != physics_entities.size(); i++) 
+		{
+			PositionComp* pos = (PositionComp*) physics_entities[i]->getComponent("Position");
+			SpriteComp* spr = (SpriteComp*) physics_entities[i]->getComponent("Sprite");
+
+			//Right
+			if( (pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 ) > screen_width)
+			{
+				pos->setPositionX(pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 - screen_width);
+			}
+			//Left
+			if( (pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 ) < 0)
+			{
+				pos->setPositionX(pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 + screen_width);
+			}
+			//Top
+			if( (pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 ) > 0)
+			{
+				pos->setPositionY(pos->getPosition().y + al_get_bitmap_height(spr->getBitmap())/2 - screen_height);
+			}
+			//Bpttom
+			if( (pos->getPosition().y + al_get_bitmap_height (spr->getBitmap())/2 ) < -screen_height)
+			{
+				pos->setPositionY(pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 + screen_height);
+			}
+
+		}
+
+
 #pragma endregion
 
 #pragma region Drawing_GUI
@@ -240,11 +319,20 @@ int main()
 #pragma region ReleaseContent
 
 	al_destroy_font(font24);
+
 	al_destroy_bitmap(red_ball);
 	al_destroy_bitmap(animation_bitmap);
 	al_destroy_bitmap(maroon_ball);
 	al_destroy_bitmap(astronaut_bitmap);
 	al_destroy_bitmap(asteroid_bitmap );
+
+	al_destroy_sample(co2_left_sample);
+	al_destroy_sample(co2_right_sample);
+	al_destroy_sample(co2_sample);
+	al_destroy_sample_instance(co2_left_sample_instance);
+	al_destroy_sample_instance(co2_right_sample_instance);
+	al_destroy_sample_instance(co2_sample_instance);
+
 	al_destroy_display(display);
 
 

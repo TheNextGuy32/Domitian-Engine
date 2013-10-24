@@ -1,6 +1,9 @@
 #include "PhysicsComp.h"
 #include "Radian.h"
 
+#define MAX_ROTATION_SPEED 7
+#define MAX_TRANSLATION_SPEED 70
+
 PhysicsComp::PhysicsComp(float myMass,float myRadius, Entity* myParent):Component("Physics",myParent),mass(myMass),radius(myRadius)
 {
 	total_translational_force=Vector2(0,0);
@@ -20,9 +23,20 @@ void PhysicsComp::update(float dt)
 	collided = false;
 
 	//Rotational Movement
-	moment_of_inertia = (2.0/5.0) * mass * (radius * radius);
+	moment_of_inertia = (2.0/3.0) * mass * (radius * radius);
+
 	rotational_acceleration = total_torque / moment_of_inertia; 
 	rotational_velocity += rotational_acceleration*dt;
+
+	//Making sure you dont spin too fast
+	if (rotational_velocity>MAX_ROTATION_SPEED)
+	{
+		rotational_velocity=MAX_ROTATION_SPEED;
+	}
+	if (rotational_velocity<-MAX_ROTATION_SPEED)
+	{
+		rotational_velocity=-MAX_ROTATION_SPEED;
+	}
 	pos_comp->setRotation(pos_comp->getRotation() + rotational_velocity*dt);
 
 	//Whetehr or not it moves translationally depends on its moment of inertia, forget tangents, period.
@@ -32,6 +46,25 @@ void PhysicsComp::update(float dt)
 	acceleration.y = total_translational_force.y/mass;
 	velocity.x += acceleration.x * dt;
 	velocity.y += acceleration.y * dt;
+
+	if(velocity.x > MAX_TRANSLATION_SPEED)
+	{
+		velocity.x = MAX_TRANSLATION_SPEED;
+	}
+	if(velocity.y > MAX_TRANSLATION_SPEED)
+	{
+		velocity.y = MAX_TRANSLATION_SPEED;
+	}
+
+	if(velocity.x < -MAX_TRANSLATION_SPEED)
+	{
+		velocity.x = -MAX_TRANSLATION_SPEED;
+	}
+	if(velocity.y < -MAX_TRANSLATION_SPEED)
+	{
+		velocity.y = -MAX_TRANSLATION_SPEED;
+	}
+
 	pos_comp->setPositionX(pos_comp->getPosition().x + velocity.x*dt);
 	pos_comp->setPositionY(pos_comp->getPosition().y + velocity.y*dt);
 
@@ -45,7 +78,7 @@ void PhysicsComp::addForce(Force myForce)
 
 	float attached_direction_displacement = myForce.getForceMathRadian() - radian_to_center_mass;
 
-	total_torque += radius *  myForce.getForce() * sin(attached_direction_displacement);
+	total_torque += -(radius *  myForce.getForce() * sin(attached_direction_displacement));
 
 	Vector2 force = Vector2::ToVector2(myForce.getForceMathRadian());
 	force.x = force.x * myForce.getForce();
@@ -101,12 +134,10 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			float second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
 			float net_force = first_force_exerted+second_force_exerted;
 
-			Force first_force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity())     ,net_force);
-			Force second_force (mathRadianDirectionTo+3.1459, 3.1459+Vector2::ToMathRadian(first->getVelocity()),net_force);
-
-			first->addForce(first_force);
-			second->addForce(second_force);
-
+			//Adding the forces
+			first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity())     ,net_force));
+			second->addForce(Force (mathRadianDirectionTo+3.1459, 3.1459+Vector2::ToMathRadian(first->getVelocity()),net_force));
+			
 			float push = (addingRadii-distanceBetween)/2;
 
 			first_pos_comp->setPosition( first_pos.x - normalizedDirectionTo.x*push, first_pos.y - normalizedDirectionTo.y*push);
