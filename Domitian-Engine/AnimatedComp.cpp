@@ -10,8 +10,6 @@ AnimatedComp::AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity
 	current_frame = Vector2(0,0);
 	number_frames = Vector2 (al_get_bitmap_width(bitmap)/dimensions.x, al_get_bitmap_height(bitmap)/dimensions.y);
 	
-	//Populating our bitmap array
-	//[(int)number_frames.x*(int)number_frames.y];
 
 	for (int x = 0; x < number_frames.x; ++x)
 	{

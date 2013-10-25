@@ -13,7 +13,7 @@ public:
 	ConnectedComp(float myRadianFromSocket,float myDistance,Entity* myParent);
 	void update(float);
 
-	bool attach(PositionComp* mySocket)
+	bool attach(PositionComp* mySocket, bool myHandleRotation)
 	{
 		if(connected)
 		{
@@ -23,6 +23,7 @@ public:
 		{
 			socket_position = mySocket;
 			connected = true;
+			handle_rotation = myHandleRotation;
 		}
 	};
 	bool detach()
@@ -42,7 +43,7 @@ private:
 	PositionComp* socket_position;
 	PositionComp* connected_position;
 
-	bool connected;
+	bool connected,handle_rotation;
 	float radian_from_socket;
 	float distance;
 

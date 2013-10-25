@@ -19,5 +19,8 @@ void ConnectedComp::update(float dt)
 
 		connected_position->setPosition(socket_position->getPosition().x + displacement.x,
 										socket_position->getPosition().y + displacement.y);
+		if(handle_rotation)
+			connected_position->setRotation(socket_position->getRotation());
+		
 	}
 }

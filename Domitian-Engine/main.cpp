@@ -124,7 +124,7 @@ int main()
 	thrust->addComponent(&thrust_animated);
 
 	ConnectedComp thrust_connected (player_position.getRotation()-(3.1459),player_physics.getRadius(),thrust);
-	thrust_connected.attach(&player_position);
+	thrust_connected.attach(&player_position,true);
 	thrust->addComponent(&thrust_connected);
 
 	//Right Thrust
@@ -138,7 +138,7 @@ int main()
 	thrust_right->addComponent(&thrust_right_animated);
 
 	ConnectedComp thrust_right_connected (player_position.getRotation()-(3.1459/2.0),player_physics.getRadius(),thrust_right);
-	thrust_right_connected.attach(&player_position);
+	thrust_right_connected.attach(&player_position,true);
 	thrust_right->addComponent(&thrust_right_connected);
 
 	//Left Thrust
@@ -152,7 +152,7 @@ int main()
 	thrust_left->addComponent(&thrust_left_animated);
 
 	ConnectedComp thrust_left_connected (player_position.getRotation()+(3.1459/2.0),player_physics.getRadius(),thrust_left);
-	thrust_left_connected.attach(&player_position);
+	thrust_left_connected.attach(&player_position,true);
 	thrust_left->addComponent(&thrust_left_connected);
 
 	Entity *ball;
