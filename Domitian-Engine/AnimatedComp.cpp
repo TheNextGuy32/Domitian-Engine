@@ -4,25 +4,47 @@ AnimatedComp::AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity
 	:Component("Animated",myParent),bitmap(myBitmap),dimensions(myDimensions)
 {
 	offset = Vector2 (dimensions.x/2,dimensions.y/2);
-	frame = Vector2(0,0);
-	frames = Vector2 (al_get_bitmap_width(bitmap)/dimensions.x,al_get_bitmap_height(bitmap)/dimensions.y);
-	frame_interval=.2;
+	
+	current_frame = Vector2(0,0);
+	number_frames = Vector2 (al_get_bitmap_width(bitmap)/dimensions.x, al_get_bitmap_height(bitmap)/dimensions.y);
+	
+	//Populating our bitmap array
+	//[(int)number_frames.x*(int)number_frames.y];
+
+	for (int x = 0; x < number_frames.x; ++x)
+	{
+		std::vector<ALLEGRO_BITMAP*> one_dim;
+		bitmap_2Dvector.push_back(one_dim);
+	}
+
+	for (int y = 0; y < number_frames.y; ++y)
+	{
+		for (int x = 0; x < number_frames.x; ++x)
+		{
+			//int index = x *(int)number_frames.y + y;
+			bitmap_2Dvector[x].push_back(al_create_sub_bitmap(	bitmap, x * dimensions.x, y * dimensions.y,		dimensions.x,dimensions.y));
+		}
+	}
+	
+
+	frame_interval=.1;
+	
 	current_time =0;
 }
 
 void AnimatedComp::setFrameX(float x)
 {
-	if(x>0&& x < frames.x+1)
+	if(x>0&& x < number_frames.x+1)
 	{
-		frame.x = x;
+		current_frame.x = x;
 	}
 }
 
 void AnimatedComp::setFrameY(float y)
 {
-	if(y>0&&y<frames.y+1)
+	if(y>0&&y<number_frames.y+1)
 	{
-		frame.y = y;
+		current_frame.y = y;
 	}
 }
 
@@ -31,20 +53,28 @@ void AnimatedComp::update(float dt)
 	if(current_time>frame_interval)
 	{
 		current_time = 0;
-		frame.x++;
-		if(frame.x>=frames.x)
-			frame.x= 0;
+
+		current_frame.x++;
+
+		if(current_frame.x>=number_frames.x)
+			current_frame.x= 0;
 	}
+
 	current_time+=dt;
 
 	PositionComp* positionComp = (PositionComp*) getComponent("Position");
+	
+	al_draw_rotated_bitmap(	bitmap_2Dvector[current_frame.x][current_frame.y],
+							offset.x,offset.y,
+							positionComp->getPosition().x,-positionComp->getPosition().y,
+							Radian::convertToGame(positionComp->getRotation()), 
+							0);
 
 	//Whatafuck we dont handle rotation
-	al_draw_bitmap_region(	bitmap, 
-							frame.x * dimensions.x, frame.y * dimensions.y,//Where to start within bitmap
-							dimensions.x, dimensions.y,//Width of piece of bitmap
-							positionComp->getPosition().x - offset.x, positionComp->getPosition().y - offset.y,//Where to draw it
-							0);	
+	//al_draw_bitmap_region(	bitmap, 
+	//						current_frame.x * dimensions.x, current_frame.y * dimensions.y,//Where to start within bitmap
+	//						dimensions.x, dimensions.y,//Width of piece of bitmap
+	//						positionComp->getPosition().x - offset.x, positionComp->getPosition().y - offset.y,//Where to draw it
+	//						0);	
 	
-
 }

@@ -6,6 +6,7 @@
 #include "Radian.h"
 #include <allegro5/bitmap_draw.h>
 #include <allegro5/bitmap.h>
+#include <vector>
 
 class AnimatedComp : public Component
 {
@@ -25,16 +26,18 @@ private:
 	bool animating;
 
 	ALLEGRO_BITMAP* bitmap;
-	 
+	std::vector<std::vector<ALLEGRO_BITMAP*>> bitmap_2Dvector;
+	
+
 	float frame_interval;
 	float current_time;
 
 	Vector2 dimensions;
-	Vector2 frame;
+	Vector2 current_frame;
 	Vector2 offset;
 	
-	Vector2 frames;
+	Vector2 number_frames;
 
-private:
+
 };
 #endif

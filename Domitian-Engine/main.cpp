@@ -73,6 +73,8 @@ int main()
 
 	ALLEGRO_BITMAP* asteroid_bitmap = al_load_bitmap("asteroid.png");
 
+	ALLEGRO_BITMAP* thrust_bitmap = al_load_bitmap("co2.png");
+
 	ALLEGRO_SAMPLE* co2_sample = al_load_sample("co2.wav");
 	ALLEGRO_SAMPLE_INSTANCE* co2_sample_instance = al_create_sample_instance(co2_sample);
 	al_set_sample_instance_playmode(co2_sample_instance, ALLEGRO_PLAYMODE_LOOP);
@@ -95,6 +97,16 @@ int main()
 	std::vector<Entity*> entities;
 	std::vector<Entity*> physics_entities;
 
+	//Thrust
+	Entity* thrust = new Entity();
+	entities.push_back(thrust);
+
+	PositionComp thrust_position (Vector3 (0,0,10),0,thrust);
+	thrust->addEntity(&thrust_position);
+
+	AnimatedComp thrust_animated (thrust_bitmap,Vector2(30,80),thrust);
+	thrust->addEntity(&thrust_animated);
+
 	//Player
 	Entity* player = new Entity(); 
 	entities.push_back(player);
@@ -111,8 +123,8 @@ int main()
 
 	//Collider
 	Entity* collider  = new Entity(); 
-	//entities.push_back(collider);
-	//physics_entities.push_back(collider);
+	entities.push_back(collider);
+	physics_entities.push_back(collider);
 
 	PositionComp collider_position (Vector3 (200,-400,10), 0, collider);
 	collider->addEntity(&collider_position);
