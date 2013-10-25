@@ -23,6 +23,7 @@ public:
 
 	void update(float);
 private:
+	PositionComp* positionComp;
 	ALLEGRO_BITMAP* bitmap;
 	Vector2 offset;
 };

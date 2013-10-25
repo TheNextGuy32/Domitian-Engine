@@ -55,6 +55,8 @@ public:
 	};
 
 private:
+	PositionComp* position_comp;
+
 	bool collided;
 	
 	float mass;

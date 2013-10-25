@@ -97,15 +97,7 @@ int main()
 	std::vector<Entity*> entities;
 	std::vector<Entity*> physics_entities;
 
-	//Thrust
-	Entity* thrust = new Entity();
-	entities.push_back(thrust);
-
-	PositionComp thrust_position (Vector3 (0,0,10),0,thrust);
-	thrust->addEntity(&thrust_position);
-
-	AnimatedComp thrust_animated (thrust_bitmap,Vector2(30,80),thrust);
-	thrust->addEntity(&thrust_animated);
+	
 
 	//Player
 	Entity* player = new Entity(); 
@@ -113,29 +105,55 @@ int main()
 	physics_entities.push_back(player);
 
 	PositionComp player_position (Vector3 (200,-200,10), 0, player);
-	player->addEntity(&player_position);
+	player->addComponent(&player_position);
 
 	SpriteComp player_sprite (astronaut_bitmap, player);
-	player->addEntity(&player_sprite);
+	player->addComponent(&player_sprite);
 
 	PhysicsComp player_physics (20,al_get_bitmap_width(astronaut_bitmap)/2,player);
-	player->addEntity(&player_physics);
+	player->addComponent(&player_physics);
 
-	//Collider
-	Entity* collider  = new Entity(); 
-	entities.push_back(collider);
-	physics_entities.push_back(collider);
+	// Thrust
+	Entity* thrust = new Entity();
+	entities.push_back(thrust);
 
-	PositionComp collider_position (Vector3 (200,-400,10), 0, collider);
-	collider->addEntity(&collider_position);
+	PositionComp thrust_position (Vector3 (100,-100,10),PI,thrust);
+	thrust->addComponent(&thrust_position);
 
-	SpriteComp collider_sprite (maroon_ball, collider);
-	collider->addEntity(&collider_sprite);
+	AnimatedComp thrust_animated (thrust_bitmap,Vector2(30,80),thrust);
+	thrust->addComponent(&thrust_animated);
 
-	PhysicsComp collider_physics (120,al_get_bitmap_width(red_ball)/2,collider);
-	collider->addEntity(&collider_physics);
+	ConnectedComp thrust_connected (player_position.getRotation()-(3.1459),player_physics.getRadius(),thrust);
+	thrust_connected.attach(&player_position);
+	thrust->addComponent(&thrust_connected);
 
-	collider_physics.addForce(Force(-(PI/2),(PI/2) , 100000));
+	//Right Thrust
+	Entity* thrust_right = new Entity();
+	entities.push_back(thrust_right);
+
+	PositionComp thrust_right_position (Vector3 (100,-100,10),PI,thrust_right);
+	thrust_right->addComponent(&thrust_right_position);
+
+	AnimatedComp thrust_right_animated (thrust_bitmap,Vector2(30,80),thrust_right);
+	thrust_right->addComponent(&thrust_right_animated);
+
+	ConnectedComp thrust_right_connected (player_position.getRotation()-(3.1459/2.0),player_physics.getRadius(),thrust_right);
+	thrust_right_connected.attach(&player_position);
+	thrust_right->addComponent(&thrust_right_connected);
+
+	//Left Thrust
+	Entity* thrust_left = new Entity();
+	entities.push_back(thrust_left);
+
+	PositionComp thrust_left_position (Vector3 (100,-100,10),PI,thrust_left);
+	thrust_left->addComponent(&thrust_left_position);
+
+	AnimatedComp thrust_left_animated (thrust_bitmap,Vector2(30,80),thrust_left);
+	thrust_left->addComponent(&thrust_left_animated);
+
+	ConnectedComp thrust_left_connected (player_position.getRotation()+(3.1459/2.0),player_physics.getRadius(),thrust_left);
+	thrust_left_connected.attach(&player_position);
+	thrust_left->addComponent(&thrust_left_connected);
 
 	Entity *ball;
 	for(int e = 0 ; e < 15 ; e++)
@@ -147,9 +165,9 @@ int main()
 		float x = std::rand()%(screen_width-100)+50;
 		float y = -(std::rand()%(screen_height-100)+50);
 
-		ball->addEntity(new PositionComp(Vector3 (x,y,10), 0, ball));		
-		ball->addEntity(new SpriteComp (asteroid_bitmap, ball));
-		ball->addEntity(new PhysicsComp (20,al_get_bitmap_width(asteroid_bitmap)/2,ball));
+		ball->addComponent(new PositionComp(Vector3 (x,y,10), 0, ball));		
+		ball->addComponent(new SpriteComp (asteroid_bitmap, ball));
+		ball->addComponent(new PhysicsComp (20,al_get_bitmap_width(asteroid_bitmap)/2,ball));
 	}
 
 #pragma endregion

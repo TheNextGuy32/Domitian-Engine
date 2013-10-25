@@ -12,7 +12,7 @@ class Entity
 public:
 	void update(float);
 
-	void addEntity(Component*);
+	void addComponent(Component*);
 	void removeEntity(std::string);
 	std::string getName();
 

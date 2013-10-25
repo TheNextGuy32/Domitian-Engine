@@ -23,7 +23,7 @@ as a parementer, or as a return type: B MyFunction(B myb);
 #include "PositionComp.h"
 #include "PhysicsComp.h"
 #include "Force.h"
-
+#include "ConnectedComp.h"
 //Utility
 #include "Vector2.h"
 #include "Vector3.h"

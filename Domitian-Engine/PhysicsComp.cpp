@@ -13,13 +13,13 @@ PhysicsComp::PhysicsComp(float myMass,float myRadius, Entity* myParent):Componen
 	rotational_acceleration = 0;
 	total_torque = 0;
 	collided =false;
+
+	position_comp = (PositionComp*) getComponent("Position");
 }
 
 
 void PhysicsComp::update(float dt)
 {
-	PositionComp* pos_comp = (PositionComp*) getComponent("Position");
-
 	collided = false;
 
 	//Rotational Movement
@@ -37,7 +37,7 @@ void PhysicsComp::update(float dt)
 	{
 		rotational_velocity=-MAX_ROTATION_SPEED;
 	}
-	pos_comp->setRotation(pos_comp->getRotation() + rotational_velocity*dt);
+	position_comp->setRotation(position_comp->getRotation() + rotational_velocity*dt);
 
 	//Whetehr or not it moves translationally depends on its moment of inertia, forget tangents, period.
 
@@ -65,8 +65,8 @@ void PhysicsComp::update(float dt)
 		velocity.y = -MAX_TRANSLATION_SPEED;
 	}
 
-	pos_comp->setPositionX(pos_comp->getPosition().x + velocity.x*dt);
-	pos_comp->setPositionY(pos_comp->getPosition().y + velocity.y*dt);
+	position_comp->setPositionX(position_comp->getPosition().x + velocity.x*dt);
+	position_comp->setPositionY(position_comp->getPosition().y + velocity.y*dt);
 
 	total_torque = 0; 
 	total_translational_force = Vector2 (0,0);
@@ -146,7 +146,7 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 
 			return true;
 		}
-
 		return false;
 	}
+	return false;
 }

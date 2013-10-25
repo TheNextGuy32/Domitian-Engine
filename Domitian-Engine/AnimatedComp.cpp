@@ -3,6 +3,8 @@
 AnimatedComp::AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity* myParent)
 	:Component("Animated",myParent),bitmap(myBitmap),dimensions(myDimensions)
 {
+	positionComp = (PositionComp*) getComponent("Position");
+
 	offset = Vector2 (dimensions.x/2,dimensions.y/2);
 	
 	current_frame = Vector2(0,0);
@@ -62,19 +64,9 @@ void AnimatedComp::update(float dt)
 
 	current_time+=dt;
 
-	PositionComp* positionComp = (PositionComp*) getComponent("Position");
-	
 	al_draw_rotated_bitmap(	bitmap_2Dvector[current_frame.x][current_frame.y],
 							offset.x,offset.y,
 							positionComp->getPosition().x,-positionComp->getPosition().y,
 							Radian::convertToGame(positionComp->getRotation()), 
-							0);
-
-	//Whatafuck we dont handle rotation
-	//al_draw_bitmap_region(	bitmap, 
-	//						current_frame.x * dimensions.x, current_frame.y * dimensions.y,//Where to start within bitmap
-	//						dimensions.x, dimensions.y,//Width of piece of bitmap
-	//						positionComp->getPosition().x - offset.x, positionComp->getPosition().y - offset.y,//Where to draw it
-	//						0);	
-	
+							0);	
 }

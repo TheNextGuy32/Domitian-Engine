@@ -23,11 +23,12 @@ public:
 	};
 
 private:
+	PositionComp* positionComp;
+
 	bool animating;
 
 	ALLEGRO_BITMAP* bitmap;
 	std::vector<std::vector<ALLEGRO_BITMAP*>> bitmap_2Dvector;
-	
 
 	float frame_interval;
 	float current_time;

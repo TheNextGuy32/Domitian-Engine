@@ -9,7 +9,7 @@ void Entity::update(float dt)
 	}
 }
 
-void Entity::addEntity(Component* myComp)
+void Entity::addComponent(Component* myComp)
 {
 	components[myComp->getName()] = myComp;
 }
