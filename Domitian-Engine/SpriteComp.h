@@ -20,7 +20,10 @@ public:
 	{
 		return bitmap;
 	};
-
+	void setBitmap(ALLEGRO_BITMAP* newBitmap)
+	{
+		bitmap = newBitmap;
+	};
 	void update(float);
 private:
 	PositionComp* positionComp;

@@ -70,6 +70,7 @@ int main()
 	ALLEGRO_BITMAP* animation_bitmap = al_load_bitmap("animation.png");
 
 	ALLEGRO_BITMAP* astronaut_bitmap = al_load_bitmap("astronaut.png");
+	ALLEGRO_BITMAP* dead_bitmap = al_load_bitmap("dead_astronaut.png");
 
 	ALLEGRO_BITMAP* asteroid_bitmap = al_load_bitmap("asteroid.png");
 
@@ -199,6 +200,14 @@ int main()
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_ESCAPE))
 		{
 			done = true;
+		}
+		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_Q))
+		{
+			if(!al_key_down(&old_keyboard_state,ALLEGRO_KEY_Q))
+			{
+				player_sprite.setBitmap(dead_bitmap);
+			}
+			
 		}
 
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
