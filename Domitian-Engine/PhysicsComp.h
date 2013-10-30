@@ -53,8 +53,9 @@ public:
 	{
 		collided = myCollided;
 	};
-
+	
 private:
+
 	PositionComp* position_comp;
 
 	bool collided;

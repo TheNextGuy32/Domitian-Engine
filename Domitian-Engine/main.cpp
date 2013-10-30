@@ -76,6 +76,8 @@ int main()
 
 	ALLEGRO_BITMAP* thrust_bitmap = al_load_bitmap("co2.png");
 
+	ALLEGRO_BITMAP* iss_bitmap = al_load_bitmap("iss_piece.png");
+
 	ALLEGRO_SAMPLE* co2_sample = al_load_sample("co2.wav");
 	ALLEGRO_SAMPLE_INSTANCE* co2_sample_instance = al_create_sample_instance(co2_sample);
 	al_set_sample_instance_playmode(co2_sample_instance, ALLEGRO_PLAYMODE_LOOP);
@@ -170,6 +172,14 @@ int main()
 		ball->addComponent(new SpriteComp (asteroid_bitmap, ball));
 		ball->addComponent(new PhysicsComp (20,al_get_bitmap_width(asteroid_bitmap)/2,ball));
 	}
+
+	Entity* iss_piece = new Entity();
+	entities.push_back(iss_piece);
+	physics_entities.push_back(iss_piece);
+	iss_piece->addComponent(new PositionComp(Vector3 (500,-500,10), 0, iss_piece));		
+	iss_piece->addComponent(new SpriteComp (iss_bitmap, iss_piece));
+	iss_piece->addComponent(new PhysicsComp (1000,al_get_bitmap_height(iss_bitmap)/2,iss_piece));
+
 
 #pragma endregion
 
@@ -364,6 +374,7 @@ int main()
 	al_destroy_bitmap(maroon_ball);
 	al_destroy_bitmap(astronaut_bitmap);
 	al_destroy_bitmap(asteroid_bitmap );
+	al_destroy_bitmap( iss_bitmap );
 
 	al_destroy_sample(co2_left_sample);
 	al_destroy_sample(co2_right_sample);

@@ -15,8 +15,8 @@ PhysicsComp::PhysicsComp(float myMass,float myRadius, Entity* myParent):Componen
 	collided =false;
 
 	position_comp = (PositionComp*) getComponent("Position");
-}
 
+}
 
 void PhysicsComp::update(float dt)
 {
@@ -80,6 +80,8 @@ void PhysicsComp::addForce(Force myForce)
 
 	total_torque += -(radius *  myForce.getForce() * sin(attached_direction_displacement));
 
+	//total_torque += (radius *  myForce.getForce() * sin(attached_direction_displacement));
+
 	Vector2 force = Vector2::ToVector2(myForce.getForceMathRadian());
 	force.x = force.x * myForce.getForce();
 	force.y = force.y * myForce.getForce();
@@ -135,9 +137,15 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			float net_force = first_force_exerted+second_force_exerted;
 
 			//Adding the forces
+
 			first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity())     ,net_force));
 			second->addForce(Force (mathRadianDirectionTo+3.1459, 3.1459+Vector2::ToMathRadian(first->getVelocity()),net_force));
-			
+
+
+			//first->addForce(Force (mathRadianDirectionTo+3.1459, 3.1459+Vector2::ToMathRadian(first->getVelocity()),net_force));
+			//second->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity())     ,net_force));
+
+
 			float push = (addingRadii-distanceBetween)/2;
 
 			first_pos_comp->setPosition( first_pos.x - normalizedDirectionTo.x*push, first_pos.y - normalizedDirectionTo.y*push);
