@@ -60,6 +60,9 @@
     <ClCompile Include="ConnectedComp.cpp">
       <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
+    <ClCompile Include="GroupComp.cpp">
+      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -96,6 +99,9 @@
       <Filter>Source Files\Domitian-Engine\Utility</Filter>
     </ClInclude>
     <ClInclude Include="ConnectedComp.h">
+      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="GroupComp.h">
       <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
   </ItemGroup>

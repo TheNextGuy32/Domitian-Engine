@@ -24,6 +24,7 @@ public:
 			socket_position = mySocket;
 			connected = true;
 			handle_rotation = myHandleRotation;
+			return true;
 		}
 	};
 	bool detach()
