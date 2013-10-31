@@ -77,6 +77,7 @@ int main()
 	ALLEGRO_BITMAP* thrust_bitmap = al_load_bitmap("co2.png");
 
 	ALLEGRO_BITMAP* iss_bitmap = al_load_bitmap("iss_piece.png");
+	ALLEGRO_BITMAP* iss_plus_bitmap = al_load_bitmap("iss_plus.png");
 
 	ALLEGRO_SAMPLE* co2_sample = al_load_sample("co2.wav");
 	ALLEGRO_SAMPLE_INSTANCE* co2_sample_instance = al_create_sample_instance(co2_sample);
@@ -173,12 +174,52 @@ int main()
 		ball->addComponent(new PhysicsComp (20,al_get_bitmap_width(asteroid_bitmap)/2,ball));
 	}
 
-	Entity* iss_piece = new Entity();
-	entities.push_back(iss_piece);
-	physics_entities.push_back(iss_piece);
-	iss_piece->addComponent(new PositionComp(Vector3 (500,-500,10), 0, iss_piece));		
-	iss_piece->addComponent(new SpriteComp (iss_bitmap, iss_piece));
-	iss_piece->addComponent(new PhysicsComp (1000,al_get_bitmap_height(iss_bitmap)/2,iss_piece));
+	Entity* iss_plus = new Entity();
+	entities.push_back(iss_plus);
+	physics_entities.push_back(iss_plus);
+	iss_plus->addComponent(new PositionComp(Vector3 (500,-500,10), 0, iss_plus));		
+	iss_plus->addComponent(new SpriteComp (iss_plus_bitmap, iss_plus));
+	iss_plus->addComponent(new PhysicsComp (10000,al_get_bitmap_height(iss_plus_bitmap)/2,iss_plus));
+
+	Entity* iss_piece_north = new Entity();
+	entities.push_back(iss_piece_north);
+	physics_entities.push_back(iss_piece_north);
+	iss_piece_north->addComponent(new PositionComp(Vector3 (0,0,10), 0, iss_piece_north));		
+	iss_piece_north->addComponent(new SpriteComp (iss_bitmap, iss_piece_north));
+	iss_piece_north->addComponent(new PhysicsComp (10000,al_get_bitmap_height(iss_bitmap)/2,iss_piece_north));
+	ConnectedComp* iss_north_attached = new ConnectedComp (PI/2,al_get_bitmap_width(iss_bitmap)/2 + al_get_bitmap_height(iss_plus_bitmap)/2,iss_piece_north);
+	iss_north_attached->attach((PositionComp*)iss_plus->getComponent("Position"),true);
+	iss_piece_north->addComponent(iss_north_attached);
+
+	Entity* iss_piece_east = new Entity();
+	entities.push_back(iss_piece_east);
+	physics_entities.push_back(iss_piece_east);
+	iss_piece_east->addComponent(new PositionComp(Vector3 (0,0,10), PI/2, iss_piece_east));		
+	iss_piece_east->addComponent(new SpriteComp (iss_bitmap, iss_piece_east));
+	iss_piece_east->addComponent(new PhysicsComp (10000,al_get_bitmap_height(iss_bitmap)/2,iss_piece_east));
+	ConnectedComp* iss_east_attached = new ConnectedComp (0,al_get_bitmap_width(iss_bitmap)/2 + al_get_bitmap_height(iss_plus_bitmap)/2,iss_piece_east);
+	iss_east_attached->attach((PositionComp*)iss_plus->getComponent("Position"),true);
+	iss_piece_east->addComponent(iss_east_attached);
+
+	Entity* iss_piece_south = new Entity();
+	entities.push_back(iss_piece_south);
+	physics_entities.push_back(iss_piece_south);
+	iss_piece_south->addComponent(new PositionComp(Vector3 (0,0,10), 0, iss_piece_south));		
+	iss_piece_south->addComponent(new SpriteComp (iss_bitmap, iss_piece_south));
+	iss_piece_south->addComponent(new PhysicsComp (10000,al_get_bitmap_height(iss_bitmap)/2,iss_piece_south));
+	ConnectedComp* iss_south_attached = new ConnectedComp (-PI/2,al_get_bitmap_width(iss_bitmap)/2 + al_get_bitmap_height(iss_plus_bitmap)/2,iss_piece_south);
+	iss_south_attached->attach((PositionComp*)iss_plus->getComponent("Position"),true);
+	iss_piece_south->addComponent(iss_south_attached);
+
+	Entity* iss_piece_west = new Entity();
+	entities.push_back(iss_piece_west);
+	physics_entities.push_back(iss_piece_west);
+	iss_piece_west->addComponent(new PositionComp(Vector3 (0,0,10), PI/2, iss_piece_west));		
+	iss_piece_west->addComponent(new SpriteComp (iss_bitmap, iss_piece_west));
+	iss_piece_west->addComponent(new PhysicsComp (10000,al_get_bitmap_height(iss_bitmap)/2,iss_piece_west));
+	ConnectedComp* iss_west_attached = new ConnectedComp (PI,al_get_bitmap_width(iss_bitmap)/2 + al_get_bitmap_height(iss_plus_bitmap)/2,iss_piece_west);
+	iss_west_attached->attach((PositionComp*)iss_plus->getComponent("Position"),true);
+	iss_piece_west->addComponent(iss_west_attached);
 
 
 #pragma endregion
