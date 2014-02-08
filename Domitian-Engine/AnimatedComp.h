@@ -11,11 +11,20 @@
 class AnimatedComp : public Component
 {
 public:
-	AnimatedComp(ALLEGRO_BITMAP*,Vector2,Entity*);
+	AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity* myParent);
 	void update(float);
 
 	void setFrameX(float);
 	void setFrameY(float);
+
+	void setToVisible()
+	{
+		visible = true;
+	};
+	void setToInvisible()
+	{
+		visible = false;
+	};
 
 	void setAnimating(bool myTruth)
 	{
@@ -25,6 +34,7 @@ public:
 private:
 	PositionComp* positionComp;
 
+	bool visible;
 	bool animating;
 
 	ALLEGRO_BITMAP* bitmap;

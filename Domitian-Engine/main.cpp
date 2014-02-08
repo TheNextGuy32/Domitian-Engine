@@ -16,7 +16,7 @@
 int main()
 {
 	std::srand( time(NULL) );
-	//std::to_string(float (0));
+
 #pragma region FPS
 
 	double FPS=0;
@@ -84,6 +84,11 @@ int main()
 	al_set_sample_instance_playmode(co2_sample_instance, ALLEGRO_PLAYMODE_LOOP);
 	al_attach_sample_instance_to_mixer(co2_sample_instance,al_get_default_mixer());
 
+	ALLEGRO_SAMPLE* co2_back_sample = al_load_sample("co2.wav");
+	ALLEGRO_SAMPLE_INSTANCE* co2_back_sample_instance = al_create_sample_instance(co2_back_sample);
+	al_set_sample_instance_playmode(co2_back_sample_instance, ALLEGRO_PLAYMODE_LOOP);
+	al_attach_sample_instance_to_mixer(co2_back_sample_instance,al_get_default_mixer());
+
 	ALLEGRO_SAMPLE* co2_left_sample = al_load_sample("leftco2.wav");
 	ALLEGRO_SAMPLE_INSTANCE* co2_left_sample_instance = al_create_sample_instance(co2_left_sample);
 	al_set_sample_instance_playmode(co2_left_sample_instance, ALLEGRO_PLAYMODE_ONCE);
@@ -101,8 +106,6 @@ int main()
 	std::vector<Entity*> entities;
 	std::vector<Entity*> physics_entities;
 
-	
-
 	//Player
 	Entity* player = new Entity(); 
 	entities.push_back(player);
@@ -114,34 +117,48 @@ int main()
 	SpriteComp player_sprite (astronaut_bitmap, player);
 	player->addComponent(&player_sprite);
 
-	PhysicsComp player_physics (20,al_get_bitmap_width(astronaut_bitmap)/2,player);
+	PhysicsComp player_physics (200,al_get_bitmap_width(astronaut_bitmap)/2,player);
 	player->addComponent(&player_physics);
 
 	// Thrust
 	Entity* thrust = new Entity();
 	entities.push_back(thrust);
 
-	PositionComp thrust_position (Vector3 (100,-100,10),PI,thrust);
+	PositionComp thrust_position (Vector3 (100,-100,10),0,thrust);
 	thrust->addComponent(&thrust_position);
 
 	AnimatedComp thrust_animated (thrust_bitmap,Vector2(30,80),thrust);
 	thrust->addComponent(&thrust_animated);
 
-	ConnectedComp thrust_connected (player_position.getRotation()-(3.1459),player_physics.getRadius(),thrust);
+	ConnectedComp thrust_connected (player_position.getRotation()-(3.1459),player_physics.getRadius(),thrust,&player_position);
 	thrust_connected.attach(&player_position,true);
 	thrust->addComponent(&thrust_connected);
+
+	// Back thrust
+	Entity* thrust_back = new Entity();
+	entities.push_back(thrust_back);
+
+	PositionComp thrust_back_position (Vector3 (100,-100,10),PI,thrust);
+	thrust_back->addComponent(&thrust_back_position);
+
+	AnimatedComp thrust_back_animated (thrust_bitmap,Vector2(30,80),thrust_back);
+	thrust_back->addComponent(&thrust_back_animated);
+
+	ConnectedComp thrust_back_connected (player_position.getRotation(),player_physics.getRadius(),thrust_back,&player_position);
+	thrust_back_connected.attach(&player_position,true);
+	thrust_back->addComponent(&thrust_back_connected);
 
 	//Right Thrust
 	Entity* thrust_right = new Entity();
 	entities.push_back(thrust_right);
 
-	PositionComp thrust_right_position (Vector3 (100,-100,10),PI,thrust_right);
+	PositionComp thrust_right_position (Vector3 (100,-100,10),0,thrust_right);
 	thrust_right->addComponent(&thrust_right_position);
 
 	AnimatedComp thrust_right_animated (thrust_bitmap,Vector2(30,80),thrust_right);
 	thrust_right->addComponent(&thrust_right_animated);
 
-	ConnectedComp thrust_right_connected (player_position.getRotation()-(3.1459/2.0),player_physics.getRadius(),thrust_right);
+	ConnectedComp thrust_right_connected (player_position.getRotation()-(3.1459/2.0),player_physics.getRadius(),thrust_right,&player_position);
 	thrust_right_connected.attach(&player_position,true);
 	thrust_right->addComponent(&thrust_right_connected);
 
@@ -149,18 +166,18 @@ int main()
 	Entity* thrust_left = new Entity();
 	entities.push_back(thrust_left);
 
-	PositionComp thrust_left_position (Vector3 (100,-100,10),PI,thrust_left);
+	PositionComp thrust_left_position (Vector3 (100,-100,10),0,thrust_left);
 	thrust_left->addComponent(&thrust_left_position);
 
 	AnimatedComp thrust_left_animated (thrust_bitmap,Vector2(30,80),thrust_left);
 	thrust_left->addComponent(&thrust_left_animated);
 
-	ConnectedComp thrust_left_connected (player_position.getRotation()+(3.1459/2.0),player_physics.getRadius(),thrust_left);
+	ConnectedComp thrust_left_connected (player_position.getRotation()+(3.1459/2.0),player_physics.getRadius(),thrust_left,&player_position);
 	thrust_left_connected.attach(&player_position,true);
 	thrust_left->addComponent(&thrust_left_connected);
 
 	Entity *ball;
-	for(int e = 0 ; e < 15 ; e++)
+	for(int e = 0 ; e < 5 ; e++)
 	{
 		ball = new Entity(); 
 		entities.push_back(ball);
@@ -171,7 +188,7 @@ int main()
 
 		ball->addComponent(new PositionComp(Vector3 (x,y,10), 0, ball));		
 		ball->addComponent(new SpriteComp (asteroid_bitmap, ball));
-		ball->addComponent(new PhysicsComp (20,al_get_bitmap_width(asteroid_bitmap)/2,ball));
+		ball->addComponent(new PhysicsComp (2000,al_get_bitmap_width(asteroid_bitmap)/2,ball));
 	}
 
 	Entity* iss_plus = new Entity();
@@ -179,8 +196,8 @@ int main()
 	physics_entities.push_back(iss_plus);
 	iss_plus->addComponent(new PositionComp(Vector3 (500,-500,10), 0, iss_plus));		
 	iss_plus->addComponent(new SpriteComp (iss_plus_bitmap, iss_plus));
-	iss_plus->addComponent(new PhysicsComp (10000,al_get_bitmap_height(iss_plus_bitmap)/2,iss_plus));
-
+	iss_plus->addComponent(new PhysicsComp (100000,al_get_bitmap_height(iss_plus_bitmap)/2,iss_plus));
+	/*
 	Entity* iss_piece_north = new Entity();
 	entities.push_back(iss_piece_north);
 	physics_entities.push_back(iss_piece_north);
@@ -219,7 +236,7 @@ int main()
 	iss_piece_west->addComponent(new PhysicsComp (10000,al_get_bitmap_height(iss_bitmap)/2,iss_piece_west));
 	ConnectedComp* iss_west_attached = new ConnectedComp (PI,al_get_bitmap_width(iss_bitmap)/2 + al_get_bitmap_height(iss_plus_bitmap)/2,iss_piece_west);
 	iss_west_attached->attach((PositionComp*)iss_plus->getComponent("Position"),true);
-	iss_piece_west->addComponent(iss_west_attached);
+	iss_piece_west->addComponent(iss_west_attached);*/
 
 
 #pragma endregion
@@ -247,22 +264,33 @@ int main()
 
 #pragma region Input
 
+		thrust_animated.setToInvisible();
+		thrust_back_animated.setToInvisible();
+		thrust_right_animated.setToInvisible();
+		thrust_left_animated.setToInvisible();
+
 		al_get_keyboard_state(&new_keyboard_state);
+
+		//ESCAPE
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_ESCAPE))
 		{
 			done = true;
 		}
+
+		//Q
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_Q))
 		{
 			if(!al_key_down(&old_keyboard_state,ALLEGRO_KEY_Q))
 			{
 				player_sprite.setBitmap(dead_bitmap);
 			}
-			
+
 		}
 
+		//W
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
 		{
+			thrust_animated.setToVisible();
 			player_physics.addForce(Force(player_position.getRotation()+3.1459,player_position.getRotation(),1000));
 			if(!al_get_sample_instance_playing(co2_sample_instance))
 			{
@@ -274,21 +302,26 @@ int main()
 			al_stop_sample_instance(co2_sample_instance);
 		}
 
+		//S
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_S))
 		{
+			thrust_back_animated.setToVisible();
 			player_physics.addForce(Force(player_position.getRotation(),player_position.getRotation()+3.1459,1000));
-		}
-			/*if(!al_get_sample_instance_playing(co2_sample_instance))
+
+			if(!al_get_sample_instance_playing(co2_sample_instance))
 			{
-				al_play_sample_instance(co2_sample_instance);
+				al_play_sample_instance(co2_back_sample_instance);
 			}		
 		}
 		else
 		{
-			al_stop_sample_instance(co2_sample_instance);
-		}*/
+			al_stop_sample_instance(co2_back_sample_instance);
+		}
+
+		//D
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_D))
 		{
+			thrust_right_animated.setToVisible();
 			player_physics.addForce(Force(player_position.getRotation()-(3.1459/2.0),player_position.getRotation(),1000));
 			if(!al_get_sample_instance_playing(co2_right_sample_instance))
 			{
@@ -299,8 +332,11 @@ int main()
 		{
 			al_stop_sample_instance(co2_right_sample_instance);
 		}
+
+		//A
 		if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_A))
 		{
+			thrust_left_animated.setToVisible();
 			player_physics.addForce(Force(player_position.getRotation()+(3.1459/2.0),player_position.getRotation(),1000));
 			if(!al_get_sample_instance_playing(co2_sample_instance))
 			{

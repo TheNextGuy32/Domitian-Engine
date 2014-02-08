@@ -25,7 +25,7 @@ void PhysicsComp::update(float dt)
 	//Rotational Movement
 	moment_of_inertia = (2.0/3.0) * mass * (radius * radius);
 
-	rotational_acceleration = total_torque / moment_of_inertia; 
+	rotational_acceleration = (total_torque/2) / moment_of_inertia; 
 	rotational_velocity += rotational_acceleration*dt;
 
 	//Making sure you dont spin too fast
@@ -80,8 +80,6 @@ void PhysicsComp::addForce(Force myForce)
 
 	total_torque += -(radius *  myForce.getForce() * sin(attached_direction_displacement));
 
-	//total_torque += (radius *  myForce.getForce() * sin(attached_direction_displacement));
-
 	Vector2 force = Vector2::ToVector2(myForce.getForceMathRadian());
 	force.x = force.x * myForce.getForce();
 	force.y = force.y * myForce.getForce();
@@ -108,53 +106,85 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	*/
 
 	PositionComp* first_pos_comp = (PositionComp*) first->getComponent("Position");
-	Vector2 first_pos = Vector2(first_pos_comp->getPosition().x,first_pos_comp->getPosition().y);
-
 	PositionComp* second_pos_comp = (PositionComp*) second->getComponent("Position");
-	Vector2 second_pos = Vector2(second_pos_comp->getPosition().x,second_pos_comp->getPosition().y);
 
-	float distanceBetween = Vector2::getDistanceBetween(first_pos,second_pos);
-	float addingRadii = first->getRadius()+second->getRadius();
-
-	if(!first->getCollided() || !second->getCollided())
+	if(abs(first_pos_comp->getBucket().x - second_pos_comp->getBucket().x)<2)
 	{
-		//Collision
-		if( distanceBetween < addingRadii)
+		if(abs(first_pos_comp->getBucket().y - second_pos_comp->getBucket().y)<2)
 		{
-			first->setCollided(true);
-			second->setCollided(true);
-
-			//Magnitude is multiplied by ratio
-			Vector2 displacement = Vector2(	second_pos_comp->getPosition().x - first_pos_comp->getPosition().x,
-				second_pos_comp->getPosition().y - first_pos_comp->getPosition().y);
-
-			float mathRadianDirectionTo = Vector2::ToMathRadian(displacement);
-			Vector2 normalizedDirectionTo = Vector2(displacement.x/distanceBetween,displacement.y/distanceBetween);
-
-			//The force applied to second = magnitude of speed of first * its mass
-			float first_force_exerted = (Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity())) * first->getMass();
-			float second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
-			float net_force = first_force_exerted+second_force_exerted;
-
-			//Adding the forces
-
-			first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity())     ,net_force));
-			second->addForce(Force (mathRadianDirectionTo+3.1459, 3.1459+Vector2::ToMathRadian(first->getVelocity()),net_force));
+			PhysicsComp* first_phys_comp = (PhysicsComp*) first->getComponent("Physics");
+			Vector2 first_pos = Vector2(first_pos_comp->getPosition().x,first_pos_comp->getPosition().y);
 
 
-			//first->addForce(Force (mathRadianDirectionTo+3.1459, 3.1459+Vector2::ToMathRadian(first->getVelocity()),net_force));
-			//second->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity())     ,net_force));
+			PhysicsComp* second_phys_comp = (PhysicsComp*) second->getComponent("Physics");
+			Vector2 second_pos = Vector2(second_pos_comp->getPosition().x,second_pos_comp->getPosition().y);
+
+			float distanceBetween = Vector2::getDistanceBetween(first_pos,second_pos);
+			float addingRadii = first->getRadius()+second->getRadius();
+
+			if(!first->getCollided() || !second->getCollided())
+			{
+				//Collision
+				if( distanceBetween < addingRadii)
+				{
+					first->setCollided(true);
+					second->setCollided(true);
+
+					//Magnitude is multiplied by ratio
+					Vector2 displacement = Vector2(	second_pos_comp->getPosition().x - first_pos_comp->getPosition().x,
+						second_pos_comp->getPosition().y - first_pos_comp->getPosition().y);
+
+					float mathRadianDirectionTo = Vector2::ToMathRadian(displacement);
+					Vector2 normalizedDirectionTo = Vector2(displacement.x/distanceBetween,displacement.y/distanceBetween);
+
+					//The force applied to second = magnitude of speed of first * its mass
+					float first_force_exerted = (Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity())) * first->getMass();
+					float second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
+					float net_force = first_force_exerted+second_force_exerted;
+
+					//Adding the forces
+
+					first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity()), -net_force));
+					//second->addForce(Force (mathRadianDirectionTo+3.1459, 3.1459+Vector2::ToMathRadian(first->getVelocity()), net_force));
+					second->addForce(Force (mathRadianDirectionTo, Vector2::ToMathRadian(first->getVelocity()), net_force));
 
 
-			float push = (addingRadii-distanceBetween)/2;
-
-			first_pos_comp->setPosition( first_pos.x - normalizedDirectionTo.x*push, first_pos.y - normalizedDirectionTo.y*push);
-			second_pos_comp->setPosition( second_pos.x + normalizedDirectionTo.x*push, second_pos.y + normalizedDirectionTo.y*push);
 
 
-			return true;
+					//first->addForce(Force (mathRadianDirectionTo+3.1459, 3.1459+Vector2::ToMathRadian(first->getVelocity()),net_force));
+					//second->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity())     ,net_force));
+
+
+					/*float first_mass_ratio = first_phys_comp->getMass() / second_phys_comp->getMass();
+					float second_mass_ratio = second_phys_comp->getMass() / first_phys_comp->getMass();*/
+
+					/*float first_push = (addingRadii-distanceBetween)/first_mass_ratio/2;
+					float second_push = (addingRadii-distanceBetween)/second_mass_ratio;*/
+					//														   //
+					//ADD A RATIO OF ITS MASS SO THE LIGHTER OBJECT GETS PUSHED//
+					//														   //
+
+					float push = (addingRadii-distanceBetween);
+
+					if(first_phys_comp->getMass()<second_phys_comp->getMass())
+					{
+						first_pos_comp->setPosition( first_pos.x - normalizedDirectionTo.x*push, first_pos.y - normalizedDirectionTo.y*push);
+					}
+					else{
+						second_pos_comp->setPosition( second_pos.x + normalizedDirectionTo.x*push, second_pos.y + normalizedDirectionTo.y*push);
+					}
+
+
+
+					
+
+
+
+					return true;
+				}
+				return false;
+			}
 		}
-		return false;
 	}
 	return false;
 }

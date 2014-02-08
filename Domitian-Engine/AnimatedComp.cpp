@@ -6,10 +6,10 @@ AnimatedComp::AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity
 	positionComp = (PositionComp*) getComponent("Position");
 
 	offset = Vector2 (dimensions.x/2,dimensions.y/2);
-	
+
 	current_frame = Vector2(0,0);
 	number_frames = Vector2 (al_get_bitmap_width(bitmap)/dimensions.x, al_get_bitmap_height(bitmap)/dimensions.y);
-	
+
 
 	for (int x = 0; x < number_frames.x; ++x)
 	{
@@ -25,10 +25,10 @@ AnimatedComp::AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity
 			bitmap_2Dvector[x].push_back(al_create_sub_bitmap(	bitmap, x * dimensions.x, y * dimensions.y,		dimensions.x,dimensions.y));
 		}
 	}
-	
+
 
 	frame_interval=.1;
-	
+
 	current_time =0;
 }
 
@@ -50,21 +50,23 @@ void AnimatedComp::setFrameY(float y)
 
 void AnimatedComp::update(float dt)
 {
-	if(current_time>frame_interval)
-	{
-		current_time = 0;
+	if(visible){
+		if(current_time>frame_interval)
+		{
+			current_time = 0;
 
-		current_frame.x++;
+			current_frame.x++;
 
-		if(current_frame.x>=number_frames.x)
-			current_frame.x= 0;
+			if(current_frame.x>=number_frames.x)
+				current_frame.x= 0;
+		}
+
+		current_time+=dt;
+
+		al_draw_rotated_bitmap(	bitmap_2Dvector[current_frame.x][current_frame.y],
+			offset.x,offset.y,
+			positionComp->getPosition().x,-positionComp->getPosition().y,
+			Radian::convertToGame(positionComp->getRotation()), 
+			0);	
 	}
-
-	current_time+=dt;
-
-	al_draw_rotated_bitmap(	bitmap_2Dvector[current_frame.x][current_frame.y],
-							offset.x,offset.y,
-							positionComp->getPosition().x,-positionComp->getPosition().y,
-							Radian::convertToGame(positionComp->getRotation()), 
-							0);	
 }

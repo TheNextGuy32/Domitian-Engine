@@ -24,8 +24,19 @@ public:
 	{
 		bitmap = newBitmap;
 	};
+
+	void setToVisible()
+	{
+		visible = true;
+	};
+	void setToInvisible()
+	{
+		visible = false;
+	};
+
 	void update(float);
 private:
+	bool visible;
 	PositionComp* positionComp;
 	ALLEGRO_BITMAP* bitmap;
 	Vector2 offset;

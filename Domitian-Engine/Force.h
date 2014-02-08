@@ -1,13 +1,10 @@
 #ifndef DForce
 #define DForce
 
-#include "Vector2.h"
-#include "Radian.h"
-
 class Force
 {
 public:
-	Force(float,float,float);
+	Force(float myDirectionToForce,float myForceDirection, float myForce);
 
 	float getMathRadianToForce()
 	{

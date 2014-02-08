@@ -10,6 +10,8 @@ class PositionComp : public Component
 {
 public:
 	PositionComp(Vector3,float,Entity*);
+	PositionComp(Vector3,Entity*);
+
 
 	Vector2 getPosition()
 	{
@@ -22,7 +24,7 @@ public:
 
 	Vector2 getBucket()
 	{
-		return Vector2(  floor(position.x / 200), floor(position.y / 200) );
+		return Vector2(  floor(position.x / 100), floor(position.y / 100) );
 	};
 
 	float getRotation();

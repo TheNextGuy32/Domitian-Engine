@@ -1,53 +1,26 @@
 #ifndef DConnectedComp_H
 #define DConnectedComp_H
 
-#include "Entity.h"
 #include "Component.h"
 #include "PositionComp.h"
-#include "Radian.h"
 
 class ConnectedComp : public Component
 {
 public:
-	
-	ConnectedComp(float myRadianFromSocket,float myDistance,Entity* myParent);
+	ConnectedComp(float myRadianFromSocket,float myDistance,Entity* myParent, PositionComp* mySocketPositionComp);
 	void update(float);
 
-	bool attach(PositionComp* mySocket, bool myHandleRotation)
-	{
-		if(connected)
-		{
-			return false;
-		}
-		else
-		{
-			socket_position = mySocket;
-			connected = true;
-			handle_rotation = myHandleRotation;
-			return true;
-		}
-	};
-	bool detach()
-	{
-		if (connected)
-		{
-			connected = false;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	};
+	bool attach(PositionComp* mySocket, bool myHandleRotation);
+	bool detach();
 
 private:
-	PositionComp* socket_position;
-	PositionComp* connected_position;
+	PositionComp* socket_position;//The larger thing we are attached to: the body
+	PositionComp* connected_position;//The thing that is attaced: the arm
+
+	float old_socket_rotation, new_socket_rotation;
 
 	bool connected,handle_rotation;
 	float radian_from_socket;
 	float distance;
-
-
 };
 #endif

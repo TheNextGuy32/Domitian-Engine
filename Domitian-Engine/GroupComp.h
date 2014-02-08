@@ -2,15 +2,16 @@
 #define DGroupComp_H
 
 #include "Component.h"
-#include "Entity.h"
-
+class Entity;
 #include "PositionComp.h"
+
+#include <vector>
 
 class GroupComp : public Component
 {
 public:
 	GroupComp(Entity*);
-	update(float);
+	void update(float);
 
 private:
 	std::vector<Entity*> members;
