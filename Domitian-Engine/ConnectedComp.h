@@ -7,8 +7,8 @@
 class ConnectedComp : public Component
 {
 public:
-	ConnectedComp(float myRadianFromSocket,float myDistance,Entity* myParent, PositionComp* mySocketPositionComp);
-	void update(float);
+	ConnectedComp(double myRadianFromSocket,double myDistance,Entity* myParent, PositionComp* mySocketPositionComp);
+	void update(double);
 
 	bool attach(PositionComp* mySocket, bool myHandleRotation);
 	bool detach();
@@ -17,10 +17,10 @@ private:
 	PositionComp* socket_position;//The larger thing we are attached to: the body
 	PositionComp* connected_position;//The thing that is attaced: the arm
 
-	float old_socket_rotation, new_socket_rotation;
+	double old_socket_rotation, new_socket_rotation;
 
 	bool connected,handle_rotation;
-	float radian_from_socket;
-	float distance;
+	double radian_from_socket;
+	double distance;
 };
 #endif

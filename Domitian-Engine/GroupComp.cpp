@@ -4,7 +4,7 @@ GroupComp::GroupComp(Entity* myParent) : Component("Group",myParent)
 {
 
 }
-void GroupComp::update(float)
+void GroupComp::update(double)
 {
 
 }

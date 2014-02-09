@@ -1,11 +1,25 @@
 #include "Entity.h"
 #include "Component.h"
 
-void Entity::update(float dt)
+void Entity::update(double dt)
 {
 	for (auto it = components.begin(); it != components.end(); ++it) 
 	{
-		it->second->update(dt);
+		if(it->first != "Sprite" && it->first != "Animated")
+		{
+			it->second->update(dt);
+		}
+	}
+}
+
+void Entity::draw(double dt)
+{
+	for (auto it = components.begin(); it != components.end(); ++it) 
+	{
+		if(it->first == "Sprite" || it->first == "Animated")
+		{
+			it->second->update(dt);
+		}
 	}
 }
 

@@ -2,7 +2,7 @@
 
 
 // W/ socket
-ConnectedComp::ConnectedComp(float myRadianFromSocket, float myDistance, Entity* myParent, PositionComp* mySocketPositionComp)
+ConnectedComp::ConnectedComp(double myRadianFromSocket, double myDistance, Entity* myParent, PositionComp* mySocketPositionComp)
 	: Component("Connected",myParent), distance(myDistance),radian_from_socket(myRadianFromSocket), socket_position(mySocketPositionComp)
 {
 	connected_position = (PositionComp*) getComponent("Position");
@@ -39,7 +39,7 @@ bool ConnectedComp::detach()
 		}
 	};
 
-void ConnectedComp::update(float dt)
+void ConnectedComp::update(double dt)
 {
 	if(connected)
 	{

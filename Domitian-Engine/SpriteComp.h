@@ -34,7 +34,7 @@ public:
 		visible = false;
 	};
 
-	void update(float);
+	void update(double);
 private:
 	bool visible;
 	PositionComp* positionComp;

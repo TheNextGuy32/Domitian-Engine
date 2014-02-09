@@ -9,7 +9,7 @@
 class PositionComp : public Component
 {
 public:
-	PositionComp(Vector3,float,Entity*);
+	PositionComp(Vector3,double,Entity*);
 	PositionComp(Vector3,Entity*);
 
 
@@ -17,21 +17,21 @@ public:
 	{
 		return Vector2(position.x,position.y);
 	};
-	void setPosition(float,float);
-	void setPositionX(float);
-	void setPositionY(float);
-	void setDepth(float);
+	void setPosition(double,double);
+	void setPositionX(double);
+	void setPositionY(double);
+	void setDepth(double);
 
 	Vector2 getBucket()
 	{
 		return Vector2(  floor(position.x / 100), floor(position.y / 100) );
 	};
 
-	float getRotation();
-	void setRotation(float);
+	double getRotation();
+	void setRotation(double);
 
 private:
 	Vector3 position;
-	float rotation;
+	double rotation;
 };
 #endif

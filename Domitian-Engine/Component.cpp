@@ -15,6 +15,6 @@ std::string Component::getName()
 {
 	return name;
 }
-void Component::update(float dt)
+void Component::update(double dt)
 {
 }

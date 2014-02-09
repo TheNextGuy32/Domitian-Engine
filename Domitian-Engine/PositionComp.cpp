@@ -1,6 +1,6 @@
 #include "PositionComp.h"
 
-PositionComp::PositionComp(Vector3 myPosition, float myRotation, Entity* myParent) 
+PositionComp::PositionComp(Vector3 myPosition, double myRotation, Entity* myParent) 
 	: Component("Position",myParent), position(myPosition), rotation(myRotation)
 {
 }
@@ -10,34 +10,34 @@ PositionComp::PositionComp(Vector3 myPosition, Entity* myParent)
 {
 }
 
-void PositionComp::setPosition(float myX,float myY)
+void PositionComp::setPosition(double myX,double myY)
 {
 	position.x = myX;
 	position.y = myY;
 
 }
-float PositionComp::getRotation()
+double PositionComp::getRotation()
 {
 	return rotation;
 }
 
-void PositionComp::setPositionX(float myX)
+void PositionComp::setPositionX(double myX)
 {
 	position.x = myX;
 
 }
-void PositionComp::setPositionY(float myY)
+void PositionComp::setPositionY(double myY)
 {
 	position.y = myY;
 
 }
 
-void PositionComp::setDepth(float myDepth)
+void PositionComp::setDepth(double myDepth)
 {
 	position.z = myDepth;
 }
 
-void PositionComp::setRotation(float myRot)
+void PositionComp::setRotation(double myRot)
 {
 	rotation = myRot;
 	while(abs(rotation)>(3.14159265359*2))

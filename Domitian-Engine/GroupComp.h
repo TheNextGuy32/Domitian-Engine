@@ -11,7 +11,7 @@ class GroupComp : public Component
 {
 public:
 	GroupComp(Entity*);
-	void update(float);
+	void update(double);
 
 private:
 	std::vector<Entity*> members;

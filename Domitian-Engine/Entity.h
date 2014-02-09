@@ -10,7 +10,8 @@ class Component;
 class Entity
 {
 public:
-	void update(float);
+	void update(double);
+	void draw(double dt);
 
 	void addComponent(Component*);
 	void removeEntity(std::string);

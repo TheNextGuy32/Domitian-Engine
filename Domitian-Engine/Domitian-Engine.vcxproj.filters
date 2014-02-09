@@ -59,6 +59,7 @@
     <ClCompile Include="GroupComp.cpp">
       <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
+    <ClCompile Include="SpaceSim.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -100,5 +101,6 @@
     <ClInclude Include="GroupComp.h">
       <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
+    <ClInclude Include="SpaceSim.h" />
   </ItemGroup>
 </Project>

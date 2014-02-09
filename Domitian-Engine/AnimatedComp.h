@@ -12,10 +12,10 @@ class AnimatedComp : public Component
 {
 public:
 	AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity* myParent);
-	void update(float);
+	void update(double);
 
-	void setFrameX(float);
-	void setFrameY(float);
+	void setFrameX(double);
+	void setFrameY(double);
 
 	void setToVisible()
 	{
@@ -40,8 +40,8 @@ private:
 	ALLEGRO_BITMAP* bitmap;
 	std::vector<std::vector<ALLEGRO_BITMAP*>> bitmap_2Dvector;
 
-	float frame_interval;
-	float current_time;
+	double frame_interval;
+	double current_time;
 
 	Vector2 dimensions;
 	Vector2 current_frame;

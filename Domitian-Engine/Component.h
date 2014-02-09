@@ -10,7 +10,7 @@ class Entity;
 class Component
 {
 public:
-	virtual void update(float);
+	virtual void update(double);
 	Component(std::string, Entity*);
 	std::string getName();
 	

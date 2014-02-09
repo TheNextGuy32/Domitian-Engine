@@ -6,9 +6,9 @@
 class Vector2
 {
 public:
-	float x,y;
+	double x,y;
 	Vector2():x(0),y(0){};
-	Vector2(float myX,float myY)
+	Vector2(double myX,double myY)
 	{
 		x = myX;
 		y = myY;
@@ -18,11 +18,11 @@ public:
 	{
 		return (first.x==second.x && first.y==second.y);
 	}
-	static float ToMathRadian(Vector2 myVector)
+	static double ToMathRadian(Vector2 myVector)
 	{
 		return atan2(myVector.y,myVector.x);
 	};
-	static Vector2 ToVector2(float angle)
+	static Vector2 ToVector2(double angle)
 	{
 		return Vector2 (cos(angle), sin(angle));
 	};
@@ -52,7 +52,7 @@ public:
 		return ret;
 	}
 
-	static float getDistanceBetween(Vector2 first, Vector2 second)
+	static double getDistanceBetween(Vector2 first, Vector2 second)
 	{
 		return sqrt( (second.x-first.x)*(second.x-first.x) + (second.y-first.y)*(second.y-first.y));
 	}

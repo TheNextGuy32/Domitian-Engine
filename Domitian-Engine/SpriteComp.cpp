@@ -10,7 +10,7 @@ SpriteComp::SpriteComp(ALLEGRO_BITMAP* myBitmap,Entity* myParent):Component("Spr
 	visible = true;
 }
 
-void SpriteComp::update(float dt)
+void SpriteComp::update(double dt)
 {
 	if(visible)
 	{

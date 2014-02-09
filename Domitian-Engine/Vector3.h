@@ -4,10 +4,10 @@
 class Vector3
 {
 public:
-	float x,y,z;
+	double x,y,z;
 
 	Vector3():x(0),y(0),z(0){};
-	Vector3(float myX,float myY,float myZ)
+	Vector3(double myX,double myY,double myZ)
 	{
 		x = myX;
 		y = myY;

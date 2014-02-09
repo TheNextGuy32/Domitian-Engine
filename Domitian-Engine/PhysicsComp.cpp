@@ -4,7 +4,7 @@
 #define MAX_ROTATION_SPEED 7
 #define MAX_TRANSLATION_SPEED 70
 
-PhysicsComp::PhysicsComp(float myMass,float myRadius, Entity* myParent):Component("Physics",myParent),mass(myMass),radius(myRadius)
+PhysicsComp::PhysicsComp(double myMass,double myRadius, Entity* myParent):Component("Physics",myParent),mass(myMass),radius(myRadius)
 {
 	total_translational_force=Vector2(0,0);
 	velocity=Vector2(0,0);
@@ -18,7 +18,7 @@ PhysicsComp::PhysicsComp(float myMass,float myRadius, Entity* myParent):Componen
 
 }
 
-void PhysicsComp::update(float dt)
+void PhysicsComp::update(double dt)
 {
 	collided = false;
 
@@ -74,9 +74,9 @@ void PhysicsComp::update(float dt)
 
 void PhysicsComp::addForce(Force myForce)
 {
-	float radian_to_center_mass = myForce.getMathRadianToForce() + 3.1459;
+	double radian_to_center_mass = myForce.getMathRadianToForce() + 3.1459;
 
-	float attached_direction_displacement = myForce.getForceMathRadian() - radian_to_center_mass;
+	double attached_direction_displacement = myForce.getForceMathRadian() - radian_to_center_mass;
 
 	total_torque += -(radius *  myForce.getForce() * sin(attached_direction_displacement));
 
@@ -99,7 +99,7 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	with the new velocities
 	and see if the numbers are equal
 	oh and i forgot to say that you need to sum up all the energies to get total energy
-	//float initialEnergy += 0.5 * first->getMass() * Vector2::ToMathRadian(first->getVelocity())*Vector2::ToMathRadian(first->getVelocity());
+	//double initialEnergy += 0.5 * first->getMass() * Vector2::ToMathRadian(first->getVelocity())*Vector2::ToMathRadian(first->getVelocity());
 	//initialEnergy += 0.5 * second->getMass() * Vector2::ToMathRadian(second->getVelocity())*Vector2::ToMathRadian(second->getVelocity());
 
 	the v^2 outputs a scalar so it works for any number of components
@@ -119,8 +119,8 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			PhysicsComp* second_phys_comp = (PhysicsComp*) second->getComponent("Physics");
 			Vector2 second_pos = Vector2(second_pos_comp->getPosition().x,second_pos_comp->getPosition().y);
 
-			float distanceBetween = Vector2::getDistanceBetween(first_pos,second_pos);
-			float addingRadii = first->getRadius()+second->getRadius();
+			double distanceBetween = Vector2::getDistanceBetween(first_pos,second_pos);
+			double addingRadii = first->getRadius()+second->getRadius();
 
 			if(!first->getCollided() || !second->getCollided())
 			{
@@ -134,13 +134,13 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 					Vector2 displacement = Vector2(	second_pos_comp->getPosition().x - first_pos_comp->getPosition().x,
 						second_pos_comp->getPosition().y - first_pos_comp->getPosition().y);
 
-					float mathRadianDirectionTo = Vector2::ToMathRadian(displacement);
+					double mathRadianDirectionTo = Vector2::ToMathRadian(displacement);
 					Vector2 normalizedDirectionTo = Vector2(displacement.x/distanceBetween,displacement.y/distanceBetween);
 
 					//The force applied to second = magnitude of speed of first * its mass
-					float first_force_exerted = (Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity())) * first->getMass();
-					float second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
-					float net_force = first_force_exerted+second_force_exerted;
+					double first_force_exerted = (Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity())) * first->getMass();
+					double second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
+					double net_force = first_force_exerted+second_force_exerted;
 
 					//Adding the forces
 
@@ -155,16 +155,16 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 					//second->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity())     ,net_force));
 
 
-					/*float first_mass_ratio = first_phys_comp->getMass() / second_phys_comp->getMass();
-					float second_mass_ratio = second_phys_comp->getMass() / first_phys_comp->getMass();*/
+					/*double first_mass_ratio = first_phys_comp->getMass() / second_phys_comp->getMass();
+					double second_mass_ratio = second_phys_comp->getMass() / first_phys_comp->getMass();*/
 
-					/*float first_push = (addingRadii-distanceBetween)/first_mass_ratio/2;
-					float second_push = (addingRadii-distanceBetween)/second_mass_ratio;*/
+					/*double first_push = (addingRadii-distanceBetween)/first_mass_ratio/2;
+					double second_push = (addingRadii-distanceBetween)/second_mass_ratio;*/
 					//														   //
 					//ADD A RATIO OF ITS MASS SO THE LIGHTER OBJECT GETS PUSHED//
 					//														   //
 
-					float push = (addingRadii-distanceBetween);
+					double push = (addingRadii-distanceBetween);
 
 					if(first_phys_comp->getMass()<second_phys_comp->getMass())
 					{

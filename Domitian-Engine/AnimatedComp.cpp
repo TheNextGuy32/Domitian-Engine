@@ -27,12 +27,12 @@ AnimatedComp::AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity
 	}
 
 
-	frame_interval=.1;
+	frame_interval=10;
 
 	current_time =0;
 }
 
-void AnimatedComp::setFrameX(float x)
+void AnimatedComp::setFrameX(double x)
 {
 	if(x>0&& x < number_frames.x+1)
 	{
@@ -40,7 +40,7 @@ void AnimatedComp::setFrameX(float x)
 	}
 }
 
-void AnimatedComp::setFrameY(float y)
+void AnimatedComp::setFrameY(double y)
 {
 	if(y>0&&y<number_frames.y+1)
 	{
@@ -48,7 +48,7 @@ void AnimatedComp::setFrameY(float y)
 	}
 }
 
-void AnimatedComp::update(float dt)
+void AnimatedComp::update(double dt)
 {
 	if(visible){
 		if(current_time>frame_interval)

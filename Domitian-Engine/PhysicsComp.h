@@ -10,9 +10,9 @@
 class PhysicsComp : public Component
 {
 public:
-	PhysicsComp(float,float, Entity*);
+	PhysicsComp(double,double, Entity*);
 
-    void update(float);
+    void update(double);
 
 	void addForce(Force myForce);
 
@@ -25,20 +25,20 @@ public:
 	{
 		velocity = myVelocity;
 	};
-	void setRotationalVelocity(float myRot)
+	void setRotationalVelocity(double myRot)
 	{
 		rotational_velocity = myRot;
 	};
 
-	float getMass()
+	double getMass()
 	{
 		return mass;	
 	}
-	void setMass(float myMass)
+	void setMass(double myMass)
 	{
 		mass = myMass;
 	};
-	float getRadius()
+	double getRadius()
 	{
 		return radius;
 	}
@@ -60,18 +60,18 @@ private:
 
 	bool collided;
 	
-	float mass;
-	float moment_of_inertia;
+	double mass;
+	double moment_of_inertia;
 
-	float radius;
+	double radius;
 
 	Vector2 total_translational_force;
 	Vector2 velocity;
 	Vector2 acceleration;
 
-	float total_torque;
-	float rotational_velocity;
-	float rotational_acceleration;
+	double total_torque;
+	double rotational_velocity;
+	double rotational_acceleration;
 };
 #endif
 

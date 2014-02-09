@@ -4,27 +4,27 @@
 class Force
 {
 public:
-	Force(float myDirectionToForce,float myForceDirection, float myForce);
+	Force(double myDirectionToForce,double myForceDirection, double myForce);
 
-	float getMathRadianToForce()
+	double getMathRadianToForce()
 	{
 		return direction_to_force;
 	};
 
-	float getForceMathRadian()
+	double getForceMathRadian()
 	{
 		return force_direction;
 	};
 
-	float getForce()
+	double getForce()
 	{
 		return force;
 	};
 
 private:
-	float direction_to_force;
-	float force_direction;
-	float force;
+	double direction_to_force;
+	double force_direction;
+	double force;
 
 };
 #endif
