@@ -74,7 +74,7 @@ void PhysicsComp::update(double dt)
 
 void PhysicsComp::addForce(Force myForce)
 {
-	double radian_to_center_mass = myForce.getMathRadianToForce() + 3.1459;
+	double radian_to_center_mass = myForce.getMathRadianToForce() + PI;
 
 	double attached_direction_displacement = myForce.getForceMathRadian() - radian_to_center_mass;
 
@@ -164,7 +164,7 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 					//ADD A RATIO OF ITS MASS SO THE LIGHTER OBJECT GETS PUSHED//
 					//														   //
 
-					double push = (addingRadii-distanceBetween);
+					double push = std::abs(addingRadii-distanceBetween);
 
 					if(first_phys_comp->getMass()<second_phys_comp->getMass())
 					{

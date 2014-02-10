@@ -50,6 +50,9 @@ void SpaceSim::LoadContent()
 	spaceship_bitmap= al_load_bitmap("space_ship.png");
 	satellite_bitmap= al_load_bitmap("satellite.png");
 
+	co2_bar_bitmap = al_load_bitmap("co2Canister.bmp");
+	oxygen_bar_bitmap = al_load_bitmap("airCanister.bmp");
+
 	co2_sample = al_load_sample("co2.wav");
 	co2_sample_instance = al_create_sample_instance(co2_sample);
 	al_set_sample_instance_playmode(co2_sample_instance, ALLEGRO_PLAYMODE_LOOP);
@@ -102,18 +105,19 @@ void SpaceSim::CreateWorld()
 	for(int p = 0 ; p <10; p++)
 	{
 		CreateAsteroid();
-		
+
 	}
-	for(int p = 0 ; p < 5; p++)
+	for(int p = 0 ; p < 0; p++)
 	{
 		CreateDebris();
 	}
 	CreateSpaceStation();
-
+	CreateGUI();
 };
 void SpaceSim::CreatePlayer()
 {
-	player = new Entity(); 
+	Entity* player = new Entity();
+
 	entities.push_back(player);
 	physics_entities.push_back(player);
 
@@ -130,13 +134,13 @@ void SpaceSim::CreatePlayer()
 	thrust = new Entity();
 	entities.push_back(thrust);
 
-	PositionComp* thrust_position = new PositionComp (Vector3 (100,-100,10),0,thrust);
+	thrust_position = new PositionComp (Vector3 (100,-100,10),0,thrust);
 	thrust->addComponent(thrust_position);
 
-	AnimatedComp* thrust_animated = new AnimatedComp (thrust_bitmap,Vector2(30,80),thrust);
+	thrust_animated = new AnimatedComp (thrust_bitmap,Vector2(30,80),thrust);
 	thrust->addComponent(thrust_animated);
 
-	ConnectedComp* thrust_connected = new ConnectedComp (player_position->getRotation()-(3.1459),player_physics->getRadius(),thrust,player_position);
+	thrust_connected = new ConnectedComp (player_position->getRotation()-(PI),player_physics->getRadius(),thrust,player_position);
 	thrust_connected->attach(player_position,true);
 	thrust->addComponent(thrust_connected);
 
@@ -144,13 +148,13 @@ void SpaceSim::CreatePlayer()
 	thrust_back = new Entity();
 	entities.push_back(thrust_back);
 
-	PositionComp* thrust_back_position = new PositionComp (Vector3 (100,-100,10),PI,thrust);
+	thrust_back_position = new PositionComp (Vector3 (100,-100,10),PI,thrust);
 	thrust_back->addComponent(thrust_back_position);
 
-	AnimatedComp* thrust_back_animated = new AnimatedComp(thrust_bitmap,Vector2(30,80),thrust_back);
+	thrust_back_animated = new AnimatedComp(thrust_bitmap,Vector2(30,80),thrust_back);
 	thrust_back->addComponent(thrust_back_animated);
 
-	ConnectedComp* thrust_back_connected = new ConnectedComp (player_position->getRotation(),player_physics->getRadius(),thrust_back,player_position);
+	thrust_back_connected = new ConnectedComp (player_position->getRotation(),player_physics->getRadius(),thrust_back,player_position);
 	thrust_back_connected->attach(player_position,true);
 	thrust_back->addComponent(thrust_back_connected);
 
@@ -158,13 +162,13 @@ void SpaceSim::CreatePlayer()
 	thrust_right = new Entity();
 	entities.push_back(thrust_right);
 
-	PositionComp* thrust_right_position = new PositionComp (Vector3 (100,-100,10),0,thrust_right);
+	thrust_right_position = new PositionComp (Vector3 (100,-100,10),0,thrust_right);
 	thrust_right->addComponent(thrust_right_position);
 
-	AnimatedComp* thrust_right_animated = new AnimatedComp (thrust_bitmap,Vector2(30,80),thrust_right);
+	thrust_right_animated = new AnimatedComp (thrust_bitmap,Vector2(30,80),thrust_right);
 	thrust_right->addComponent(thrust_right_animated);
 
-	ConnectedComp* thrust_right_connected = new ConnectedComp (player_position->getRotation()-(3.1459/2.0),player_physics->getRadius(),thrust_right,player_position);
+	thrust_right_connected = new ConnectedComp (player_position->getRotation()-(PI/2.0),player_physics->getRadius(),thrust_right,player_position);
 	thrust_right_connected->attach(player_position,true);
 	thrust_right->addComponent(thrust_right_connected);
 
@@ -172,13 +176,13 @@ void SpaceSim::CreatePlayer()
 	thrust_left = new Entity();
 	entities.push_back(thrust_left);
 
-	PositionComp* thrust_left_position = new PositionComp (Vector3 (100,-100,10),0,thrust_left);
+	thrust_left_position = new PositionComp (Vector3 (100,-100,10),0,thrust_left);
 	thrust_left->addComponent(thrust_left_position);
 
-	AnimatedComp* thrust_left_animated = new AnimatedComp (thrust_bitmap,Vector2(30,80),thrust_left);
+	thrust_left_animated = new AnimatedComp (thrust_bitmap,Vector2(30,80),thrust_left);
 	thrust_left->addComponent(thrust_left_animated);
 
-	ConnectedComp* thrust_left_connected = new ConnectedComp (player_position->getRotation()+(3.1459/2.0),player_physics->getRadius(),thrust_left,player_position);
+	thrust_left_connected = new ConnectedComp (player_position->getRotation()+(PI/2.0),player_physics->getRadius(),thrust_left,player_position);
 	thrust_left_connected->attach(player_position,true);
 	thrust_left->addComponent(thrust_left_connected);
 };
@@ -201,8 +205,8 @@ void SpaceSim::CreateDebris()
 	entities.push_back(debris);
 	physics_entities.push_back(debris);
 
-	double x = std::rand()%(screen_width-750)+200;
-	double y = -(std::rand()%(screen_height-500)+100);
+	double x = std::rand()%(screen_width-1300)+300;
+	double y = -(std::rand()%(screen_height-600)+100);
 
 	debris->addComponent(new PositionComp(Vector3 (x,y,10), 0, debris));		
 	debris->addComponent(new SpriteComp (debris_bitmap, debris));
@@ -210,19 +214,23 @@ void SpaceSim::CreateDebris()
 };
 void SpaceSim::CreateSpaceStation()
 {
-	/*spaceship = new Entity();
+	spaceship = new Entity();
 	entities.push_back(spaceship);
 	physics_entities.push_back(spaceship);
-	spaceship->addComponent(new PositionComp(Vector3 (250,-500,10), 0, spaceship));		
+	spaceship->addComponent(new PositionComp(Vector3 (250,-500,10), -PI/4, spaceship));		
 	spaceship->addComponent(new SpriteComp (spaceship_bitmap, spaceship));
-	spaceship->addComponent(new PhysicsComp (1000000,al_get_bitmap_height(spaceship_bitmap)/2,spaceship));
+	PhysicsComp* spaceship_phys = new PhysicsComp (1000000,al_get_bitmap_height(spaceship_bitmap)/2,spaceship);
+	//spaceship_phys->addForce(Force(PI,-PI/2,5000000));
+	spaceship->addComponent(spaceship_phys);
 
 	satellite = new Entity();
 	entities.push_back(satellite);
 	physics_entities.push_back(satellite);
-	satellite->addComponent(new PositionComp(Vector3 (1000,-250,10), 0, satellite));		
+	satellite->addComponent(new PositionComp(Vector3 (1000,-250,10), -PI/2, satellite));		
 	satellite->addComponent(new SpriteComp (satellite_bitmap, satellite));
-	satellite->addComponent(new PhysicsComp (1000000,al_get_bitmap_height(satellite_bitmap)/2,satellite));*/
+	PhysicsComp* phys = new PhysicsComp (1000000,al_get_bitmap_height(satellite_bitmap)/2,satellite);
+	//phys->addForce(Force(0,PI/2,5000000));
+	satellite->addComponent(phys);
 
 	/*iss_piece_north = new Entity();
 	entities.push_back(iss_piece_north);
@@ -264,6 +272,38 @@ void SpaceSim::CreateSpaceStation()
 	iss_west_attached->attach((PositionComp*)iss_plus->getComponent("Position"),true);
 	iss_piece_west->addComponent(iss_west_attached);*/
 };
+void SpaceSim::CreateGUI()
+{
+	double space_between_bars_x = 1;
+	double space_between_bars_y = 5;
+
+	double oxygen_position_x = 275;
+	double oxygen_position_y = -650;
+
+	for(int p = 0 ; p < 100 ; p++)
+	{
+		Entity* oxygen_bar = new Entity();
+		entities.push_back(oxygen_bar);
+		oxygen_bars[p] = oxygen_bar;
+
+		//
+		PositionComp* oxy_pos = new PositionComp(Vector3(oxygen_position_x+(p*(space_between_bars_x+al_get_bitmap_width(oxygen_bar_bitmap))),oxygen_position_y,10),oxygen_bar);
+		oxy_pos->setRotation(PI/2);
+		oxygen_bar->addComponent(oxy_pos);
+		oxygen_bar->addComponent(new SpriteComp(oxygen_bar_bitmap,oxygen_bar));
+
+		Entity* co2_bar = new Entity();
+		entities.push_back(co2_bar);
+		co2_bars[p] = co2_bar;
+
+		PositionComp* co2_pos = new PositionComp(Vector3(oxygen_position_x+(p*(space_between_bars_x+al_get_bitmap_width(oxygen_bar_bitmap))),oxygen_position_y-al_get_bitmap_height(oxygen_bar_bitmap)-space_between_bars_y,10),
+			co2_bar);
+		co2_pos->setRotation(PI/2);
+		co2_bar->addComponent(co2_pos);
+			
+		co2_bar->addComponent(new SpriteComp(co2_bar_bitmap,co2_bar));
+	}
+};
 
 void SpaceSim::UnloadContent()
 {
@@ -295,25 +335,18 @@ void SpaceSim::UnloadContent()
 
 void SpaceSim::Update()
 {
+	thrust_animated->setToInvisible();
+	thrust_back_animated->setToInvisible();
+	thrust_right_animated->setToInvisible();
+	thrust_left_animated->setToInvisible();
 	while(!done)
 	{
-		/*thrust_animated->setToInvisible();
-		thrust_back_animated->setToInvisible();
-		thrust_right_animated->setToInvisible();
-		thrust_left_animated->setToInvisible();*/
-
-
-		
-		
-
-		
-
 		double current_timestamp = al_get_time();
 		double seconds_since_last_tick = current_timestamp - previous_tick_timestamp;
 		if(seconds_since_last_tick > .25)
 		{
 			seconds_since_last_tick = 0.25;
-			
+
 		}
 		previous_tick_timestamp = current_timestamp;
 
@@ -399,8 +432,8 @@ void SpaceSim::TakeInput()
 	//W
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
 	{
-		//thrust_animated->setToVisible();
-		player_physics->addForce(Force(player_position->getRotation()+3.1459,player_position->getRotation(),1000));
+		thrust_animated->setToVisible();
+		player_physics->addForce(Force(player_position->getRotation()+PI,player_position->getRotation(),1000));
 		if(!al_get_sample_instance_playing(co2_sample_instance))
 		{
 			al_play_sample_instance(co2_sample_instance);
@@ -408,14 +441,15 @@ void SpaceSim::TakeInput()
 	}
 	else
 	{
+		thrust_animated->setToInvisible();
 		al_stop_sample_instance(co2_sample_instance);
 	}
 
 	//S
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_S))
 	{
-		//thrust_back_animated->setToVisible();
-		player_physics->addForce(Force(player_position->getRotation(),player_position->getRotation()+3.1459,1000));
+		thrust_back_animated->setToVisible();
+		player_physics->addForce(Force(player_position->getRotation(),player_position->getRotation()+PI,1000));
 
 		if(!al_get_sample_instance_playing(co2_sample_instance))
 		{
@@ -424,14 +458,15 @@ void SpaceSim::TakeInput()
 	}
 	else
 	{
+		thrust_back_animated->setToInvisible();
 		al_stop_sample_instance(co2_back_sample_instance);
 	}
 
 	//D
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_D))
 	{
-		//thrust_right_animated->setToVisible();
-		player_physics->addForce(Force(player_position->getRotation()-(3.1459/2.0),player_position->getRotation(),1000));
+		thrust_right_animated->setToVisible();
+		player_physics->addForce(Force(player_position->getRotation()-(PI/2.0),player_position->getRotation(),1000));
 		if(!al_get_sample_instance_playing(co2_right_sample_instance))
 		{
 			al_play_sample_instance(co2_right_sample_instance);
@@ -439,14 +474,15 @@ void SpaceSim::TakeInput()
 	}
 	else
 	{
+		thrust_right_animated->setToInvisible();
 		al_stop_sample_instance(co2_right_sample_instance);
 	}
 
 	//A
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_A))
 	{
-		//thrust_left_animated->setToVisible();
-		player_physics->addForce(Force(player_position->getRotation()+(3.1459/2.0),player_position->getRotation(),1000));
+		thrust_left_animated->setToVisible();
+		player_physics->addForce(Force(player_position->getRotation()+(PI/2.0),player_position->getRotation(),1000));
 		if(!al_get_sample_instance_playing(co2_sample_instance))
 		{
 			al_play_sample_instance(co2_left_sample_instance);
@@ -454,6 +490,7 @@ void SpaceSim::TakeInput()
 	}
 	else
 	{
+		thrust_left_animated->setToInvisible();
 		al_stop_sample_instance(co2_left_sample_instance);
 	}
 
@@ -463,6 +500,7 @@ void SpaceSim::TakeInput()
 
 void SpaceSim::Draw()
 {
+	//DrawScreenNodes();
 	for(std::vector<Entity*>::size_type i = 0; i != entities.size(); i++) 
 	{
 		entities[i]->draw(dt);

@@ -27,7 +27,7 @@ AnimatedComp::AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity
 	}
 
 
-	frame_interval=10;
+	frame_interval=1;
 
 	current_time =0;
 }

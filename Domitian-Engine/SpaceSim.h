@@ -8,7 +8,7 @@
 
 #pragma region Preproccessor
 
-#define PI 3.14159265
+#define PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679
 #define deg2rad( a ) a * (PI/180)
 
 #pragma endregion
@@ -28,6 +28,7 @@ public:
 	void CreateAsteroid();
 	void CreatePlayer();
 	void CreateSpaceStation();
+	void CreateGUI();
 
 	void UnloadContent();
 
@@ -77,6 +78,9 @@ private:
 	ALLEGRO_BITMAP* iss_bitmap;
 	ALLEGRO_BITMAP* iss_plus_bitmap;
 
+	ALLEGRO_BITMAP* co2_bar_bitmap;
+	ALLEGRO_BITMAP* oxygen_bar_bitmap;
+
 	ALLEGRO_SAMPLE* co2_sample;
 	ALLEGRO_SAMPLE_INSTANCE* co2_sample_instance;
 
@@ -119,4 +123,7 @@ private:
 
 	Entity* spaceship;
 	Entity* satellite;
+
+	Entity* oxygen_bars[100];
+	Entity* co2_bars[100];
 };
