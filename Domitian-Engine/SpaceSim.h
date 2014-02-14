@@ -5,6 +5,7 @@
 #include <allegro5\allegro_audio.h>
 #include <allegro5\allegro_acodec.h>
 #include "Domitian-Engine.h"
+#include "AstronautComp.h"
 
 #pragma region Preproccessor
 
@@ -34,6 +35,7 @@ public:
 
 	void Update();
 	void TakeInput();
+	void UpdateUI();
 
 	void Draw();
 	void DrawScreenNodes();
@@ -80,6 +82,7 @@ private:
 
 	ALLEGRO_BITMAP* co2_bar_bitmap;
 	ALLEGRO_BITMAP* oxygen_bar_bitmap;
+	ALLEGRO_BITMAP* gui_bar_bitmap;
 
 	ALLEGRO_SAMPLE* co2_sample;
 	ALLEGRO_SAMPLE_INSTANCE* co2_sample_instance;
@@ -100,6 +103,7 @@ private:
 	PositionComp* player_position;
 	SpriteComp* player_sprite;
 	PhysicsComp* player_physics;
+	AstronautComp* player_astronaut;
 
 	Entity* thrust;
 	AnimatedComp* thrust_animated;

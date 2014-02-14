@@ -64,6 +64,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedComp.cpp" />
+    <ClCompile Include="AstronautComp.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConnectedComp.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -77,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedComp.h" />
+    <ClInclude Include="AstronautComp.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConnectedComp.h" />
     <ClInclude Include="Domitian-Engine.h" />

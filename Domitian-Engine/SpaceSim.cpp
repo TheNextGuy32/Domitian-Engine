@@ -52,6 +52,7 @@ void SpaceSim::LoadContent()
 
 	co2_bar_bitmap = al_load_bitmap("co2Canister.bmp");
 	oxygen_bar_bitmap = al_load_bitmap("airCanister.bmp");
+	gui_bar_bitmap = al_load_bitmap("guiBar.bmp");
 
 	co2_sample = al_load_sample("co2.wav");
 	co2_sample_instance = al_create_sample_instance(co2_sample);
@@ -107,7 +108,7 @@ void SpaceSim::CreateWorld()
 		CreateAsteroid();
 
 	}
-	for(int p = 0 ; p < 0; p++)
+	for(int p = 0 ; p < 20; p++)
 	{
 		CreateDebris();
 	}
@@ -129,6 +130,9 @@ void SpaceSim::CreatePlayer()
 
 	player_physics = new PhysicsComp (10,al_get_bitmap_width(astronaut_bitmap)/2,player);
 	player->addComponent(player_physics);
+
+	player_astronaut = new AstronautComp(100,0.001,100,1,player);
+	player->addComponent(player_astronaut);
 
 	// Thrust
 	thrust = new Entity();
@@ -223,14 +227,14 @@ void SpaceSim::CreateSpaceStation()
 	//spaceship_phys->addForce(Force(PI,-PI/2,5000000));
 	spaceship->addComponent(spaceship_phys);
 
-	satellite = new Entity();
-	entities.push_back(satellite);
-	physics_entities.push_back(satellite);
-	satellite->addComponent(new PositionComp(Vector3 (1000,-250,10), -PI/2, satellite));		
-	satellite->addComponent(new SpriteComp (satellite_bitmap, satellite));
-	PhysicsComp* phys = new PhysicsComp (1000000,al_get_bitmap_height(satellite_bitmap)/2,satellite);
-	//phys->addForce(Force(0,PI/2,5000000));
-	satellite->addComponent(phys);
+	//satellite = new Entity();
+	//entities.push_back(satellite);
+	//physics_entities.push_back(satellite);
+	//satellite->addComponent(new PositionComp(Vector3 (1000,-250,10), -PI/2, satellite));		
+	//satellite->addComponent(new SpriteComp (satellite_bitmap, satellite));
+	//PhysicsComp* phys = new PhysicsComp (1000000,al_get_bitmap_height(satellite_bitmap)/2,satellite);
+	////phys->addForce(Force(0,PI/2,5000000));
+	//satellite->addComponent(phys);
 
 	/*iss_piece_north = new Entity();
 	entities.push_back(iss_piece_north);
@@ -274,6 +278,13 @@ void SpaceSim::CreateSpaceStation()
 };
 void SpaceSim::CreateGUI()
 {
+	Entity* gui_bar_ent = new Entity();
+	entities.push_back(gui_bar_ent);
+	PositionComp* pos = new PositionComp(Vector3(675,-675,11),gui_bar_ent);
+	pos->setRotation(PI/2);
+	gui_bar_ent->addComponent(pos);
+	gui_bar_ent->addComponent(new SpriteComp(gui_bar_bitmap,gui_bar_ent));
+
 	double space_between_bars_x = 1;
 	double space_between_bars_y = 5;
 
@@ -285,8 +296,6 @@ void SpaceSim::CreateGUI()
 		Entity* oxygen_bar = new Entity();
 		entities.push_back(oxygen_bar);
 		oxygen_bars[p] = oxygen_bar;
-
-		//
 		PositionComp* oxy_pos = new PositionComp(Vector3(oxygen_position_x+(p*(space_between_bars_x+al_get_bitmap_width(oxygen_bar_bitmap))),oxygen_position_y,10),oxygen_bar);
 		oxy_pos->setRotation(PI/2);
 		oxygen_bar->addComponent(oxy_pos);
@@ -295,12 +304,11 @@ void SpaceSim::CreateGUI()
 		Entity* co2_bar = new Entity();
 		entities.push_back(co2_bar);
 		co2_bars[p] = co2_bar;
-
 		PositionComp* co2_pos = new PositionComp(Vector3(oxygen_position_x+(p*(space_between_bars_x+al_get_bitmap_width(oxygen_bar_bitmap))),oxygen_position_y-al_get_bitmap_height(oxygen_bar_bitmap)-space_between_bars_y,10),
 			co2_bar);
 		co2_pos->setRotation(PI/2);
 		co2_bar->addComponent(co2_pos);
-			
+
 		co2_bar->addComponent(new SpriteComp(co2_bar_bitmap,co2_bar));
 	}
 };
@@ -356,6 +364,8 @@ void SpaceSim::Update()
 		while ( accumulator >= dt )
 		{
 			TakeInput();
+
+			//Update all the entities
 			for(std::vector<Entity*>::size_type i = 0; i != entities.size(); i++) 
 			{
 				entities[i]->update(dt);
@@ -378,27 +388,35 @@ void SpaceSim::Update()
 					}
 				}
 				//Boundaries
-				//Right
-				if( (pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 ) > screen_width)
+				if(physics_entities[i]->hasComponent("Astronaut"))
 				{
-					pos->setPositionX(pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 - screen_width);
-				}
-				//Left
-				if( (pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 ) < 0)
-				{
-					pos->setPositionX(pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 + screen_width);
-				}
-				//Top
-				if( (pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 ) > 0)
-				{
-					pos->setPositionY(pos->getPosition().y + al_get_bitmap_height(spr->getBitmap())/2 - screen_height);
-				}
-				//Bottom
-				if( (pos->getPosition().y + al_get_bitmap_height (spr->getBitmap())/2 ) < -screen_height)
-				{
-					pos->setPositionY(pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 + screen_height);
+					//Right
+					if( (pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 ) > screen_width)
+					{
+						//pos->setPositionX(pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 - screen_width);
+						done = true;
+					}
+					//Left
+					if( (pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 ) < 0)
+					{
+						//pos->setPositionX(pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 + screen_width);
+						done = true;
+					}
+					//Top
+					if( (pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 ) > 0)
+					{
+						//pos->setPositionY(pos->getPosition().y + al_get_bitmap_height(spr->getBitmap())/2 - screen_height);
+						done = true;
+					}
+					//Bottom
+					if( (pos->getPosition().y + al_get_bitmap_height (spr->getBitmap())/2 ) < -screen_height)
+					{
+						//pos->setPositionY(pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 + screen_height);
+						done = true;
+					}
 				}
 			}
+			UpdateUI();
 			accumulator -= dt;
 		}
 
@@ -429,8 +447,14 @@ void SpaceSim::TakeInput()
 		}
 	}
 
+	//Player fuel stats
+
+	double fuel_cost =player_astronaut->getFuelCost();
+	double current_co2 = player_astronaut->getCurrentCO2();
+
 	//W
-	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
+	current_co2 = player_astronaut->getCurrentCO2();
+	if(current_co2 > fuel_cost*1000*dt && al_key_down(&new_keyboard_state,ALLEGRO_KEY_W))
 	{
 		thrust_animated->setToVisible();
 		player_physics->addForce(Force(player_position->getRotation()+PI,player_position->getRotation(),1000));
@@ -438,6 +462,8 @@ void SpaceSim::TakeInput()
 		{
 			al_play_sample_instance(co2_sample_instance);
 		}		
+
+		player_astronaut->setCurrentCO2(current_co2 - (fuel_cost*1000)*dt );
 	}
 	else
 	{
@@ -446,15 +472,19 @@ void SpaceSim::TakeInput()
 	}
 
 	//S
-	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_S))
+	current_co2 = player_astronaut->getCurrentCO2();
+	if(current_co2 > fuel_cost*1000*dt && al_key_down(&new_keyboard_state,ALLEGRO_KEY_S))
 	{
+		double current_co2 = player_astronaut->getCurrentCO2();
+
 		thrust_back_animated->setToVisible();
 		player_physics->addForce(Force(player_position->getRotation(),player_position->getRotation()+PI,1000));
 
 		if(!al_get_sample_instance_playing(co2_sample_instance))
 		{
 			al_play_sample_instance(co2_back_sample_instance);
-		}		
+		}	
+		player_astronaut->setCurrentCO2(current_co2 - (fuel_cost*1000)*dt );
 	}
 	else
 	{
@@ -463,14 +493,17 @@ void SpaceSim::TakeInput()
 	}
 
 	//D
-	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_D))
+	current_co2 = player_astronaut->getCurrentCO2();
+	if(current_co2 > fuel_cost*500*dt && al_key_down(&new_keyboard_state,ALLEGRO_KEY_D))
 	{
+
 		thrust_right_animated->setToVisible();
-		player_physics->addForce(Force(player_position->getRotation()-(PI/2.0),player_position->getRotation(),1000));
+		player_physics->addForce(Force(player_position->getRotation()-(PI/2.0),player_position->getRotation(),500));
 		if(!al_get_sample_instance_playing(co2_right_sample_instance))
 		{
 			al_play_sample_instance(co2_right_sample_instance);
-		}		
+		}	
+		player_astronaut->setCurrentCO2(current_co2 - (fuel_cost*500)*dt );
 	}
 	else
 	{
@@ -479,14 +512,16 @@ void SpaceSim::TakeInput()
 	}
 
 	//A
-	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_A))
+	current_co2 = player_astronaut->getCurrentCO2();
+	if(current_co2 > fuel_cost*500*dt && al_key_down(&new_keyboard_state,ALLEGRO_KEY_A))
 	{
 		thrust_left_animated->setToVisible();
-		player_physics->addForce(Force(player_position->getRotation()+(PI/2.0),player_position->getRotation(),1000));
+		player_physics->addForce(Force(player_position->getRotation()+(PI/2.0),player_position->getRotation(),500));
 		if(!al_get_sample_instance_playing(co2_sample_instance))
 		{
 			al_play_sample_instance(co2_left_sample_instance);
-		}		
+		}	
+		player_astronaut->setCurrentCO2(current_co2 - (fuel_cost*500)*dt );	
 	}
 	else
 	{
@@ -498,13 +533,59 @@ void SpaceSim::TakeInput()
 	old_keyboard_state = new_keyboard_state;
 }
 
+void SpaceSim::UpdateUI()
+{
+	double co2_ticks_worth = 100/player_astronaut->getMaxCO2();
+	double visible_bars_co2 = player_astronaut->getCurrentCO2()/co2_ticks_worth;
+
+	double o2_ticks_worth = 100/player_astronaut->getMaxO2();
+	double visible_bars_o2 = player_astronaut->getCurrentO2()/o2_ticks_worth;
+
+	for(int p = 0 ; p < 100 ; p++)
+	{
+		//CO2 UPDATE
+		Entity* co2_bar = co2_bars[p];
+
+		SpriteComp* spr = (SpriteComp*) co2_bar->getComponent("Sprite");
+		if(p<=visible_bars_co2)
+		{
+			//If its within curret
+			spr->setToVisible();
+		}
+		else
+		{
+			//If its greater than current
+			spr->setToInvisible();
+		}
+
+		//O2 UPDATE
+		Entity* o2_bar = oxygen_bars[p];
+		spr = (SpriteComp*) o2_bar->getComponent("Sprite");
+		if(p<=visible_bars_o2)
+		{
+			//If its within curret
+			spr->setToVisible();
+		}
+		else
+		{
+			//If its greater than current
+			spr->setToInvisible();
+		}
+	}
+}
+
 void SpaceSim::Draw()
 {
+
+	//al_draw_bitmap(gui_bar_bitmap,230,650,0);
+
 	//DrawScreenNodes();
 	for(std::vector<Entity*>::size_type i = 0; i != entities.size(); i++) 
 	{
 		entities[i]->draw(dt);
 	}
+
+
 
 	al_flip_display();
 	al_clear_to_color(al_map_rgb(0,0,0));

@@ -74,6 +74,8 @@ private:
 	double total_torque;
 	double rotational_velocity;
 	double rotational_acceleration;
+
+	
 };
 #endif
 

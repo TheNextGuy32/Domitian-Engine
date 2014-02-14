@@ -60,6 +60,7 @@
       <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
     <ClCompile Include="SpaceSim.cpp" />
+    <ClCompile Include="AstronautComp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
@@ -102,5 +103,6 @@
       <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
     <ClInclude Include="SpaceSim.h" />
+    <ClInclude Include="AstronautComp.h" />
   </ItemGroup>
 </Project>

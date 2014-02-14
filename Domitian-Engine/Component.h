@@ -16,6 +16,11 @@ public:
 	
 	 Component* getComponent(std::string);
 
+	/* bool hasComponent(std::string componentName)
+	{
+		return parent->hasComponent(componentName);
+	};*/
+
 private:
 	std::string name;
 	Entity* parent;

@@ -18,6 +18,14 @@ public:
 	std::string getName();
 
 	Component* getComponent(std::string);
+	bool hasComponent(std::string componentName)
+	{
+		for (auto it = components.begin(); it != components.end(); ++it) 
+		{
+			if(it->first == componentName) return true;
+		}
+		return false;
+	};
 
 private:
 	bool active;
