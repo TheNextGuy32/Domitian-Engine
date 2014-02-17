@@ -65,31 +65,40 @@
   <ItemGroup>
     <ClCompile Include="AnimatedComp.cpp" />
     <ClCompile Include="AstronautComp.cpp" />
+    <ClCompile Include="BulletComp.cpp" />
+    <ClCompile Include="Combiner.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConnectedComp.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Force.cpp" />
-    <ClCompile Include="GroupComp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsComp.cpp" />
     <ClCompile Include="PositionComp.cpp" />
+    <ClCompile Include="SpaceshipComp.cpp" />
     <ClCompile Include="SpaceSim.cpp" />
     <ClCompile Include="SpriteComp.cpp" />
+    <ClCompile Include="ThrusterComp.cpp" />
+    <ClCompile Include="TurretComp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedComp.h" />
     <ClInclude Include="AstronautComp.h" />
+    <ClInclude Include="BulletComp.h" />
+    <ClInclude Include="Combiner.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConnectedComp.h" />
     <ClInclude Include="Domitian-Engine.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Force.h" />
-    <ClInclude Include="GroupComp.h" />
     <ClInclude Include="Radian.h" />
     <ClInclude Include="PhysicsComp.h" />
     <ClInclude Include="PositionComp.h" />
+    <ClInclude Include="RemovalComp.h" />
+    <ClInclude Include="SpaceshipComp.h" />
     <ClInclude Include="SpaceSim.h" />
     <ClInclude Include="SpriteComp.h" />
+    <ClInclude Include="ThrusterComp.h" />
+    <ClInclude Include="TurretComp.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>

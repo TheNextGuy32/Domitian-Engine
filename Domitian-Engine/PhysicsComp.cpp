@@ -150,7 +150,6 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity()), -net_force));
 			second->addForce(Force (mathRadianDirectionTo, Vector2::ToMathRadian(first->getVelocity()), net_force));
 
-
 			////YOU GOT HIT!
 			//if(net_force >= 50)
 			//{

@@ -9,6 +9,8 @@ class ConnectedComp : public Component
 public:
 	ConnectedComp(double myRadianFromSocket,double myDistance,Entity* myParent, PositionComp* mySocketPositionComp);
 	void update(double);
+	
+	double getRadianFromSocket(){return radian_from_socket;};
 
 	bool attach(PositionComp* mySocket, bool myHandleRotation);
 	bool detach();

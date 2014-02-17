@@ -9,100 +9,141 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Domitian-Engine">
+    <Filter Include="Domitian-Engine">
       <UniqueIdentifier>{3072204c-4225-42b1-9788-9771ce407f78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Domitian-Engine\Components">
+    <Filter Include="Domitian-Engine\Components">
       <UniqueIdentifier>{8dc1c4f4-c31f-41c6-8f8d-e35ba9e4afba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Domitian-Engine\Components\Graphics">
+    <Filter Include="Domitian-Engine\Components\Graphics">
       <UniqueIdentifier>{8de6ef68-7aff-4bdc-9a4f-7fd3795c2aeb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Domitian-Engine\Components\Infastructure">
+    <Filter Include="Domitian-Engine\Components\Infastructure">
       <UniqueIdentifier>{cd8dd2bc-dd7a-42c9-b5cd-7d4e7f1afed8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Domitian-Engine\Base Classes">
+    <Filter Include="Domitian-Engine\Base Classes">
       <UniqueIdentifier>{37cad735-b2cf-45ec-ab51-30a9f5587ca0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Domitian-Engine\Utility">
+    <Filter Include="Domitian-Engine\Utility">
       <UniqueIdentifier>{c00b427c-00bf-4f6c-af6c-3b7d041ee284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameFiles">
+      <UniqueIdentifier>{4a1fa26b-4884-4602-98f4-8b526ed75bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Files and Components">
+      <UniqueIdentifier>{71dafec8-08c1-4a74-8954-6b4e2d4d61df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Files and Components\Components">
+      <UniqueIdentifier>{de8af556-dd0d-45dd-8525-82130a87c3a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Files and Components\Combiner Classes">
+      <UniqueIdentifier>{921e38d8-3e31-4f5e-bee7-70862d19af75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Component.cpp">
-      <Filter>Source Files\Domitian-Engine\Base Classes</Filter>
+      <Filter>Domitian-Engine\Base Classes</Filter>
     </ClCompile>
     <ClCompile Include="Entity.cpp">
-      <Filter>Source Files\Domitian-Engine\Base Classes</Filter>
+      <Filter>Domitian-Engine\Base Classes</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComp.cpp">
-      <Filter>Source Files\Domitian-Engine\Components\Graphics</Filter>
+      <Filter>Domitian-Engine\Components\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="AnimatedComp.cpp">
-      <Filter>Source Files\Domitian-Engine\Components\Graphics</Filter>
+      <Filter>Domitian-Engine\Components\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="PhysicsComp.cpp">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
     <ClCompile Include="PositionComp.cpp">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
     <ClCompile Include="Force.cpp">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
     <ClCompile Include="ConnectedComp.cpp">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
-    </ClCompile>
-    <ClCompile Include="GroupComp.cpp">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
     <ClCompile Include="SpaceSim.cpp" />
-    <ClCompile Include="AstronautComp.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="AstronautComp.cpp">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletComp.cpp">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SpaceshipComp.cpp">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TurretComp.cpp">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Combiner.cpp">
+      <Filter>Game Files and Components\Combiner Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="ThrusterComp.cpp">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">
-      <Filter>Source Files\Domitian-Engine\Base Classes</Filter>
+      <Filter>Domitian-Engine\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
-      <Filter>Source Files\Domitian-Engine\Base Classes</Filter>
+      <Filter>Domitian-Engine\Base Classes</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
-      <Filter>Source Files\Domitian-Engine\Utility</Filter>
+      <Filter>Domitian-Engine\Utility</Filter>
     </ClInclude>
     <ClInclude Include="Vector3.h">
-      <Filter>Source Files\Domitian-Engine\Utility</Filter>
+      <Filter>Domitian-Engine\Utility</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComp.h">
-      <Filter>Source Files\Domitian-Engine\Components\Graphics</Filter>
+      <Filter>Domitian-Engine\Components\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="AnimatedComp.h">
-      <Filter>Source Files\Domitian-Engine\Components\Graphics</Filter>
+      <Filter>Domitian-Engine\Components\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="PhysicsComp.h">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
     <ClInclude Include="PositionComp.h">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
     <ClInclude Include="Domitian-Engine.h">
-      <Filter>Source Files\Domitian-Engine</Filter>
+      <Filter>Domitian-Engine</Filter>
     </ClInclude>
     <ClInclude Include="Force.h">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
     <ClInclude Include="Radian.h">
-      <Filter>Source Files\Domitian-Engine\Utility</Filter>
+      <Filter>Domitian-Engine\Utility</Filter>
     </ClInclude>
     <ClInclude Include="ConnectedComp.h">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
-    </ClInclude>
-    <ClInclude Include="GroupComp.h">
-      <Filter>Source Files\Domitian-Engine\Components\Infastructure</Filter>
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
     <ClInclude Include="SpaceSim.h" />
-    <ClInclude Include="AstronautComp.h" />
+    <ClInclude Include="RemovalComp.h">
+      <Filter>Domitian-Engine\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="AstronautComp.h">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletComp.h">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceshipComp.h">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TurretComp.h">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Combiner.h">
+      <Filter>Game Files and Components\Combiner Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="ThrusterComp.h">
+      <Filter>Game Files and Components\Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

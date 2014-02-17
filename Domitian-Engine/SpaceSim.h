@@ -4,8 +4,16 @@
 #include <allegro5\allegro_ttf.h>
 #include <allegro5\allegro_audio.h>
 #include <allegro5\allegro_acodec.h>
+
 #include "Domitian-Engine.h"
+
 #include "AstronautComp.h"
+#include "SpaceshipComp.h"
+#include "BulletComp.h"
+#include "TurretComp.h"
+#include "ThrusterComp.h"
+
+#include "Combiner.h"
 
 #pragma region Preproccessor
 
@@ -28,6 +36,7 @@ public:
 	void CreateDebris();
 	void CreateAsteroid();
 	void CreatePlayer();
+	Combiner* CreateSpaceship(double x, double y);
 	void CreateSpaceStation();
 	void CreateGUI();
 
@@ -41,6 +50,8 @@ public:
 	void DrawScreenNodes();
 
 private:
+
+	//std::string game_state;
 
 	boolean done;
 
@@ -61,13 +72,11 @@ private:
 
 	ALLEGRO_FONT* font24;
 
-	ALLEGRO_BITMAP* red_ball;
-	ALLEGRO_BITMAP* maroon_ball;
+	/*ALLEGRO_BITMAP* red_ball;
+	ALLEGRO_BITMAP* maroon_ball;*/
 
-	ALLEGRO_BITMAP* animation_bitmap;
-
-	ALLEGRO_BITMAP* astronaut_bitmap;
-	ALLEGRO_BITMAP* dead_bitmap;
+	/*ALLEGRO_BITMAP* astronaut_bitmap;
+	ALLEGRO_BITMAP* dead_bitmap;*/
 
 	ALLEGRO_BITMAP* asteroid_bitmap;
 	ALLEGRO_BITMAP* debris_bitmap;
@@ -75,9 +84,10 @@ private:
 	ALLEGRO_BITMAP* thrust_bitmap;
 
 	ALLEGRO_BITMAP* spaceship_bitmap;
-	ALLEGRO_BITMAP* satellite_bitmap;
+	ALLEGRO_BITMAP* turret_bitmap;
+	ALLEGRO_BITMAP* bullet_bitmap;
 
-	ALLEGRO_BITMAP* iss_bitmap;
+	/*ALLEGRO_BITMAP* iss_bitmap;
 	ALLEGRO_BITMAP* iss_plus_bitmap;
 
 	ALLEGRO_BITMAP* co2_bar_bitmap;
@@ -94,12 +104,13 @@ private:
 	ALLEGRO_SAMPLE_INSTANCE* co2_left_sample_instance;
 
 	ALLEGRO_SAMPLE* co2_right_sample;
-	ALLEGRO_SAMPLE_INSTANCE* co2_right_sample_instance;
+	ALLEGRO_SAMPLE_INSTANCE* co2_right_sample_instance;*/
 
+	//std::unordered_map<std::string,std::vector<Entity*>> game_state_entities;
 	std::vector<Entity*> entities;
 	std::vector<Entity*> physics_entities;
 
-	Entity* player;
+	/*Entity* player;
 	PositionComp* player_position;
 	SpriteComp* player_sprite;
 	PhysicsComp* player_physics;
@@ -123,11 +134,11 @@ private:
 	Entity* thrust_left;
 	PositionComp* thrust_left_position;
 	AnimatedComp* thrust_left_animated;
-	ConnectedComp* thrust_left_connected;
+	ConnectedComp* thrust_left_connected;*/
 
-	Entity* spaceship;
-	Entity* satellite;
+	Combiner* spaceship;
+	//Entity* satellite;
 
-	Entity* oxygen_bars[100];
-	Entity* co2_bars[100];
+	/*Entity* oxygen_bars[100];
+	Entity* co2_bars[100];*/
 };
