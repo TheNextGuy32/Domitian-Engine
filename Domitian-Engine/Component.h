@@ -16,14 +16,14 @@ public:
 	
 	 Component* getComponent(std::string);
 
-	/* bool hasComponent(std::string componentName)
+	 /*bool hasComponent(std::string componentName)
 	{
 		return parent->hasComponent(componentName);
 	};*/
-
+	 Entity* parent;
 private:
 	std::string name;
-	Entity* parent;
+	
 };
 
 #endif

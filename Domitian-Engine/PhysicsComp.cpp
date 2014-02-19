@@ -40,32 +40,34 @@ void PhysicsComp::update(double dt)
 
 	//Whetehr or not it moves translationally depends on its moment of inertia, forget tangents, period.
 
+
+	
 	//Planar Movement
 	acceleration.x = total_translational_force.x/mass;
 	acceleration.y = total_translational_force.y/mass;
 	velocity.x += acceleration.x * dt;
 	velocity.y += acceleration.y * dt;
 
-	if(velocity.x > MAX_TRANSLATION_SPEED)
-	{
-		velocity.x = MAX_TRANSLATION_SPEED;
-	}
-	if(velocity.y > MAX_TRANSLATION_SPEED)
-	{
-		velocity.y = MAX_TRANSLATION_SPEED;
-	}
-
-	if(velocity.x < -MAX_TRANSLATION_SPEED)
-	{
-		velocity.x = -MAX_TRANSLATION_SPEED;
-	}
-	if(velocity.y < -MAX_TRANSLATION_SPEED)
-	{
-		velocity.y = -MAX_TRANSLATION_SPEED;
-	}
+	//if(velocity.x > MAX_TRANSLATION_SPEED)
+	//{
+	//	velocity.x = MAX_TRANSLATION_SPEED;
+	//}
+	//if(velocity.y > MAX_TRANSLATION_SPEED)
+	//{
+	//	velocity.y = MAX_TRANSLATION_SPEED;
+	//}
+	//if(velocity.x < -MAX_TRANSLATION_SPEED)
+	//{
+	//	velocity.x = -MAX_TRANSLATION_SPEED;
+	//}
+	//if(velocity.y < -MAX_TRANSLATION_SPEED)
+	//{
+	//	velocity.y = -MAX_TRANSLATION_SPEED;
+	//}
 
 	position_comp->setPositionX(position_comp->getPosition().x + velocity.x*dt);
 	position_comp->setPositionY(position_comp->getPosition().y + velocity.y*dt);
+
 
 	total_torque = 0; 
 	total_translational_force = Vector2 (0,0);
@@ -73,7 +75,7 @@ void PhysicsComp::update(double dt)
 
 void PhysicsComp::addForce(Force myForce)
 {
-	double radian_to_center_mass = myForce.getMathRadianToForce() + PI;
+	double radian_to_center_mass =myForce.getMathRadianToForce() + PI;
 
 	double attached_direction_displacement = myForce.getForceMathRadian() - radian_to_center_mass;
 
@@ -150,18 +152,9 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity()), -net_force));
 			second->addForce(Force (mathRadianDirectionTo, Vector2::ToMathRadian(first->getVelocity()), net_force));
 
-			////YOU GOT HIT!
-			//if(net_force >= 50)
-			//{
-			//	if(first->hasComponent("Astronaut"))
-			//	{
+			/*first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity()), net_force));
+			second->addForce(Force (mathRadianDirectionTo+PI, Vector2::ToMathRadian(first->getVelocity()), net_force));*/
 
-			//	}
-			//	if(second->hasComponent("Astronaut"))
-			//	{
-
-			//	}
-			//}
 
 			//The amount the lesser mass gets pushed so they are overlapping
 			double push = std::abs(addingRadii-distanceBetween);

@@ -40,14 +40,14 @@ void SpaceSim::LoadContent()
 	asteroid_bitmap = al_load_bitmap("asteroid.png");
 	debris_bitmap = al_load_bitmap("debris.png");
 
-	thrust_bitmap = al_load_bitmap("co2.png");
+	thrust_bitmap = al_load_bitmap("thruster_fire.png");
 
 	/*iss_bitmap = al_load_bitmap("iss_piece.png");
 	iss_plus_bitmap = al_load_bitmap("iss_plus.png");*/
 
 	spaceship_bitmap= al_load_bitmap("spaceship.png");
 	turret_bitmap = al_load_bitmap("turret.png");
-	bullet_bitmap = al_load_bitmap("debris.png");
+	bullet_bitmap = al_load_bitmap("debris0.png");
 
 	/*co2_bar_bitmap = al_load_bitmap("co2Canister.bmp");
 	oxygen_bar_bitmap = al_load_bitmap("airCanister.bmp");
@@ -107,10 +107,10 @@ void SpaceSim::CreateWorld()
 	////	CreateAsteroid();
 
 	////}
-	///*for(int p = 0 ; p < 20; p++)
-	//{
-	//	CreateDebris();
-	//}*/
+	/*for(int p = 0 ; p < 20; p++)
+	{
+		CreateDebris();
+	}*/
 	//CreateSpaceStation();
 	//CreateGUI();
 
@@ -205,30 +205,30 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	spaceship->addComponent(spaceshipPos);
 	spaceship->addComponent(new SpriteComp(spaceship_bitmap,spaceship));
 	spaceship->addComponent(new SpaceshipComp(30.0,spaceship));
-	spaceship->addComponent(new PhysicsComp(100,al_get_bitmap_width(spaceship_bitmap),spaceship));
+	spaceship->addComponent(new PhysicsComp(100,al_get_bitmap_width(spaceship_bitmap)/2+5,spaceship));
 
 	//TURRETS
 	Entity* turret_north = new Entity();
 	entities.push_back(turret_north);
 	spaceship_combiner->addEntity("turret_north",turret_north);
 
-	turret_north->addComponent(new PositionComp(Vector3(x,y,16),0,turret_north));
+	turret_north->addComponent(new PositionComp(Vector3(x,y,16),PI/8,turret_north));
 	turret_north->addComponent(new SpriteComp(turret_bitmap,turret_north));
-	ConnectedComp* turret_north_connected = new ConnectedComp(0,al_get_bitmap_width(spaceship_bitmap),turret_north, spaceshipPos);
+	ConnectedComp* turret_north_connected = new ConnectedComp(0,al_get_bitmap_width(spaceship_bitmap)/2,turret_north, spaceshipPos);
 	turret_north_connected->attach(spaceshipPos,true);
 	turret_north->addComponent(turret_north_connected);
-	turret_north->addComponent(new TurretComp(10,500000,5,0.05,turret_north));
+	turret_north->addComponent(new TurretComp(10,5000,5,0.05,turret_north));
 
-	Entity* turret_east = new Entity();
+	/*Entity* turret_east = new Entity();
 	entities.push_back(turret_east);
 	spaceship_combiner->addEntity("turret_east",turret_east);
 
 	turret_east->addComponent(new PositionComp(Vector3(x,y,16),-PI/2,turret_east));
 	turret_east->addComponent(new SpriteComp(turret_bitmap,turret_east));
-	ConnectedComp* turret_east_connected = new ConnectedComp(-PI/2,al_get_bitmap_width(spaceship_bitmap),turret_east, spaceshipPos);
+	ConnectedComp* turret_east_connected = new ConnectedComp(-PI/2,al_get_bitmap_width(spaceship_bitmap)/2,turret_east, spaceshipPos);
 	turret_east_connected->attach(spaceshipPos,true);
 	turret_east->addComponent(turret_east_connected);
-	turret_east->addComponent(new TurretComp(10,500,5,0.05,turret_east));
+	turret_east->addComponent(new TurretComp(10,500000,5,0.05,turret_east));
 
 	Entity* turret_west = new Entity();
 	entities.push_back(turret_west);
@@ -236,10 +236,10 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 
 	turret_west->addComponent(new PositionComp(Vector3(x,y,16),PI/2,turret_west));
 	turret_west->addComponent(new SpriteComp(turret_bitmap,turret_west));
-	ConnectedComp* turret_west_connected = new ConnectedComp(PI/2,al_get_bitmap_width(spaceship_bitmap),turret_west, spaceshipPos);
+	ConnectedComp* turret_west_connected = new ConnectedComp(PI/2,al_get_bitmap_width(spaceship_bitmap)/2,turret_west, spaceshipPos);
 	turret_west_connected->attach(spaceshipPos,true);
 	turret_west->addComponent(turret_west_connected);
-	turret_west->addComponent(new TurretComp(10,500,5,0.05,turret_west));
+	turret_west->addComponent(new TurretComp(10,500,5,0.05,turret_west));*/
 
 	//Thrusters!
 	Entity* main_thruster = new Entity();
@@ -248,21 +248,32 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 
 	main_thruster->addComponent(new PositionComp(Vector3(0,0,16),main_thruster));
 	main_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80),main_thruster));
-	ConnectedComp* main_thruster_connected = new ConnectedComp(PI,al_get_bitmap_width(spaceship_bitmap),main_thruster,spaceshipPos);
+	ConnectedComp* main_thruster_connected = new ConnectedComp(PI,al_get_bitmap_width(spaceship_bitmap)/2,main_thruster,spaceshipPos);
 	main_thruster_connected->attach(spaceshipPos,true);
 	main_thruster->addComponent(main_thruster_connected);
 	main_thruster->addComponent(new ThrusterComp(1000,main_thruster));
 
-	Entity* turn_thruster = new Entity();
-	entities.push_back(turn_thruster);
-	spaceship_combiner->addEntity("thruster_turn",turn_thruster);
+	Entity* west_thruster = new Entity();
+	entities.push_back(west_thruster);
+	spaceship_combiner->addEntity("thruster_west",west_thruster);
 
-	turn_thruster->addComponent(new PositionComp(Vector3(0,0,16),PI/4,turn_thruster));
-	turn_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80),turn_thruster));
-	ConnectedComp* turn_thruster_connected = new ConnectedComp(PI/2,al_get_bitmap_width(spaceship_bitmap),turn_thruster,spaceshipPos);
-	turn_thruster_connected->attach(spaceshipPos,true);
-	turn_thruster->addComponent(turn_thruster_connected);
-	turn_thruster->addComponent(new ThrusterComp(1000,turn_thruster));
+	west_thruster->addComponent(new PositionComp(Vector3(0,0,16),0,west_thruster));
+	west_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80),west_thruster));
+	ConnectedComp* west_thruster_connected = new ConnectedComp(PI/2,al_get_bitmap_width(spaceship_bitmap)/2,west_thruster,spaceshipPos);
+	west_thruster_connected->attach(spaceshipPos,true);
+	west_thruster->addComponent(west_thruster_connected);
+	west_thruster->addComponent(new ThrusterComp(1000,west_thruster));
+
+	Entity* east_thruster = new Entity();
+	entities.push_back(east_thruster);
+	spaceship_combiner->addEntity("thruster_east",east_thruster);
+
+	east_thruster->addComponent(new PositionComp(Vector3(0,0,16),0,east_thruster));
+	east_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80),east_thruster));
+	ConnectedComp* east_thruster_connected = new ConnectedComp(-PI/2,al_get_bitmap_width(spaceship_bitmap)/2,east_thruster,spaceshipPos);
+	east_thruster_connected->attach(spaceshipPos,true);
+	east_thruster->addComponent(east_thruster_connected);
+	east_thruster->addComponent(new ThrusterComp(1000,east_thruster));
 
 	return spaceship_combiner;
 };
@@ -440,14 +451,14 @@ void SpaceSim::TakeInput()
 	}
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_D))
 	{
-		Entity* thruster_turn_entity = spaceship->getEntity("thruster_turn");
-		PositionComp* thruster_turn_pos = (PositionComp*) thruster_turn_entity->getComponent("Position");
-		ThrusterComp* thruster_turn = (ThrusterComp*)thruster_turn_entity->getComponent("Thruster");
-		ConnectedComp* thruster_turn_connected = (ConnectedComp*)thruster_turn_entity->getComponent("Connected");
+		Entity* thruster_east_entity = spaceship->getEntity("thruster_east");
+		PositionComp* thruster_east_pos = (PositionComp*) thruster_east_entity->getComponent("Position");
+		ThrusterComp* thruster_east = (ThrusterComp*)thruster_east_entity->getComponent("Thruster");
+		ConnectedComp* thruster_east_connected = (ConnectedComp*)thruster_east_entity->getComponent("Connected");
 
-		spaceship_body_physiscs->addForce(Force(thruster_turn_connected->getRadianFromSocket()+spaceship_body_pos->getRotation(),
-			thruster_turn_pos->getRotation(),
-			thruster_turn->getForceExerted()));
+		spaceship_body_physiscs->addForce(Force(thruster_east_connected->getRadianFromSocket()+spaceship_body_pos->getRotation(),
+			thruster_east_pos->getRotation(),
+			thruster_east->getForceExerted()));
 
 	}
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_S))
@@ -456,7 +467,14 @@ void SpaceSim::TakeInput()
 	}
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_A))
 	{
+		Entity* thruster_west_entity = spaceship->getEntity("thruster_west");
+		PositionComp* thruster_west_pos = (PositionComp*) thruster_west_entity->getComponent("Position");
+		ThrusterComp* thruster_west = (ThrusterComp*)thruster_west_entity->getComponent("Thruster");
+		ConnectedComp* thruster_west_connected = (ConnectedComp*)thruster_west_entity->getComponent("Connected");
 
+		spaceship_body_physiscs->addForce(Force(thruster_west_connected->getRadianFromSocket()+spaceship_body_pos->getRotation(),
+			thruster_west_pos->getRotation(),
+			thruster_west->getForceExerted()));
 	}
 
 	//ARROW KEYS
@@ -472,17 +490,28 @@ void SpaceSim::TakeInput()
 			physics_entities.push_back(bullet);
 			entities.push_back(bullet);
 
-			bullet->addComponent(new PositionComp(Vector3(north_turret_pos->getPosition().x,north_turret_pos->getPosition().y,18),bullet));
+			//We need to allow space betweent he turret and the bullet so they dont collide
+			double x_position = (45.0*cos(north_turret_pos->getRotation())) + north_turret_pos->getPosition().x;
+			double y_position = (45.0*sin(north_turret_pos->getRotation())) + north_turret_pos->getPosition().y;
+
+			bullet->addComponent(new PositionComp(Vector3(x_position,y_position,16),bullet));
 			bullet->addComponent(new SpriteComp(bullet_bitmap,bullet));
-			PhysicsComp* bullet_phys =new PhysicsComp(north_turret->getBulletWeight(),al_get_bitmap_width(bullet_bitmap),bullet);
-			bullet_phys->addForce(Force(north_turret_pos->getRotation()+PI,north_turret_pos->getRotation(), north_turret->getBulletForce()));
-			bullet->addComponent(bullet_phys);
 			bullet->addComponent(new BulletComp(north_turret->getBulletArmorPiercing(),bullet));
+			
+			PhysicsComp* bullet_phys =new PhysicsComp(north_turret->getBulletWeight(),al_get_bitmap_width(bullet_bitmap)/2,bullet);
+			double bullet_direction = north_turret_pos->getRotation();
+			double bullet_degrees = bullet_direction*57.2957795;
+			bullet_phys->addForce(Force(bullet_direction+PI,bullet_direction, north_turret->getBulletForce()));
+			bullet->addComponent(bullet_phys);
+			
 		}
 	}
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_RIGHT))
 	{
-
+		if(!al_key_down(&old_keyboard_state,ALLEGRO_KEY_RIGHT))
+		{
+			
+		}
 	}
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_DOWN))
 	{
@@ -490,7 +519,10 @@ void SpaceSim::TakeInput()
 	}
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_LEFT))
 	{
+		if(!al_key_down(&old_keyboard_state,ALLEGRO_KEY_LEFT))
+		{
 
+		}
 	}
 
 

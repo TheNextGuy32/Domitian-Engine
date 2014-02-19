@@ -1,6 +1,8 @@
 #ifndef DPosComp_H
 #define DPosComp_H
 
+#define PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679
+
 #include "Component.h"
 
 
@@ -29,7 +31,7 @@ public:
 
 	double getRotation();
 	void setRotation(double);
-
+	//double rotation;
 private:
 	Vector3 position;
 	double rotation;
