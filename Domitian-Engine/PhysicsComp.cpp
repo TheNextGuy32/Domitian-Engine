@@ -36,34 +36,22 @@ void PhysicsComp::update(double dt)
 	{
 		rotational_velocity=-MAX_ROTATION_SPEED;
 	}
+	
 	position_comp->setRotation(position_comp->getRotation() + rotational_velocity*dt);
 
 	//Whetehr or not it moves translationally depends on its moment of inertia, forget tangents, period.
 
-
-	
 	//Planar Movement
 	acceleration.x = total_translational_force.x/mass;
 	acceleration.y = total_translational_force.y/mass;
 	velocity.x += acceleration.x * dt;
 	velocity.y += acceleration.y * dt;
-
-	//if(velocity.x > MAX_TRANSLATION_SPEED)
-	//{
-	//	velocity.x = MAX_TRANSLATION_SPEED;
-	//}
-	//if(velocity.y > MAX_TRANSLATION_SPEED)
-	//{
-	//	velocity.y = MAX_TRANSLATION_SPEED;
-	//}
-	//if(velocity.x < -MAX_TRANSLATION_SPEED)
-	//{
-	//	velocity.x = -MAX_TRANSLATION_SPEED;
-	//}
-	//if(velocity.y < -MAX_TRANSLATION_SPEED)
-	//{
-	//	velocity.y = -MAX_TRANSLATION_SPEED;
-	//}
+	
+	//To reduce speed:
+	//	find the abs magnitude of the vector and the angle
+	//	Reduce the magnitude to MAX_MAGNITUDE
+	//	Perhaps use dynamic MAX_MAGNITUDE depending on the time step?
+	//	Using the angle and the new magnitude, calc the translational components
 
 	position_comp->setPositionX(position_comp->getPosition().x + velocity.x*dt);
 	position_comp->setPositionY(position_comp->getPosition().y + velocity.y*dt);
@@ -158,6 +146,9 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 
 			//The amount the lesser mass gets pushed so they are overlapping
 			double push = std::abs(addingRadii-distanceBetween);
+			
+			//Perphaps use more than mass to calc which one moves, use mass*a to find lesser force
+			//that moves
 
 			if(first_phys_comp->getMass()<=second_phys_comp->getMass())
 			{
