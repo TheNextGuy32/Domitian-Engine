@@ -74,6 +74,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsComp.cpp" />
     <ClCompile Include="PositionComp.cpp" />
+    <ClCompile Include="RemovalComp.cpp" />
     <ClCompile Include="SpaceshipComp.cpp" />
     <ClCompile Include="SpaceSim.cpp" />
     <ClCompile Include="SpriteComp.cpp" />

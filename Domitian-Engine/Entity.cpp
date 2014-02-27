@@ -1,6 +1,11 @@
 #include "Entity.h"
 #include "Component.h"
 
+Entity::Entity(){};
+Entity::Entity(std::string myName){name = myName;};
+
+std::string Entity::getName(){return name;};
+
 void Entity::update(double dt)
 {
 	for (auto it = components.begin(); it != components.end(); ++it) 
@@ -30,10 +35,6 @@ void Entity::addComponent(Component* myComp)
 void Entity::removeEntity(std::string myCompName)
 {
 
-}
-std::string Entity::getName()
-{
-	return name;
 }
 
 Component* Entity::getComponent(std::string myCompName)

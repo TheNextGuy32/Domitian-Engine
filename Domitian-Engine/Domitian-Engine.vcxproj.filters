@@ -85,6 +85,9 @@
     <ClCompile Include="ThrusterComp.cpp">
       <Filter>Game Files and Components\Components</Filter>
     </ClCompile>
+    <ClCompile Include="RemovalComp.cpp">
+      <Filter>Domitian-Engine\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Component.h">

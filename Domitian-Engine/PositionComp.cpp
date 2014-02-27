@@ -40,15 +40,15 @@ void PositionComp::setDepth(double myDepth)
 void PositionComp::setRotation(double myRot)
 {
 	rotation = myRot;
-	while(abs(rotation)>(3.14159265359*2))
+	/*while(abs(rotation)>(PI*2))
 	{
 		if(rotation>0)
 		{
-			rotation-=3.14159265359*2;
+			rotation-=PI*2;
 		}
 		if(rotation<0)
 		{
-			rotation+=3.14159265359*2;
+			rotation+=PI*2;
 		}
-	}
+	}*/
 }

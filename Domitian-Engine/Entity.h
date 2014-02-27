@@ -10,12 +10,16 @@ class Component;
 class Entity
 {
 public:
+	Entity();
+	Entity(std::string myName);
+
+	std::string getName();
+
 	void update(double);
 	void draw(double dt);
 
 	void addComponent(Component*);
 	void removeEntity(std::string);
-	std::string getName();
 
 	Component* getComponent(std::string);
 	bool hasComponent(std::string componentName)
