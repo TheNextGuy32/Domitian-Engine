@@ -38,7 +38,7 @@ void SpaceSim::LoadContent()
 	dead_bitmap = al_load_bitmap("dead_astronaut.png");*/
 
 	asteroid_bitmap = al_load_bitmap("asteroid.png");
-	debris_bitmap = al_load_bitmap("debris.png");
+	debris_bitmap = al_load_bitmap("debris0.png");
 
 	thrust_bitmap = al_load_bitmap("thruster_fire.png");
 
@@ -47,7 +47,7 @@ void SpaceSim::LoadContent()
 
 	spaceship_bitmap= al_load_bitmap("spaceship.png");
 	turret_bitmap = al_load_bitmap("turret.png");
-	bullet_bitmap = al_load_bitmap("debris0.png");
+	bullet_bitmap = al_load_bitmap("debris1.png");
 
 	/*co2_bar_bitmap = al_load_bitmap("co2Canister.bmp");
 	oxygen_bar_bitmap = al_load_bitmap("airCanister.bmp");
@@ -102,11 +102,11 @@ void SpaceSim::LoadAllegro()
 void SpaceSim::CreateWorld()
 {
 	////CreatePlayer();
-	////for(int p = 0 ; p <0; p++)
-	////{
-	////	CreateAsteroid();
+	for(int p = 0 ; p <20; p++)
+	{
+		CreateAsteroid();
 
-	////}
+	}
 	/*for(int p = 0 ; p < 20; p++)
 	{
 		CreateDebris();
@@ -212,12 +212,12 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	entities.push_back(turret_north);
 	spaceship_combiner->addEntity("turret_north",turret_north);
 
-	turret_north->addComponent(new PositionComp(Vector3(x,y,16),PI/8,turret_north));
+	turret_north->addComponent(new PositionComp(Vector3(x,y,16),0,turret_north));
 	turret_north->addComponent(new SpriteComp(turret_bitmap,turret_north));
 	ConnectedComp* turret_north_connected = new ConnectedComp(0,al_get_bitmap_width(spaceship_bitmap)/2,turret_north, spaceshipPos);
 	turret_north_connected->attach(spaceshipPos,true);
 	turret_north->addComponent(turret_north_connected);
-	turret_north->addComponent(new TurretComp(10,5000,5,0.05,turret_north));
+	turret_north->addComponent(new TurretComp(50,500000,5,0.05,turret_north));
 
 	/*Entity* turret_east = new Entity();
 	entities.push_back(turret_east);
@@ -288,7 +288,7 @@ void SpaceSim::CreateAsteroid()
 
 	ball->addComponent(new PositionComp(Vector3 (x,y,10), 0, ball));		
 	ball->addComponent(new SpriteComp (asteroid_bitmap, ball));
-	ball->addComponent(new PhysicsComp (2000,al_get_bitmap_width(asteroid_bitmap)/2,ball));
+	ball->addComponent(new PhysicsComp (20,al_get_bitmap_width(asteroid_bitmap)/2,ball));
 };
 void SpaceSim::CreateDebris()
 {
@@ -367,11 +367,29 @@ void SpaceSim::Update()
 			for(std::vector<Entity*>::size_type i = 0; i != entities.size(); i++) 
 			{
 				entities[i]->update(dt);
+				if(entities[i]->hasComponent("Removal"))
+				{
+					RemovalComp* remove = (RemovalComp*)entities[i]->getComponent("Removal");
+					if(remove->getShouldDiscard())
+					{
+						entities.erase(entities.begin() + i);
+						i--;
+					}
+				}
 			}
 
 			//CHECKING COLLISION and wrap 
 			for(int i = 0; i != physics_entities.size(); i++) 
 			{
+				/*if(physics_entities[i]->hasComponent("Removal"))
+				{
+					RemovalComp* remove = (RemovalComp*)physics_entities[i]->getComponent("Removal");
+					if(remove->getShouldDiscard())
+					{
+						physics_entities.erase(physics_entities.begin() + i);
+					}
+				}*/
+
 				PositionComp* pos = (PositionComp*) physics_entities[i]->getComponent("Position");
 				SpriteComp* spr = (SpriteComp*) physics_entities[i]->getComponent("Sprite");
 				PhysicsComp* phys = (PhysicsComp*) physics_entities[i]->getComponent("Physics");
@@ -491,13 +509,14 @@ void SpaceSim::TakeInput()
 			entities.push_back(bullet);
 
 			//We need to allow space betweent he turret and the bullet so they dont collide
-			double x_position = (45.0*cos(north_turret_pos->getRotation())) + north_turret_pos->getPosition().x;
-			double y_position = (45.0*sin(north_turret_pos->getRotation())) + north_turret_pos->getPosition().y;
+			double x_position = (15.0*cos(north_turret_pos->getRotation())) + north_turret_pos->getPosition().x;
+			double y_position = (15.0*sin(north_turret_pos->getRotation())) + north_turret_pos->getPosition().y;
 
 			bullet->addComponent(new PositionComp(Vector3(x_position,y_position,16),bullet));
 			bullet->addComponent(new SpriteComp(bullet_bitmap,bullet));
 			bullet->addComponent(new BulletComp(north_turret->getBulletArmorPiercing(),bullet));
-			
+			bullet->addComponent(new RemovalComp(3,false,bullet));
+
 			PhysicsComp* bullet_phys =new PhysicsComp(north_turret->getBulletWeight(),al_get_bitmap_width(bullet_bitmap)/2,bullet);
 			double bullet_direction = north_turret_pos->getRotation();
 			double bullet_degrees = bullet_direction*57.2957795;

@@ -14,6 +14,7 @@
 #include "ThrusterComp.h"
 
 #include "Combiner.h"
+#include "RemovalComp.h"
 
 #pragma region Preproccessor
 
