@@ -18,7 +18,7 @@ void PositionComp::setPosition(double myX,double myY)
 }
 double PositionComp::getRotation()
 {
-	return std::fmod(rotation, PI);
+	return rotation;
 }
 
 void PositionComp::setPositionX(double myX)
