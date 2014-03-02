@@ -22,7 +22,7 @@ void PhysicsComp::update(double dt)
 	collided = false;
 
 	bool rotational_movement = true;
-	bool planar_movement = false;
+	bool planar_movement =true;
 
 	//Rotational Movement
 	if(rotational_movement)
@@ -50,7 +50,6 @@ void PhysicsComp::update(double dt)
 	//Planar Movement
 	if(planar_movement)
 	{
-<<<<<<< HEAD
 		acceleration.x = total_translational_force.x/mass;
 		acceleration.y = total_translational_force.y/mass;
 		velocity.x += acceleration.x * dt;
@@ -71,44 +70,12 @@ void PhysicsComp::update(double dt)
 		velocity.x = cos(position_comp->getRotation()) * vector_magnitude;
 		velocity.y = sin(position_comp->getRotation()) * vector_magnitude;
 		*/
-=======
-		rotational_velocity=-MAX_ROTATION_SPEED;
-	}
-	
-	position_comp->setRotation(position_comp->getRotation() + rotational_velocity*dt);
->>>>>>> d57f7d8201bdc49ce46e271b71084cec72f3e29d
 
-
-<<<<<<< HEAD
-<<<<<<< HEAD
 		position_comp->setPositionX(position_comp->getPosition().x + velocity.x*dt);
 		position_comp->setPositionY(position_comp->getPosition().y + velocity.y*dt);
 
 		total_translational_force = Vector2 (0,0);
 	}
-
-=======
-=======
->>>>>>> d57f7d8201bdc49ce46e271b71084cec72f3e29d
-	//Planar Movement
-	acceleration.x = total_translational_force.x/mass;
-	acceleration.y = total_translational_force.y/mass;
-	velocity.x += acceleration.x * dt;
-	velocity.y += acceleration.y * dt;
-	
-	//To reduce speed:
-	//	find the abs magnitude of the vector and the angle
-	//	Reduce the magnitude to MAX_MAGNITUDE
-	//	Perhaps use dynamic MAX_MAGNITUDE depending on the time step?
-	//	Using the angle and the new magnitude, calc the translational components
-
-	position_comp->setPositionX(position_comp->getPosition().x + velocity.x*dt);
-	position_comp->setPositionY(position_comp->getPosition().y + velocity.y*dt);
-
-
-	total_torque = 0; 
-	total_translational_force = Vector2 (0,0);
->>>>>>> d57f7d8201bdc49ce46e271b71084cec72f3e29d
 }
 
 void PhysicsComp::addForce(Force myForce)
@@ -123,6 +90,11 @@ void PhysicsComp::addForce(Force myForce)
 	Vector2 translation (force_normal_components.x * myForce.getForce(),force_normal_components.y * myForce.getForce());
 	total_translational_force+=translation;
 }
+
+double squared(double myInput)
+{
+	return myInput*myInput;
+};
 
 bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 {
@@ -143,7 +115,7 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	the v^2 outputs a scalar so it works for any number of components
 	*/
 
-	bool push_enabled = true;
+	bool push_enabled = false;
 	bool buckets_enabled = false;
 
 
@@ -191,28 +163,41 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			double mathRadianDirectionTo = Vector2::ToMathRadian(displacement);
 			Vector2 normalizedDirectionTo = Vector2(displacement.x/distanceBetween,displacement.y/distanceBetween);
 
-			//The force applied to second = magnitude of speed of first * its mass
-			//Does the force it exerts on the other object depend on the direction its facing
-			//	for instance, say the other object is moving away from the other oject, it wouldn't be applying that big of a force
-			double first_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity()) * first->getMass();
-			double second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
-			double net_force = first_force_exerted+second_force_exerted;
 
-			//Adding the forces, other object gets force in direction that other was moving
-			first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity()), net_force));
-			second->addForce(Force (mathRadianDirectionTo+PI, Vector2::ToMathRadian(first->getVelocity()), net_force));
+			//Mass and acceleration
+			double first_mass = first_phys_comp->getMass();
+			Vector2 first_velocity = first_phys_comp->getVelocity();
 
-<<<<<<< HEAD
-=======
-			//The amount the lesser mass gets pushed so they are overlapping
-			double push = std::abs(addingRadii-distanceBetween);
-			
-			//Perphaps use more than mass to calc which one moves, use mass*a to find lesser force
-			//that moves
-<<<<<<< HEAD
->>>>>>> d57f7d8201bdc49ce46e271b71084cec72f3e29d
-=======
->>>>>>> d57f7d8201bdc49ce46e271b71084cec72f3e29d
+			double second_mass = second_phys_comp->getMass();
+			Vector2 second_velocity = second_phys_comp->getVelocity();
+
+			//Ramons
+			first_phys_comp->setVelocity(Vector2 
+				(
+				(second_mass*(2*second_velocity.x-first_velocity.x)+first_mass*first_velocity.x)/(second_mass+first_mass),
+				(second_mass*(2*second_velocity.y-first_velocity.y)+first_mass*first_velocity.y)/(second_mass+first_mass)
+				)
+				);
+
+			second_phys_comp->setVelocity(Vector2
+				(
+				(first_mass*(2*first_velocity.x-second_velocity.x)+second_mass*second_velocity.x)/(first_mass+second_mass),
+				(first_mass*(2*first_velocity.y-second_velocity.y)+second_mass*second_velocity.y)/(first_mass+second_mass)
+				)
+				);
+
+
+			////The force applied to second = magnitude of speed of first * its mass
+			////Does the force it exerts on the other object depend on the direction its facing
+			////	for instance, say the other object is moving away from the other oject, it wouldn't be applying that big of a force
+			//double first_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity()) * first->getMass();
+			//double second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
+			//double net_force = first_force_exerted+second_force_exerted;
+
+			////Adding the forces, other object gets force in direction that other was moving
+			//first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity()), net_force));
+			//second->addForce(Force (mathRadianDirectionTo+PI, Vector2::ToMathRadian(first->getVelocity()), net_force));
+
 
 			//ANTI TUNNELING
 			if(push_enabled)
@@ -229,7 +214,6 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 					second_pos_comp->setPosition( second_pos.x + normalizedDirectionTo.x*push, second_pos.y + normalizedDirectionTo.y*push);
 				}
 				else
-
 				{
 					second_pos_comp->setPosition( second_pos.x + normalizedDirectionTo.x*(push/2), second_pos.y + normalizedDirectionTo.y*(push/2));
 					first_pos_comp->setPosition( first_pos.x - normalizedDirectionTo.x*(push/2), first_pos.y - normalizedDirectionTo.y*(push/2));

@@ -47,7 +47,7 @@ void SpaceSim::LoadContent()
 
 	spaceship_bitmap= al_load_bitmap("spaceship.png");
 	turret_bitmap = al_load_bitmap("turret.png");
-	bullet_bitmap = al_load_bitmap("debris1.png");
+	bullet_bitmap = al_load_bitmap("debris0.png");
 
 	/*co2_bar_bitmap = al_load_bitmap("co2Canister.bmp");
 	oxygen_bar_bitmap = al_load_bitmap("airCanister.bmp");
@@ -217,7 +217,7 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	ConnectedComp* turret_north_connected = new ConnectedComp(0,al_get_bitmap_width(spaceship_bitmap)/2,turret_north, spaceshipPos);
 	turret_north_connected->attach(spaceshipPos,true);
 	turret_north->addComponent(turret_north_connected);
-	turret_north->addComponent(new TurretComp(50,500000,5,0.05,turret_north));
+	turret_north->addComponent(new TurretComp(0.001,5,5,0.05,turret_north));
 
 	/*Entity* turret_east = new Entity();
 	entities.push_back(turret_east);
@@ -341,11 +341,6 @@ void SpaceSim::UnloadContent()
 
 void SpaceSim::Update()
 {
-	/*thrust_animated->setToInvisible();
-	thrust_back_animated->setToInvisible();
-	thrust_right_animated->setToInvisible();
-	thrust_left_animated->setToInvisible();*/
-
 	while(!done)
 	{
 		//Delta time handling
@@ -367,7 +362,8 @@ void SpaceSim::Update()
 			for(std::vector<Entity*>::size_type i = 0; i != entities.size(); i++) 
 			{
 				entities[i]->update(dt);
-				if(entities[i]->hasComponent("Removal"))
+
+				/*if(entities[i]->hasComponent("Removal"))
 				{
 					RemovalComp* remove = (RemovalComp*)entities[i]->getComponent("Removal");
 					if(remove->getShouldDiscard())
@@ -375,7 +371,7 @@ void SpaceSim::Update()
 						entities.erase(entities.begin() + i);
 						i--;
 					}
-				}
+				}*/
 			}
 
 			//CHECKING COLLISION and wrap 
@@ -515,7 +511,7 @@ void SpaceSim::TakeInput()
 			bullet->addComponent(new PositionComp(Vector3(x_position,y_position,16),bullet));
 			bullet->addComponent(new SpriteComp(bullet_bitmap,bullet));
 			bullet->addComponent(new BulletComp(north_turret->getBulletArmorPiercing(),bullet));
-			bullet->addComponent(new RemovalComp(3,false,bullet));
+			//bullet->addComponent(new RemovalComp(3,false,bullet));
 
 			PhysicsComp* bullet_phys =new PhysicsComp(north_turret->getBulletWeight(),al_get_bitmap_width(bullet_bitmap)/2,bullet);
 			double bullet_direction = north_turret_pos->getRotation();
@@ -683,16 +679,11 @@ void SpaceSim::UpdateUI()
 
 void SpaceSim::Draw()
 {
-
-	//al_draw_bitmap(gui_bar_bitmap,230,650,0);
-
 	//DrawScreenNodes();
 	for(std::vector<Entity*>::size_type i = 0; i != entities.size(); i++) 
 	{
 		entities[i]->draw(dt);
 	}
-
-
 
 	al_flip_display();
 	al_clear_to_color(al_map_rgb(0,0,0));
