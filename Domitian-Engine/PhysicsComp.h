@@ -12,7 +12,7 @@
 class PhysicsComp : public Component
 {
 public:
-	PhysicsComp(double myMass,double myRadius, Entity* myParent);
+	PhysicsComp(double myMass,double myRadius,double myCofRestitution, Entity* myParent);
 
     void update(double);
 
@@ -55,6 +55,11 @@ public:
 	{
 		collided = myCollided;
 	};
+
+	double getCoefficientOfRestitution()
+	{
+		return coefficient_of_restitution;
+	};
 	
 private:
 
@@ -66,6 +71,8 @@ private:
 	double moment_of_inertia;
 
 	double radius;
+
+	double coefficient_of_restitution;
 
 	Vector2 total_translational_force;
 	Vector2 velocity;

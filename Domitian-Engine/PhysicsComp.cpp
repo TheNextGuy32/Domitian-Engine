@@ -4,7 +4,7 @@
 #define MAX_ROTATION_SPEED 7
 #define MAX_TRANSLATION_SPEED 70
 
-PhysicsComp::PhysicsComp(double myMass,double myRadius, Entity* myParent):Component("Physics",myParent),mass(myMass),radius(myRadius)
+PhysicsComp::PhysicsComp(double myMass,double myRadius,double myCofRestitution, Entity* myParent):Component("Physics",myParent),mass(myMass),radius(myRadius),coefficient_of_restitution(myCofRestitution)
 {
 	total_translational_force=Vector2(0,0);
 	velocity=Vector2(0,0);
@@ -115,7 +115,7 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	the v^2 outputs a scalar so it works for any number of components
 	*/
 
-	bool push_enabled = false;
+	bool push_enabled = true;
 	bool buckets_enabled = false;
 
 
@@ -171,20 +171,36 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			double second_mass = second_phys_comp->getMass();
 			Vector2 second_velocity = second_phys_comp->getVelocity();
 
-			//Ramons
-			first_phys_comp->setVelocity(Vector2 
-				(
-				(second_mass*(2*second_velocity.x-first_velocity.x)+first_mass*first_velocity.x)/(second_mass+first_mass),
-				(second_mass*(2*second_velocity.y-first_velocity.y)+first_mass*first_velocity.y)/(second_mass+first_mass)
-				)
-				);
+			////Ramons Fully Elastic Collisions
+			//first_phys_comp->setVelocity(Vector2 (
+			//	(second_mass*(2*second_velocity.x-first_velocity.x)+first_mass*first_velocity.x)/(second_mass+first_mass),
+			//	(second_mass*(2*second_velocity.y-first_velocity.y)+first_mass*first_velocity.y)/(second_mass+first_mass))
+			//	);
 
-			second_phys_comp->setVelocity(Vector2
-				(
-				(first_mass*(2*first_velocity.x-second_velocity.x)+second_mass*second_velocity.x)/(first_mass+second_mass),
-				(first_mass*(2*first_velocity.y-second_velocity.y)+second_mass*second_velocity.y)/(first_mass+second_mass)
-				)
-				);
+			//second_phys_comp->setVelocity(Vector2
+			//	(
+			//	(first_mass*(2*first_velocity.x-second_velocity.x)+second_mass*second_velocity.x)/(first_mass+second_mass),
+			//	(first_mass*(2*first_velocity.y-second_velocity.y)+second_mass*second_velocity.y)/(first_mass+second_mass)
+			//	)
+			//	);
+
+			//1 is elastic, 0 is inelastic
+			double first_CoR = first_phys_comp->getCoefficientOfRestitution();
+			double second_CoR = second_phys_comp->getCoefficientOfRestitution();
+			double coefficient_of_restitution = (first_CoR+second_CoR)/2.0;
+
+			//Variable elastisity
+			first_phys_comp->setVelocity(Vector2(
+				((coefficient_of_restitution*second_mass*(second_velocity.x-first_velocity.x))+(first_mass*first_velocity.x)+(second_mass*second_velocity.x))/
+				(second_mass+first_mass),
+				((coefficient_of_restitution*second_mass*(second_velocity.y-first_velocity.y))+(first_mass*first_velocity.y)+(second_mass*second_velocity.y))/(second_mass+first_mass)
+				));
+
+			second_phys_comp->setVelocity(Vector2(
+				((coefficient_of_restitution*first_mass*(first_velocity.x-second_velocity.x))+(second_mass*second_velocity.x)+(first_mass*first_velocity.x))/
+				(first_mass+second_mass),
+				((coefficient_of_restitution*first_mass*(first_velocity.y-second_velocity.y))+(second_mass*second_velocity.y)+(first_mass*first_velocity.y))/(first_mass+second_mass)
+				));
 
 
 			////The force applied to second = magnitude of speed of first * its mass
