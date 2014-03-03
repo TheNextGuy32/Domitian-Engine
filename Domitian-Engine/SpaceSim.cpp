@@ -102,7 +102,7 @@ void SpaceSim::LoadAllegro()
 void SpaceSim::CreateWorld()
 {
 	////CreatePlayer();
-	for(int p = 0 ; p <5; p++)
+	for(int p = 0 ; p <0; p++)
 	{
 		CreateAsteroid();
 
