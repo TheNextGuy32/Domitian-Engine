@@ -14,7 +14,7 @@
 class SpriteComp : public Component
 {
 public:
-	SpriteComp(ALLEGRO_BITMAP*,Entity*);
+	SpriteComp(ALLEGRO_BITMAP*);
 
 	ALLEGRO_BITMAP* getBitmap()
 	{

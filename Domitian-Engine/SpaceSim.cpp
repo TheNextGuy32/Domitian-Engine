@@ -22,7 +22,6 @@ void SpaceSim::Initialize()
 	CreateWorld();
 
 	Update();
-	//Disconnect draw and update
 };
 
 void SpaceSim::LoadContent()
@@ -47,7 +46,7 @@ void SpaceSim::LoadContent()
 
 	spaceship_bitmap= al_load_bitmap("spaceship.png");
 	turret_bitmap = al_load_bitmap("turret.png");
-	bullet_bitmap = al_load_bitmap("debris0.png");
+	bullet_bitmap = al_load_bitmap("debris.png");
 
 	/*co2_bar_bitmap = al_load_bitmap("co2Canister.bmp");
 	oxygen_bar_bitmap = al_load_bitmap("airCanister.bmp");
@@ -102,15 +101,15 @@ void SpaceSim::LoadAllegro()
 void SpaceSim::CreateWorld()
 {
 	////CreatePlayer();
-	for(int p = 0 ; p <0; p++)
+	/*for(int p = 0 ; p <15; p++)
 	{
 		CreateAsteroid();
 
 	}
-	for(int p = 0 ; p < 10; p++)
+	for(int p = 0 ; p < 0; p++)
 	{
 		CreateDebris();
-	}
+	}*/
 	//CreateSpaceStation();
 	//CreateGUI();
 
@@ -201,79 +200,79 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	physics_entities.push_back(spaceship);
 	spaceship_combiner->addEntity("body",spaceship);
 
-	PositionComp* spaceshipPos = new PositionComp(Vector3(x,y,15),0,spaceship);
+	PositionComp* spaceshipPos = new PositionComp(Vector3(x,y,15),0);
 	spaceship->addComponent(spaceshipPos);
-	spaceship->addComponent(new SpriteComp(spaceship_bitmap,spaceship));
-	spaceship->addComponent(new SpaceshipComp(30.0,spaceship));
-	spaceship->addComponent(new PhysicsComp(100,al_get_bitmap_width(spaceship_bitmap)/2+5,1,spaceship));
+	spaceship->addComponent(new SpriteComp(spaceship_bitmap));
+	spaceship->addComponent(new SpaceshipComp(30.0));
+	spaceship->addComponent(new PhysicsComp(50,al_get_bitmap_width(spaceship_bitmap)/2+5,0.2));
 
-	//TURRETS
-	Entity* turret_north = new Entity();
-	entities.push_back(turret_north);
-	spaceship_combiner->addEntity("turret_north",turret_north);
+	////TURRETS
+	//Entity* turret_north = new Entity();
+	//entities.push_back(turret_north);
+	//spaceship_combiner->addEntity("turret_north",turret_north);
 
-	turret_north->addComponent(new PositionComp(Vector3(x,y,16),0,turret_north));
-	turret_north->addComponent(new SpriteComp(turret_bitmap,turret_north));
-	ConnectedComp* turret_north_connected = new ConnectedComp(0,al_get_bitmap_width(spaceship_bitmap)/2,turret_north, spaceshipPos);
-	turret_north_connected->attach(spaceshipPos,true);
-	turret_north->addComponent(turret_north_connected);
-	turret_north->addComponent(new TurretComp(0.001,5,5,0.05,turret_north));
+	//turret_north->addComponent(new PositionComp(Vector3(x,y,16),0));
+	//turret_north->addComponent(new SpriteComp(turret_bitmap));
+	//ConnectedComp* turret_north_connected = new ConnectedComp(0,al_get_bitmap_width(spaceship_bitmap)/2, spaceshipPos);
+	//turret_north_connected->attach(spaceshipPos,true);
+	//turret_north->addComponent(turret_north_connected);
+	//turret_north->addComponent(new TurretComp(0.001,5,5,0.05));
 
-	/*Entity* turret_east = new Entity();
-	entities.push_back(turret_east);
-	spaceship_combiner->addEntity("turret_east",turret_east);
+	//Entity* turret_east = new Entity();
+	//entities.push_back(turret_east);
+	//spaceship_combiner->addEntity("turret_east",turret_east);
 
-	turret_east->addComponent(new PositionComp(Vector3(x,y,16),-PI/2,turret_east));
-	turret_east->addComponent(new SpriteComp(turret_bitmap,turret_east));
-	ConnectedComp* turret_east_connected = new ConnectedComp(-PI/2,al_get_bitmap_width(spaceship_bitmap)/2,turret_east, spaceshipPos);
-	turret_east_connected->attach(spaceshipPos,true);
-	turret_east->addComponent(turret_east_connected);
-	turret_east->addComponent(new TurretComp(10,500000,5,0.05,turret_east));
+	//turret_east->addComponent(new PositionComp(Vector3(x,y,16),-PI/2));
+	//turret_east->addComponent(new SpriteComp(turret_bitmap));
+	//ConnectedComp* turret_east_connected = new ConnectedComp(-PI/2,al_get_bitmap_width(spaceship_bitmap)/2, spaceshipPos);
+	//turret_east_connected->attach(spaceshipPos,true);
+	//turret_east->addComponent(turret_east_connected);
+	//turret_east->addComponent(new TurretComp(10,500000,5,0.05));
 
-	Entity* turret_west = new Entity();
-	entities.push_back(turret_west);
-	spaceship_combiner->addEntity("turret_west",turret_west);
+	//Entity* turret_west = new Entity();
+	//entities.push_back(turret_west);
+	//spaceship_combiner->addEntity("turret_west",turret_west);
 
-	turret_west->addComponent(new PositionComp(Vector3(x,y,16),PI/2,turret_west));
-	turret_west->addComponent(new SpriteComp(turret_bitmap,turret_west));
-	ConnectedComp* turret_west_connected = new ConnectedComp(PI/2,al_get_bitmap_width(spaceship_bitmap)/2,turret_west, spaceshipPos);
-	turret_west_connected->attach(spaceshipPos,true);
-	turret_west->addComponent(turret_west_connected);
-	turret_west->addComponent(new TurretComp(10,500,5,0.05,turret_west));*/
+	//turret_west->addComponent(new PositionComp(Vector3(x,y,16),PI/2));
+	//turret_west->addComponent(new SpriteComp(turret_bitmap));
+	//ConnectedComp* turret_west_connected = new ConnectedComp(PI/2,al_get_bitmap_width(spaceship_bitmap)/2, spaceshipPos);
+	//turret_west_connected->attach(spaceshipPos,true);
+	//turret_west->addComponent(turret_west_connected);
+	//turret_west->addComponent(new TurretComp(10,500,5,0.05));
 
-	//Thrusters!
-	Entity* main_thruster = new Entity();
-	entities.push_back(main_thruster);
-	spaceship_combiner->addEntity("thruster_main",main_thruster);
+	////Thrusters!
+	//Entity* main_thruster = new Entity();
+	//entities.push_back(main_thruster);
+	//spaceship_combiner->addEntity("thruster_main",main_thruster);
 
-	main_thruster->addComponent(new PositionComp(Vector3(0,0,16),main_thruster));
-	main_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80),main_thruster));
-	ConnectedComp* main_thruster_connected = new ConnectedComp(PI,al_get_bitmap_width(spaceship_bitmap)/2,main_thruster,spaceshipPos);
-	main_thruster_connected->attach(spaceshipPos,true);
-	main_thruster->addComponent(main_thruster_connected);
-	main_thruster->addComponent(new ThrusterComp(1000,main_thruster));
+	//main_thruster->addComponent(new PositionComp(Vector3(0,0,16)));
+	//main_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80)));
+	//ConnectedComp* main_thruster_connected = new ConnectedComp(PI,al_get_bitmap_width(spaceship_bitmap)/2,spaceshipPos);
+	//main_thruster_connected->attach(spaceshipPos,true);
+	//main_thruster->addComponent(main_thruster_connected);
+	//main_thruster->addComponent(new ThrusterComp(1000));
 
-	Entity* west_thruster = new Entity();
-	entities.push_back(west_thruster);
-	spaceship_combiner->addEntity("thruster_west",west_thruster);
+	//Entity* west_thruster = new Entity();
+	//entities.push_back(west_thruster);
+	//spaceship_combiner->addEntity("thruster_west",west_thruster);
 
-	west_thruster->addComponent(new PositionComp(Vector3(0,0,16),0,west_thruster));
-	west_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80),west_thruster));
-	ConnectedComp* west_thruster_connected = new ConnectedComp(PI/2,al_get_bitmap_width(spaceship_bitmap)/2,west_thruster,spaceshipPos);
-	west_thruster_connected->attach(spaceshipPos,true);
-	west_thruster->addComponent(west_thruster_connected);
-	west_thruster->addComponent(new ThrusterComp(1000,west_thruster));
+	//west_thruster->addComponent(new PositionComp(Vector3(0,0,16),0));
+	//west_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80)));
+	//ConnectedComp* west_thruster_connected = new ConnectedComp(PI/2,al_get_bitmap_width(spaceship_bitmap)/2,spaceshipPos);
+	//west_thruster_connected->attach(spaceshipPos,true);
+	//west_thruster->addComponent(west_thruster_connected);
+	//west_thruster->addComponent(new ThrusterComp(1000));
 
-	Entity* east_thruster = new Entity();
-	entities.push_back(east_thruster);
-	spaceship_combiner->addEntity("thruster_east",east_thruster);
+	//Entity* east_thruster = new Entity();
+	//entities.push_back(east_thruster);
+	//spaceship_combiner->addEntity("thruster_east",east_thruster);
 
-	east_thruster->addComponent(new PositionComp(Vector3(0,0,16),0,east_thruster));
-	east_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80),east_thruster));
-	ConnectedComp* east_thruster_connected = new ConnectedComp(-PI/2,al_get_bitmap_width(spaceship_bitmap)/2,east_thruster,spaceshipPos);
-	east_thruster_connected->attach(spaceshipPos,true);
-	east_thruster->addComponent(east_thruster_connected);
-	east_thruster->addComponent(new ThrusterComp(1000,east_thruster));
+	//east_thruster->addComponent(new PositionComp(Vector3(0,0,16),0));
+	//east_thruster->addComponent(new AnimatedComp(thrust_bitmap,Vector2(30,80)));
+	//ConnectedComp* east_thruster_connected = new ConnectedComp(-PI/2,al_get_bitmap_width(spaceship_bitmap)/2,spaceshipPos);
+	//east_thruster_connected->attach(spaceshipPos,true);
+	//east_thruster->addComponent(east_thruster_connected);
+	//east_thruster->addComponent(new ThrusterComp(1000));
 
 	return spaceship_combiner;
 };
@@ -286,9 +285,9 @@ void SpaceSim::CreateAsteroid()
 	double x = std::rand()%(screen_width-100)+50;
 	double y = -(std::rand()%(screen_height-100)+50);
 
-	ball->addComponent(new PositionComp(Vector3 (x,y,10), 0, ball));		
-	ball->addComponent(new SpriteComp (asteroid_bitmap, ball));
-	ball->addComponent(new PhysicsComp (20,al_get_bitmap_width(asteroid_bitmap)/2,0.3,ball));
+	ball->addComponent(new PositionComp(Vector3 (x,y,10), 0));		
+	ball->addComponent(new SpriteComp (asteroid_bitmap));
+	ball->addComponent(new PhysicsComp (10,al_get_bitmap_width(asteroid_bitmap)/2,0.3));
 };
 void SpaceSim::CreateDebris()
 {
@@ -299,9 +298,9 @@ void SpaceSim::CreateDebris()
 	double x = std::rand()%(screen_width-1300)+600;
 	double y = -(std::rand()%(screen_height-600)+300);
 
-	debris->addComponent(new PositionComp(Vector3 (x,y,10), 0, debris));		
-	debris->addComponent(new SpriteComp (debris_bitmap, debris));
-	debris->addComponent(new PhysicsComp (0.1,al_get_bitmap_width(debris_bitmap)/2,0,debris));
+	debris->addComponent(new PositionComp(Vector3 (x,y,10), 0));		
+	debris->addComponent(new SpriteComp (debris_bitmap));
+	debris->addComponent(new PhysicsComp (0.1,al_get_bitmap_width(debris_bitmap)/2,0.7));
 };
 void SpaceSim::CreateSpaceStation()
 {
@@ -356,7 +355,7 @@ void SpaceSim::Update()
 		//Do this before drawing
 		while ( accumulator >= dt )
 		{
-			TakeInput();
+			//TakeInput();
 
 			//Update all the entities
 			for(std::vector<Entity*>::size_type i = 0; i != entities.size(); i++) 
@@ -365,12 +364,12 @@ void SpaceSim::Update()
 
 				/*if(entities[i]->hasComponent("Removal"))
 				{
-					RemovalComp* remove = (RemovalComp*)entities[i]->getComponent("Removal");
-					if(remove->getShouldDiscard())
-					{
-						entities.erase(entities.begin() + i);
-						i--;
-					}
+				RemovalComp* remove = (RemovalComp*)entities[i]->getComponent("Removal");
+				if(remove->getShouldDiscard())
+				{
+				entities.erase(entities.begin() + i);
+				i--;
+				}
 				}*/
 			}
 
@@ -379,11 +378,11 @@ void SpaceSim::Update()
 			{
 				/*if(physics_entities[i]->hasComponent("Removal"))
 				{
-					RemovalComp* remove = (RemovalComp*)physics_entities[i]->getComponent("Removal");
-					if(remove->getShouldDiscard())
-					{
-						physics_entities.erase(physics_entities.begin() + i);
-					}
+				RemovalComp* remove = (RemovalComp*)physics_entities[i]->getComponent("Removal");
+				if(remove->getShouldDiscard())
+				{
+				physics_entities.erase(physics_entities.begin() + i);
+				}
 				}*/
 
 				PositionComp* pos = (PositionComp*) physics_entities[i]->getComponent("Position");
@@ -399,31 +398,31 @@ void SpaceSim::Update()
 						PhysicsComp::checkCollision(phys,collider);
 					}
 				}
-				////Boundaries
-				////Right
-				//if( (pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 ) > screen_width)
-				//{
-				//	//pos->setPositionX(pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 - screen_width);
-				//	//done = true;
-				//}
-				////Left
-				//if( (pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 ) < 0)
-				//{
-				//	//pos->setPositionX(pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 + screen_width);
-				//	//done = true;
-				//}
-				////Top
-				//if( (pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 ) > 0)
-				//{
-				//	//pos->setPositionY(pos->getPosition().y + al_get_bitmap_height(spr->getBitmap())/2 - screen_height);
-				//	//done = true;
-				//}
-				////Bottom
-				//if( (pos->getPosition().y + al_get_bitmap_height (spr->getBitmap())/2 ) < -screen_height)
-				//{
-				//	//pos->setPositionY(pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 + screen_height);
-				//	//done = true;
-				//}
+				//Boundaries
+				//Right
+				if( (pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 ) > screen_width)
+				{
+					pos->setPositionX(pos->getPosition().x - al_get_bitmap_width (spr->getBitmap())/2 - screen_width);
+					//done = true;
+				}
+				//Left
+				if( (pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 ) < 0)
+				{
+					pos->setPositionX(pos->getPosition().x + al_get_bitmap_width (spr->getBitmap())/2 + screen_width);
+					//done = true;
+				}
+				//Top
+				if( (pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 ) > 0)
+				{
+					pos->setPositionY(pos->getPosition().y + al_get_bitmap_height(spr->getBitmap())/2 - screen_height);
+					//done = true;
+				}
+				//Bottom
+				if( (pos->getPosition().y + al_get_bitmap_height (spr->getBitmap())/2 ) < -screen_height)
+				{
+					pos->setPositionY(pos->getPosition().y - al_get_bitmap_height (spr->getBitmap())/2 + screen_height);
+					//done = true;
+				}
 
 			}
 			/*UpdateUI();*/
@@ -508,24 +507,24 @@ void SpaceSim::TakeInput()
 			double x_position = (15.0*cos(north_turret_pos->getRotation())) + north_turret_pos->getPosition().x;
 			double y_position = (15.0*sin(north_turret_pos->getRotation())) + north_turret_pos->getPosition().y;
 
-			bullet->addComponent(new PositionComp(Vector3(x_position,y_position,16),bullet));
-			bullet->addComponent(new SpriteComp(bullet_bitmap,bullet));
-			bullet->addComponent(new BulletComp(north_turret->getBulletArmorPiercing(),bullet));
+			bullet->addComponent(new PositionComp(Vector3(x_position,y_position,16)));
+			bullet->addComponent(new SpriteComp(bullet_bitmap));
+			bullet->addComponent(new BulletComp(north_turret->getBulletArmorPiercing()));
 			//bullet->addComponent(new RemovalComp(3,false,bullet));
 
-			PhysicsComp* bullet_phys =new PhysicsComp(north_turret->getBulletWeight(),al_get_bitmap_width(bullet_bitmap)/2,.1,bullet);
+			PhysicsComp* bullet_phys =new PhysicsComp(north_turret->getBulletWeight(),al_get_bitmap_width(bullet_bitmap)/2,.1);
 			double bullet_direction = north_turret_pos->getRotation();
 			double bullet_degrees = bullet_direction*57.2957795;
 			bullet_phys->addForce(Force(bullet_direction+PI,bullet_direction, north_turret->getBulletForce()));
 			bullet->addComponent(bullet_phys);
-			
+
 		}
 	}
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_RIGHT))
 	{
 		if(!al_key_down(&old_keyboard_state,ALLEGRO_KEY_RIGHT))
 		{
-			
+
 		}
 	}
 	if(al_key_down(&new_keyboard_state,ALLEGRO_KEY_DOWN))

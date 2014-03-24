@@ -6,7 +6,7 @@
 class SpaceshipComp : public Component
 {
 public:
-	SpaceshipComp(double myArmor, Entity* myParent);
+	SpaceshipComp(double myArmor);
 
 	double getArmor(){return armor;}
 private:

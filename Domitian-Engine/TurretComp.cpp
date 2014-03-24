@@ -1,7 +1,7 @@
 #include "TurretComp.h"
 
-TurretComp::TurretComp(double myBulletWeight, double myBulletForce, double myArmorPiercing,double myReloadTime, Entity* myParent)
-	: Component("Turret",myParent),
+TurretComp::TurretComp(double myBulletWeight, double myBulletForce, double myArmorPiercing,double myReloadTime)
+	: Component("Turret"),
 	bullet_weight(myBulletWeight), bullet_force(myBulletForce), bullet_armor_piercing(myArmorPiercing),max_reload_time(myReloadTime)
 {
 };

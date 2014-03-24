@@ -4,7 +4,7 @@
 #define MAX_ROTATION_SPEED 7
 #define MAX_TRANSLATION_SPEED 70
 
-PhysicsComp::PhysicsComp(double myMass,double myRadius,double myCofRestitution, Entity* myParent):Component("Physics",myParent),mass(myMass),radius(myRadius),coefficient_of_restitution(myCofRestitution)
+PhysicsComp::PhysicsComp(double myMass,double myRadius,double myCofRestitution):Component("Physics"),mass(myMass),radius(myRadius),coefficient_of_restitution(myCofRestitution)
 {
 	total_translational_force=Vector2(0,0);
 	velocity=Vector2(0,0);
@@ -28,9 +28,9 @@ void PhysicsComp::update(double dt)
 	if(rotational_movement)
 	{
 		//Rotational Movement
-		moment_of_inertia = (2.0/3.0) * mass * (radius * radius);
+		moment_of_inertia = (2.0/5.0) * mass * (radius * radius);
 
-		rotational_acceleration = (total_torque/2) / moment_of_inertia; 
+		rotational_acceleration = (total_torque) / moment_of_inertia; 
 		rotational_velocity += rotational_acceleration*dt;
 
 		//Making sure you dont spin too fast
@@ -176,18 +176,29 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			double second_CoR = second_phys_comp->getCoefficientOfRestitution();
 			double coefficient_of_restitution = (first_CoR+second_CoR)/2.0;
 
+			//double coefficient_of_restitution = 1;
+			
+
 			//Variable elastisity
+
+			//For two-dimensional collisions the velocities in these formulas are the components 
+			//	perpendicular to the tangent line at the point of contact.
+
+			double both_massses= first_mass + second_mass;
+
+			//second_phys_comp->setVelocity(Vector2(0,0));
+
 			first_phys_comp->setVelocity(Vector2(
-				((coefficient_of_restitution*second_mass*(second_velocity.x-first_velocity.x))+(first_mass*first_velocity.x)+(second_mass*second_velocity.x))/
-				(second_mass+first_mass),
+				((coefficient_of_restitution*second_mass*(second_velocity.x-first_velocity.x))+(first_mass*first_velocity.x)+(second_mass*second_velocity.x))/(second_mass+first_mass),
 				((coefficient_of_restitution*second_mass*(second_velocity.y-first_velocity.y))+(first_mass*first_velocity.y)+(second_mass*second_velocity.y))/(second_mass+first_mass)
 				));
 
 			second_phys_comp->setVelocity(Vector2(
-				((coefficient_of_restitution*first_mass*(first_velocity.x-second_velocity.x))+(second_mass*second_velocity.x)+(first_mass*first_velocity.x))/
-				(first_mass+second_mass),
+				((coefficient_of_restitution*first_mass*(first_velocity.x-second_velocity.x))+(second_mass*second_velocity.x)+(first_mass*first_velocity.x))/(first_mass+second_mass),
 				((coefficient_of_restitution*first_mass*(first_velocity.y-second_velocity.y))+(second_mass*second_velocity.y)+(first_mass*first_velocity.y))/(first_mass+second_mass)
 				));
+
+		
 
 			
 

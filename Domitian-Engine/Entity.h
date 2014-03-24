@@ -19,7 +19,6 @@ public:
 	void draw(double dt);
 
 	void addComponent(Component*);
-	void removeEntity(std::string);
 
 	Component* getComponent(std::string);
 	bool hasComponent(std::string componentName)

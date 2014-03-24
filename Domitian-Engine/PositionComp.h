@@ -11,8 +11,8 @@
 class PositionComp : public Component
 {
 public:
-	PositionComp(Vector3,double,Entity*);
-	PositionComp(Vector3,Entity*);
+	PositionComp(Vector3,double);
+	PositionComp(Vector3);
 
 
 	Vector2 getPosition()

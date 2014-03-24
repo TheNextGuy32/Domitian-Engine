@@ -1,29 +1,36 @@
 #ifndef DComp_H
 #define DComp_H
 
+#include "Entity.h"
+
 #include <string>
 #include "Vector2.h"
 #include "Vector3.h"
 
-class Entity;
 
 class Component
 {
 public:
 	virtual void update(double);
-	Component(std::string, Entity*);
+	Component(std::string);
 	std::string getName();
-	
-	 Component* getComponent(std::string);
-
-	 /*bool hasComponent(std::string componentName)
+	Entity* getParent()
 	{
-		return parent->hasComponent(componentName);
-	};*/
-	 Entity* parent;
+		return parent;
+	};
+	void setParent(Entity* myParent)
+	{
+		parent = myParent;
+	};
+	Component* getComponent(std::string myCompName)
+	{
+		return getParent()->getComponent(myCompName);
+	};
+
+	
 private:
 	std::string name;
-	
+	Entity* parent;
 };
 
 #endif

@@ -1,7 +1,7 @@
 #include "AstronautComp.h"
 
-AstronautComp::AstronautComp(double myMaxCO2, double myFuelConsumptionPerForce, double myMaxO2,double myO2Consumption, Entity* myParent) 
-	: Component("Astronaut",myParent), 
+AstronautComp::AstronautComp(double myMaxCO2, double myFuelConsumptionPerForce, double myMaxO2,double myO2Consumption) 
+	: Component("Astronaut"), 
 	max_co2(myMaxCO2), current_co2(myMaxCO2),
 	fuel_cost_per_force(myFuelConsumptionPerForce),
 	o2_consumption(myO2Consumption),

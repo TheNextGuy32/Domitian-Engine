@@ -11,7 +11,7 @@
 class AnimatedComp : public Component
 {
 public:
-	AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity* myParent);
+	AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions);
 	void update(double);
 
 	void setFrameX(double);

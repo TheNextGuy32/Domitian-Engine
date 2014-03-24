@@ -1,7 +1,7 @@
 #include "ThrusterComp.h"
 
-ThrusterComp::ThrusterComp(double myForceExerted, Entity* myParent)
-	: Component("Thruster",myParent),force_exerted(myForceExerted)
+ThrusterComp::ThrusterComp(double myForceExerted)
+	: Component("Thruster"),force_exerted(myForceExerted)
 {
 };
 
