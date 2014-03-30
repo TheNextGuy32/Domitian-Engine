@@ -37,5 +37,6 @@ void Entity::addComponent(Component* myComp)
 {
 	components[myComp->getName()] = myComp;
 	components[myComp->getName()]->setParent(this);
+
 }
 

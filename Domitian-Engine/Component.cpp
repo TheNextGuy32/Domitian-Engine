@@ -4,6 +4,7 @@
 Component::Component(std::string myName):name(myName)
 {
 	parent = new Entity();
+
 }
 
 std::string Component::getName()
@@ -12,4 +13,9 @@ std::string Component::getName()
 }
 void Component::update(double dt)
 {
+}
+
+void Component::initialize()
+{
+
 }

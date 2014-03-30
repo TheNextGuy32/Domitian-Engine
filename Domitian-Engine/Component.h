@@ -27,10 +27,12 @@ public:
 		return getParent()->getComponent(myCompName);
 	};
 
-	
-private:
+
+protected:
 	std::string name;
 	Entity* parent;
+
+	virtual void initialize();
 };
 
 #endif

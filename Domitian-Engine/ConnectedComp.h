@@ -7,7 +7,7 @@
 class ConnectedComp : public Component
 {
 public:
-	ConnectedComp(double myRadianFromSocket,double myDistance, PositionComp* mySocketPositionComp);
+	ConnectedComp(double myRadianFromSocket,double myDistance, PositionComp* mySocketPositionComp,PositionComp* myLesserPos);
 	void update(double);
 	
 	double getRadianFromSocket(){return radian_from_socket;};

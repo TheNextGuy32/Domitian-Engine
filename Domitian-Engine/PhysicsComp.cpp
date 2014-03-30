@@ -4,7 +4,7 @@
 #define MAX_ROTATION_SPEED 7
 #define MAX_TRANSLATION_SPEED 70
 
-PhysicsComp::PhysicsComp(double myMass,double myRadius,double myCofRestitution):Component("Physics"),mass(myMass),radius(myRadius),coefficient_of_restitution(myCofRestitution)
+PhysicsComp::PhysicsComp(double myMass,double myRadius,double myCofRestitution,PositionComp* myPosComp):Component("Physics"),mass(myMass),radius(myRadius),coefficient_of_restitution(myCofRestitution)
 {
 	total_translational_force=Vector2(0,0);
 	velocity=Vector2(0,0);
@@ -14,7 +14,7 @@ PhysicsComp::PhysicsComp(double myMass,double myRadius,double myCofRestitution):
 	total_torque = 0;
 	collided =false;
 
-	position_comp = (PositionComp*) getComponent("Position");
+	position_comp = myPosComp;
 }
 
 void PhysicsComp::update(double dt)
@@ -117,7 +117,6 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 
 	bool push_enabled = true;
 	bool buckets_enabled = true;
-
 
 	bool collision = false;
 

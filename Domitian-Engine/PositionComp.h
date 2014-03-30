@@ -31,7 +31,7 @@ public:
 
 	double getRotation();
 	void setRotation(double);
-	//double rotation;
+
 private:
 	Vector3 position;
 	double rotation;

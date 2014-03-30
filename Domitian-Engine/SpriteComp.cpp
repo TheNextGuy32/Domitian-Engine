@@ -1,9 +1,9 @@
 #include "SpriteComp.h"
 
-SpriteComp::SpriteComp(ALLEGRO_BITMAP* myBitmap):Component("Sprite"),bitmap(myBitmap)
+SpriteComp::SpriteComp(ALLEGRO_BITMAP* myBitmap, PositionComp* myPositionComp):Component("Sprite"),bitmap(myBitmap)
 {
 	offset = Vector2 (al_get_bitmap_width(bitmap)/2,al_get_bitmap_height(bitmap)/2);
-	positionComp = (PositionComp*) getComponent("Position");
+	positionComp = myPositionComp;
 	visible = true;
 }
 

@@ -11,7 +11,7 @@
 class AnimatedComp : public Component
 {
 public:
-	AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions);
+	AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, PositionComp* myPosComp);
 	void update(double);
 
 	void setFrameX(double);
@@ -49,6 +49,9 @@ private:
 	
 	Vector2 number_frames;
 
-
+	void initialize() override
+	{
+		name = "Animated";
+	};
 };
 #endif

@@ -12,7 +12,7 @@
 class PhysicsComp : public Component
 {
 public:
-	PhysicsComp(double myMass,double myRadius,double myCofRestitution);
+	PhysicsComp(double myMass,double myRadius,double myCofRestitution,PositionComp* myPosComp);
 
     void update(double);
 
