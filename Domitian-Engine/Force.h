@@ -11,7 +11,7 @@ public:
 		return direction_to_force;
 	};
 
-	double getForceMathRadian()
+	double getForceDirectionMathRadian()
 	{
 		return force_direction;
 	};

@@ -1,9 +1,11 @@
 #include "AnimatedComp.h"
 
-AnimatedComp::AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions, Entity* myParent)
-	:Component("Animated",myParent),bitmap(myBitmap),dimensions(myDimensions)
+AnimatedComp::AnimatedComp(ALLEGRO_BITMAP* myBitmap,Vector2 myDimensions,PositionComp* myPosComp)
+	:Component("Animated"),bitmap(myBitmap),dimensions(myDimensions)
 {
-	positionComp = (PositionComp*) getComponent("Position");
+	initialize();
+
+	positionComp = myPosComp;
 
 	offset = Vector2 (dimensions.x/2,dimensions.y/2);
 

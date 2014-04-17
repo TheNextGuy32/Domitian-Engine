@@ -6,7 +6,7 @@
 class AstronautComp : public Component
 {
 public:
-	AstronautComp(double myMaxCO2, double myFuelCostPerForce, double myMaxO2,double myO2Consumption, Entity* myParent);
+	AstronautComp(double myMaxCO2, double myFuelCostPerForce, double myMaxO2,double myO2Consumption);
 
 	void setCurrentO2(double o2);
 	void setCurrentCO2(double co2);

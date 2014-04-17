@@ -1,12 +1,12 @@
 #include "PositionComp.h"
 
-PositionComp::PositionComp(Vector3 myPosition, double myRotation, Entity* myParent) 
-	: Component("Position",myParent), position(myPosition), rotation(myRotation)
+PositionComp::PositionComp(Vector3 myPosition, double myRotation) 
+	: Component("Position"), position(myPosition), rotation(myRotation)
 {
 }
 
-PositionComp::PositionComp(Vector3 myPosition, Entity* myParent) 
-	: Component("Position",myParent), position(myPosition), rotation(0)
+PositionComp::PositionComp(Vector3 myPosition) 
+	: Component("Position"), position(myPosition), rotation(0)
 {
 }
 
@@ -18,7 +18,7 @@ void PositionComp::setPosition(double myX,double myY)
 }
 double PositionComp::getRotation()
 {
-	return std::fmod(rotation, PI);
+	return rotation;
 }
 
 void PositionComp::setPositionX(double myX)

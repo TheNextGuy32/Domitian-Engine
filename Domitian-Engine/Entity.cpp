@@ -27,17 +27,16 @@ void Entity::draw(double dt)
 		}
 	}
 }
-
-void Entity::addComponent(Component* myComp)
-{
-	components[myComp->getName()] = myComp;
-}
-void Entity::removeEntity(std::string myCompName)
-{
-
-}
-
 Component* Entity::getComponent(std::string myCompName)
 {
 	return components[myCompName];
 }
+
+
+void Entity::addComponent(Component* myComp)
+{
+	components[myComp->getName()] = myComp;
+	components[myComp->getName()]->setParent(this);
+
+}
+

@@ -6,7 +6,7 @@
 class ThrusterComp : public Component
 {
 public:
-	ThrusterComp(double myForceExerted, Entity* myParent);
+	ThrusterComp(double myForceExerted);
 
 	double getForceExerted();
 

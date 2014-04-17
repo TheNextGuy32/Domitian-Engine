@@ -8,7 +8,7 @@
 class BulletComp : public Component
 {
 public:
-	BulletComp(double myArmorPiercing, Entity* myParent);
+	BulletComp(double myArmorPiercing);
 
 	double getArmorPiercing(){return armor_piercing;};
 

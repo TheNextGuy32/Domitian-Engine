@@ -74,10 +74,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PhysicsComp.cpp" />
     <ClCompile Include="PositionComp.cpp" />
-    <ClCompile Include="RemovalComp.cpp" />
     <ClCompile Include="SpaceshipComp.cpp" />
     <ClCompile Include="SpaceSim.cpp" />
     <ClCompile Include="SpriteComp.cpp" />
+    <ClCompile Include="TetherComponent.cpp" />
     <ClCompile Include="ThrusterComp.cpp" />
     <ClCompile Include="TurretComp.cpp" />
   </ItemGroup>
@@ -98,6 +98,7 @@
     <ClInclude Include="SpaceshipComp.h" />
     <ClInclude Include="SpaceSim.h" />
     <ClInclude Include="SpriteComp.h" />
+    <ClInclude Include="TetherComponent.h" />
     <ClInclude Include="ThrusterComp.h" />
     <ClInclude Include="TurretComp.h" />
     <ClInclude Include="Vector2.h" />

@@ -11,8 +11,8 @@
 class PositionComp : public Component
 {
 public:
-	PositionComp(Vector3,double,Entity*);
-	PositionComp(Vector3,Entity*);
+	PositionComp(Vector3 myPositionAndDepth,double myRotation);
+	PositionComp(Vector3 myPositionAndDepth);
 
 
 	Vector2 getPosition()
@@ -31,7 +31,7 @@ public:
 
 	double getRotation();
 	void setRotation(double);
-	//double rotation;
+
 private:
 	Vector3 position;
 	double rotation;

@@ -1,7 +1,7 @@
 #include "SpaceshipComp.h"
 
-SpaceshipComp::SpaceshipComp(double myArmor, Entity* myParent) 
-	: Component("Spaceship", myParent), armor(myArmor)
+SpaceshipComp::SpaceshipComp(double myArmor) 
+	: Component("Spaceship"), armor(myArmor)
 {
 
 };

@@ -4,7 +4,7 @@
 #define MAX_ROTATION_SPEED 7
 #define MAX_TRANSLATION_SPEED 70
 
-PhysicsComp::PhysicsComp(double myMass,double myRadius, Entity* myParent):Component("Physics",myParent),mass(myMass),radius(myRadius)
+PhysicsComp::PhysicsComp(double myMass,double myRadius,double myCofRestitution,PositionComp* myPosComp):Component("Physics"),mass(myMass),radius(myRadius),coefficient_of_restitution(myCofRestitution)
 {
 	total_translational_force=Vector2(0,0);
 	velocity=Vector2(0,0);
@@ -14,7 +14,7 @@ PhysicsComp::PhysicsComp(double myMass,double myRadius, Entity* myParent):Compon
 	total_torque = 0;
 	collided =false;
 
-	position_comp = (PositionComp*) getComponent("Position");
+	position_comp = myPosComp;
 }
 
 void PhysicsComp::update(double dt)
@@ -22,15 +22,15 @@ void PhysicsComp::update(double dt)
 	collided = false;
 
 	bool rotational_movement = true;
-	bool planar_movement = false;
+	bool planar_movement =true;
 
 	//Rotational Movement
 	if(rotational_movement)
 	{
 		//Rotational Movement
-		moment_of_inertia = (2.0/3.0) * mass * (radius * radius);
+		moment_of_inertia = (2.0/5.0) * mass * (radius * radius);
 
-		rotational_acceleration = (total_torque/2) / moment_of_inertia; 
+		rotational_acceleration = (total_torque) / moment_of_inertia; 
 		rotational_velocity += rotational_acceleration*dt;
 
 		//Making sure you dont spin too fast
@@ -82,14 +82,34 @@ void PhysicsComp::addForce(Force myForce)
 {
 	double radian_to_center_mass = myForce.getMathRadianToForce() + PI;
 
-	double attached_direction_displacement = myForce.getForceMathRadian() - radian_to_center_mass;
+	double attached_direction_displacement = myForce.getForceDirectionMathRadian() - radian_to_center_mass;
 
 	total_torque += -(radius *  myForce.getForce() * sin(attached_direction_displacement));
 
-	Vector2 force_normal_components = Vector2::ToVector2(myForce.getForceMathRadian());
-	Vector2 translation (force_normal_components.x * myForce.getForce(),force_normal_components.y * myForce.getForce());
+	Vector2 force_normal_components = Vector2::ToVector2(myForce.getForceDirectionMathRadian());
+	Vector2 translation (force_normal_components.x * myForce.getForce() * cos(attached_direction_displacement),
+		force_normal_components.y * myForce.getForce() * cos(attached_direction_displacement));
 	total_translational_force+=translation;
 }
+
+void PhysicsComp::addForceWithRadius(Force myForce, float myRadius)
+{
+	double radian_to_center_mass = myForce.getMathRadianToForce() + PI;
+
+	double attached_direction_displacement = myForce.getForceDirectionMathRadian() - radian_to_center_mass;
+
+	total_torque += -(myRadius *  myForce.getForce() * sin(attached_direction_displacement));
+
+	Vector2 force_normal_components = Vector2::ToVector2(myForce.getForceDirectionMathRadian());
+	Vector2 translation (force_normal_components.x * myForce.getForce() * cos(attached_direction_displacement),
+		force_normal_components.y * myForce.getForce() * cos(attached_direction_displacement));
+	total_translational_force+=translation;
+}
+
+double squared(double myInput)
+{
+	return myInput*myInput;
+};
 
 bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 {
@@ -111,8 +131,7 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	*/
 
 	bool push_enabled = true;
-	bool buckets_enabled = false;
-
+	bool buckets_enabled = true;
 
 	bool collision = false;
 
@@ -158,26 +177,61 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			double mathRadianDirectionTo = Vector2::ToMathRadian(displacement);
 			Vector2 normalizedDirectionTo = Vector2(displacement.x/distanceBetween,displacement.y/distanceBetween);
 
-			//The force applied to second = magnitude of speed of first * its mass
-			//Does the force it exerts on the other object depend on the direction its facing
-			//	for instance, say the other object is moving away from the other oject, it wouldn't be applying that big of a force
-			double first_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity()) * first->getMass();
-			double second_force_exerted = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
-			double net_force = first_force_exerted+second_force_exerted;
 
-			//Adding the forces, other object gets force in direction that other was moving
-			first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity()), net_force));
-			second->addForce(Force (mathRadianDirectionTo+PI, Vector2::ToMathRadian(first->getVelocity()), net_force));
+			//Mass and acceleration
+			double first_mass = first_phys_comp->getMass();
+			Vector2 first_velocity = first_phys_comp->getVelocity();
+
+			double second_mass = second_phys_comp->getMass();
+			Vector2 second_velocity = second_phys_comp->getVelocity();
+
+			//1 is elastic, 0 is inelastic
+			double first_CoR = first_phys_comp->getCoefficientOfRestitution();
+			double second_CoR = second_phys_comp->getCoefficientOfRestitution();
+			double coefficient_of_restitution = (first_CoR+second_CoR)/2.0;
+
+			//One dimensional solution with elasticity
+			double both_masses= first_mass + second_mass;
+
+			first_phys_comp->setVelocity(Vector2(
+				((coefficient_of_restitution*second_mass*(second_velocity.x-first_velocity.x))+(first_mass*first_velocity.x)+(second_mass*second_velocity.x))/(second_mass+first_mass),
+				((coefficient_of_restitution*second_mass*(second_velocity.y-first_velocity.y))+(first_mass*first_velocity.y)+(second_mass*second_velocity.y))/(second_mass+first_mass)
+				));
+
+			second_phys_comp->setVelocity(Vector2(
+				((coefficient_of_restitution*first_mass*(first_velocity.x-second_velocity.x))+(second_mass*second_velocity.x)+(first_mass*first_velocity.x))/(first_mass+second_mass),
+				((coefficient_of_restitution*first_mass*(first_velocity.y-second_velocity.y))+(second_mass*second_velocity.y)+(first_mass*first_velocity.y))/(first_mass+second_mass)
+				));
+
+			//Ramons solution is still one dimensional
+			/*first_phys_comp->setVelocity(Vector2(
+				((second_mass*(2*(second_velocity.x-first_velocity.x))) +(first_mass*first_phys_comp->getVelocity().x))/both_masses,
+				((second_mass*(2*(second_velocity.y-first_velocity.y))) +(first_mass*first_phys_comp->getVelocity().y))/both_masses
+				));
+
+			second_phys_comp->setVelocity(Vector2(
+				((first_mass*(2*(first_velocity.x-second_velocity.x))) +(second_mass*second_phys_comp->getVelocity().x))/both_masses,
+				((first_mass*(2*(first_velocity.y-second_velocity.y))) +(second_mass*second_phys_comp->getVelocity().y))/both_masses
+				));*/
+
 			
 
-			//IF BALL 2 IS NOT MOVING
-			//Final Velocity x of the first object = ((m1-m2)/m1+m2) * v1x
-			//F Vel x of the second objet = (2m1/m1+m2) * v1x i  
-			//Same applies for y direction
+			////The force applied to second = magnitude of speed of first * its mass
+			////Does the force it exerts on the other object depend on the direction its facing
+			////	for instance, say the other object is moving away from the other oject, it wouldn't be applying that big of a force
+			double first_momentum = Vector2::getDistanceBetween(Vector2(0,0),first->getVelocity()) * first->getMass();
+			double second_momentum = Vector2::getDistanceBetween(Vector2(0,0),second->getVelocity()) * second->getMass();
+			double net_force = first_momentum+second_momentum;
 
+			double first_additional_torque = -(first_phys_comp->radius *  net_force * sin(mathRadianDirectionTo - Vector2::ToMathRadian(second->getVelocity())));
+			first_phys_comp->total_torque+= first_additional_torque;
 
+			double second_additional_torque = -(second_phys_comp->radius *  net_force * sin(mathRadianDirectionTo + PI - Vector2::ToMathRadian(first->getVelocity())));
+			second_phys_comp->total_torque += second_additional_torque;
 
-			//The amount the lesser mass gets pushed so they are overlapping
+			////Adding the forces, other object gets force in direction that other was moving
+			//first->addForce(Force (mathRadianDirectionTo,  Vector2::ToMathRadian(second->getVelocity()), net_force));
+			//second->addForce(Force (mathRadianDirectionTo+PI, Vector2::ToMathRadian(first->getVelocity()), net_force));
 
 
 			//ANTI TUNNELING
@@ -195,7 +249,6 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 					second_pos_comp->setPosition( second_pos.x + normalizedDirectionTo.x*push, second_pos.y + normalizedDirectionTo.y*push);
 				}
 				else
-
 				{
 					second_pos_comp->setPosition( second_pos.x + normalizedDirectionTo.x*(push/2), second_pos.y + normalizedDirectionTo.y*(push/2));
 					first_pos_comp->setPosition( first_pos.x - normalizedDirectionTo.x*(push/2), first_pos.y - normalizedDirectionTo.y*(push/2));

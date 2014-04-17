@@ -2,10 +2,10 @@
 
 
 // W/ socket
-ConnectedComp::ConnectedComp(double myRadianFromSocket, double myDistance, Entity* myParent, PositionComp* mySocketPositionComp)
-	: Component("Connected",myParent), distance(myDistance),radian_from_socket(myRadianFromSocket), socket_position(mySocketPositionComp)
+ConnectedComp::ConnectedComp(double myRadianFromSocket, double myDistance, PositionComp* mySocketPositionComp,PositionComp* myLesserPos)
+	: Component("Connected"), distance(myDistance),radian_from_socket(myRadianFromSocket), socket_position(mySocketPositionComp)
 {
-	connected_position = (PositionComp*) getComponent("Position");
+	connected_position = myLesserPos;
 	connected = false;
 	new_socket_rotation = socket_position->getRotation();
 	old_socket_rotation = new_socket_rotation;

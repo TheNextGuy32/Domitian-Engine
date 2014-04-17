@@ -1,14 +1,10 @@
 #include "Component.h"
 #include "Entity.h"
 
-Component::Component(std::string myName,Entity* myParent):parent(myParent),name(myName)
+Component::Component(std::string myName):name(myName)
 {
-	
-}
+	parent = new Entity();
 
-Component* Component::getComponent(std::string myCompName)
-{
-	return parent->getComponent(myCompName);
 }
 
 std::string Component::getName()
@@ -17,4 +13,9 @@ std::string Component::getName()
 }
 void Component::update(double dt)
 {
+}
+
+void Component::initialize()
+{
+
 }

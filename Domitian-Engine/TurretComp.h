@@ -8,7 +8,7 @@
 class TurretComp : public Component
 {
 public:
-	TurretComp(double myBulletWeight, double myBulletForce, double myArmorPiercing, double myReloadTime, Entity* myParent);
+	TurretComp(double myBulletWeight, double myBulletForce, double myArmorPiercing, double myReloadTime);
 
 	double getBulletWeight(){return bullet_weight;};
 	double getBulletForce(){return bullet_force;};

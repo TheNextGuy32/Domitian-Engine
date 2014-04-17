@@ -85,8 +85,8 @@
     <ClCompile Include="ThrusterComp.cpp">
       <Filter>Game Files and Components\Components</Filter>
     </ClCompile>
-    <ClCompile Include="RemovalComp.cpp">
-      <Filter>Domitian-Engine\Utility</Filter>
+    <ClCompile Include="TetherComponent.cpp">
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,6 +147,9 @@
     </ClInclude>
     <ClInclude Include="ThrusterComp.h">
       <Filter>Game Files and Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TetherComponent.h">
+      <Filter>Domitian-Engine\Components\Infastructure</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

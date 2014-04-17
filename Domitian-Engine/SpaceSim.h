@@ -16,6 +16,8 @@
 #include "Combiner.h"
 #include "RemovalComp.h"
 
+#include <iostream>
+
 #pragma region Preproccessor
 
 #define PI 3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679
@@ -87,6 +89,7 @@ private:
 	ALLEGRO_BITMAP* spaceship_bitmap;
 	ALLEGRO_BITMAP* turret_bitmap;
 	ALLEGRO_BITMAP* bullet_bitmap;
+	ALLEGRO_BITMAP* tether_bitmap;
 
 	/*ALLEGRO_BITMAP* iss_bitmap;
 	ALLEGRO_BITMAP* iss_plus_bitmap;
