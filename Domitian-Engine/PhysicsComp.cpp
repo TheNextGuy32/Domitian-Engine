@@ -130,8 +130,7 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	the v^2 outputs a scalar so it works for any number of components
 	*/
 
-	bool push_enabled = true;
-	bool buckets_enabled = true;
+	bool push_enabled = false;
 
 	bool collision = false;
 
@@ -140,32 +139,23 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	{
 		//Pull the objects positions
 		PositionComp* first_pos_comp = (PositionComp*) first->getComponent("Position");
-		PositionComp* second_pos_comp = (PositionComp*) second->getComponent("Position");
-
-		//Check if we are within at least 2 buckets of it, for large objects that straddle mutliple buckets
-		if(buckets_enabled)
-		{
-			if(abs(first_pos_comp->getBucket().x - second_pos_comp->getBucket().x)<1)
-			{
-				if(abs(first_pos_comp->getBucket().y - second_pos_comp->getBucket().y)<1)
-				{
-				}
-			}
-		}
-		//Pull the physics and positions of the objects
 		PhysicsComp* first_phys_comp = (PhysicsComp*) first->getComponent("Physics");
 		Vector2 first_pos = Vector2(first_pos_comp->getPosition().x,first_pos_comp->getPosition().y);
 
+		PositionComp* second_pos_comp = (PositionComp*) second->getComponent("Position");
 		PhysicsComp* second_phys_comp = (PhysicsComp*) second->getComponent("Physics");
 		Vector2 second_pos = Vector2(second_pos_comp->getPosition().x,second_pos_comp->getPosition().y);
 
 		//Find the distance and added radii
 		double distanceBetween = Vector2::getDistanceBetween(first_pos,second_pos);
+		
 		double addingRadii = first->getRadius()+second->getRadius();
 
 		//Collision
 		if(distanceBetween < addingRadii)
 		{
+			double radian_from_horizontal_to_second = Vector2::ToMathRadian((Vector2(second_pos.x-first_pos.x,second_pos.y-first_pos.y)));
+
 			//Make sure it doesnt collide with anythign else this tick
 			first->setCollided(true);
 			second->setCollided(true);

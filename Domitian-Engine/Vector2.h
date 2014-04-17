@@ -1,7 +1,7 @@
 #ifndef DVector2_H
 #define DVector2_H
 
-#include <cmath>
+#include <math.h>
 
 class Vector2
 {
@@ -56,5 +56,13 @@ public:
 	{
 		return sqrt( (second.x-first.x)*(second.x-first.x) + (second.y-first.y)*(second.y-first.y));
 	}
+
+	//static Vector2 Normalize(Vector2 myVector)
+	//{
+	//	
+	//	float length =sqrt( squared( myVector.x) + squared(myVector.y));
+
+	//	return Vector2(myVector.x/length,myVector.y/length);
+	//}
 };
 #endif

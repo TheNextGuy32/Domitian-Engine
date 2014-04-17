@@ -143,7 +143,7 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	turret_north->addComponent(turret_north_connected);
 	turret_north->addComponent(new TurretComp(0.001,5,5,0.05));
 
-	Entity* turret_east = new Entity();
+	/*Entity* turret_east = new Entity();
 	entities.push_back(turret_east);
 	spaceship_combiner->addEntity("turret_east",turret_east);
 
@@ -166,7 +166,7 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	turret_west_connected->attach(spaceshipPos,true);
 	turret_west->addComponent(turret_west_connected);
 	turret_west->addComponent(new TurretComp(10,500,5,0.05));
-
+*/
 	//Thrusters!
 	Entity* main_thruster = new Entity();
 	entities.push_back(main_thruster);
