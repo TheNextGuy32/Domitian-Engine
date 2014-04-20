@@ -4,13 +4,14 @@
 #include "Component.h"
 #include "PhysicsComp.h"
 #include "PositionComp.h"
+#include <math.h>
 
 class TetherComp : public Component
 {
 public:
 	TetherComp(float myTetherLength,
-			   PositionComp* myFirst,	float myFirstRadius,		  float myFirstRadianToTether,
-			   PositionComp* mySecond,	float mySecondRadianToTether, float mySecondRadius);
+		PositionComp* myFirstPos,PhysicsComp* myFirstPhys,	float myFirstRadius,		  float myFirstRadianToTether,
+			   PositionComp* mySecondPos,PhysicsComp* mySecondPhys,	 float mySecondRadius,float mySecondRadianToTether);
 
 	void update(double);
 

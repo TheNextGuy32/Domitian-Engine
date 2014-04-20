@@ -12,6 +12,7 @@
 #include "BulletComp.h"
 #include "TurretComp.h"
 #include "ThrusterComp.h"
+#include "TetherComponent.h"
 
 #include "Combiner.h"
 #include "RemovalComp.h"

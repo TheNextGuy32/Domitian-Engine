@@ -57,12 +57,32 @@ public:
 		return sqrt( (second.x-first.x)*(second.x-first.x) + (second.y-first.y)*(second.y-first.y));
 	}
 
-	//static Vector2 Normalize(Vector2 myVector)
-	//{
-	//	
-	//	float length =sqrt( squared( myVector.x) + squared(myVector.y));
+	static Vector2 Normalize(Vector2 myVector)
+	{
+		if(!(myVector.x ==0 && myVector.y==0))
+		{
+			float length = sqrt( (myVector.x*myVector.x) + (myVector.y*myVector.y));
 
-	//	return Vector2(myVector.x/length,myVector.y/length);
-	//}
+			return Vector2(myVector.x/length,myVector.y/length);
+		}
+		else
+		{
+			return Vector2(0,0);
+		}
+	}
+	double GetLength()
+	{
+		return sqrt((x*x)+(y*y));
+	}
+	void Normalize()
+	{
+		if(!(x ==0 && y==0))
+		{
+			float length = sqrt((x*x) + (y*y));
+
+			x = x/length;
+			y = y/length;
+		}
+	}
 };
 #endif
