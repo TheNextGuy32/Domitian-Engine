@@ -87,8 +87,8 @@ void PhysicsComp::addForce(Force myForce)
 	total_torque += -(radius *  myForce.getForce() * sin(attached_direction_displacement));
 
 	Vector2 force_normal_components = Vector2::ToVector2(myForce.getForceDirectionMathRadian());
-	Vector2 translation (force_normal_components.x * myForce.getForce() * cos(attached_direction_displacement),
-		force_normal_components.y * myForce.getForce() * cos(attached_direction_displacement));
+	Vector2 translation (force_normal_components.x * myForce.getForce(), //* cos(attached_direction_displacement),
+		force_normal_components.y * myForce.getForce());// * cos(attached_direction_displacement));
 	total_translational_force+=translation;
 }
 

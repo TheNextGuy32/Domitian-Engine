@@ -109,7 +109,7 @@ void SpaceSim::CreateWorld()
 	}
 	for(int p = 0 ; p < 10; p++)
 	{
-		//CreateDebris();
+		CreateDebris();
 	}
 
 	spaceship = CreateSpaceship(300,-300);
@@ -128,7 +128,7 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	spaceship->addComponent(spaceshipPos);
 	spaceship->addComponent(new SpriteComp(spaceship_bitmap,spaceshipPos));
 	spaceship->addComponent(new SpaceshipComp(30.0));
-	PhysicsComp* spaceship_Phys = new PhysicsComp(50,al_get_bitmap_width(spaceship_bitmap)/2+5,0.2,spaceshipPos);
+	PhysicsComp* spaceship_Phys = new PhysicsComp(500,al_get_bitmap_width(spaceship_bitmap)/2+5,0.2,spaceshipPos);
 	spaceship->addComponent(spaceship_Phys);
 
 	//TURRETS

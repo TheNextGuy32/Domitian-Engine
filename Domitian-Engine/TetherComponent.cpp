@@ -42,14 +42,39 @@ void TetherComp::update(double dt)
 		Vector2 second_velocity = second_physics_comp->getVelocity();
 		Vector2 second_normalized_velocity = Vector2::Normalize(second_velocity);
 
+		//In this solution, we use the kinetic energy to find the transfer 
+		//Inelastic tether pulling
+		Vector2 full_velocity_of_first_tether = Vector2(0,0);
+		double first_velocity_in_direction_of_tether = 0;
+		double kinetic_energy_first = 0.5* first_physics_comp->getMass * first_velocity_in_direction_of_tether;
+
+		Vector2 full_velocity_of_second_tether = Vector2(0,0);
+		double second_velocity_in_direction_of_tether = 0;
+		double kinetic_energy_second = 0.5* second_physics_comp->getMass * second_velocity_in_direction_of_tether;
+
+		if(kinetic_energy_first>=kinetic_energy_second)
+		{
+			//First has more kinetic energy and is imparting it into the second
+			//1000 planet moving at 10 
+			double cannot_transfer_more_energy_than = 0.5*second_physics_comp->getMass()*(first_velocity_in_direction_of_tether-second_velocity_in_direction_of_tether)*
+																						 (first_velocity_in_direction_of_tether-second_velocity_in_direction_of_tether);
+			
+		}
+		else
+		{
+			//Second has more kinetic energy
+		}
+
+
+
 		//In this solution, we are going to only apply the momentum in the direction of the tether
 		//sin angle made between
 
-		displacement_to_first_tether_from_second_tether.Normalize();
+		/*displacement_to_first_tether_from_second_tether.Normalize();
 		displacement_to_second_tether_from_first_tether.Normalize();
 
 		double tension_force_applied_to_second = (first_velocity.x *displacement_to_first_tether_from_second_tether.x)+(first_velocity.y *displacement_to_first_tether_from_second_tether.y) * first_physics_comp->getMass();
-		double tension_force_applied_to_first = (second_velocity.x *displacement_to_second_tether_from_first_tether.x)+(second_velocity.y *displacement_to_second_tether_from_first_tether.y) * second_physics_comp->getMass();
+		double tension_force_applied_to_first = (second_velocity.x *displacement_to_second_tether_from_first_tether.x)+(second_velocity.y *displacement_to_second_tether_from_first_tether.y) * second_physics_comp->getMass();*/
 			
 
 		//This is my centripedal solution, doesnt seem to make sense
