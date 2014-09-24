@@ -34,36 +34,63 @@ void TetherComp::update(double dt)
 		Vector2 displacement_to_second_tether_from_first_tether = Vector2((second_tether_position.x - first_tether_position.x),-(second_tether_position.y - first_tether_position.y));
 		Vector2 displacement_to_first_tether_from_second_tether = Vector2((first_tether_position.x - second_tether_position.x),-(first_tether_position.y - second_tether_position.y));
 		
+		double first_mass = first_physics_comp->getMass();
+		double second_mass = second_physics_comp->getMass();
 		double both_mass = first_physics_comp->getMass() + second_physics_comp->getMass();
 
 		Vector2 first_velocity = first_physics_comp->getVelocity();
 		Vector2 first_normalized_velocity= Vector2::Normalize(first_velocity);
+		double first_velocity_magnitude = first_velocity.GetLength();
 
 		Vector2 second_velocity = second_physics_comp->getVelocity();
 		Vector2 second_normalized_velocity = Vector2::Normalize(second_velocity);
+		double second_velocity_magnitude = second_velocity.GetLength();
+		
+		double angle_between_first_velocity_and_tether;
+		double angle_between_second_velocity_and_tether;
 
-		//In this solution, we use the kinetic energy to find the transfer 
-		//Inelastic tether pulling
-		Vector2 full_velocity_of_first_tether = Vector2(0,0);
-		double first_velocity_in_direction_of_tether = 0;
-		double kinetic_energy_first = 0.5* first_physics_comp->getMass * first_velocity_in_direction_of_tether;
+		double first_velocity_in_direction_tether_magnitude = (first_velocity.x*Vector2::Normalize(displacement_to_second_tether_from_first_tether).x)
+			+(first_velocity.y*Vector2::Normalize(displacement_to_second_tether_from_first_tether).y);
 
-		Vector2 full_velocity_of_second_tether = Vector2(0,0);
-		double second_velocity_in_direction_of_tether = 0;
-		double kinetic_energy_second = 0.5* second_physics_comp->getMass * second_velocity_in_direction_of_tether;
+		double second_velocity_in_direction_tether_magnitude = (second_velocity.x*Vector2::Normalize(displacement_to_second_tether_from_first_tether).x)
+			+(second_velocity.y*Vector2::Normalize(displacement_to_second_tether_from_first_tether).y);
+		//Do we delete this velocity from current?
 
-		if(kinetic_energy_first>=kinetic_energy_second)
-		{
-			//First has more kinetic energy and is imparting it into the second
-			//1000 planet moving at 10 
-			double cannot_transfer_more_energy_than = 0.5*second_physics_comp->getMass()*(first_velocity_in_direction_of_tether-second_velocity_in_direction_of_tether)*
-																						 (first_velocity_in_direction_of_tether-second_velocity_in_direction_of_tether);
-			
-		}
-		else
-		{
-			//Second has more kinetic energy
-		}
+
+		//Zacharakis solution
+		double final_velocity_magnitude = ((first_mass * first_velocity_in_direction_tether_magnitude)+(second_mass * second_velocity_in_direction_tether_magnitude))/both_mass;
+		Vector2 final_velocity (cos(Vector2::ToMathRadian(Vector2::Normalize(displacement_to_second_tether_from_first_tether)))*final_velocity_magnitude,
+								sin(Vector2::ToMathRadian(Vector2::Normalize(displacement_to_second_tether_from_first_tether)))*final_velocity_magnitude);
+
+		//Do we add this velocty
+		first_physics_comp->setVelocity(final_velocity);
+		second_physics_comp->setVelocity(final_velocity);
+
+		//But wait this gets rid of non-in direction tether
+		//WE NEED TO SNAP THE ROTATIONS IN PLACE
+
+		////In this solution, we use the kinetic energy to find the transfer 
+		////Inelastic tether pulling
+		//Vector2 full_velocity_of_first_tether = Vector2(0,0);
+		//double first_velocity_in_direction_of_tether = 0;
+		//double kinetic_energy_first = 0.5* first_physics_comp->getMass * first_velocity_in_direction_of_tether;
+
+		//Vector2 full_velocity_of_second_tether = Vector2(0,0);
+		//double second_velocity_in_direction_of_tether = 0;
+		//double kinetic_energy_second = 0.5* second_physics_comp->getMass * second_velocity_in_direction_of_tether;
+
+		//if(kinetic_energy_first>=kinetic_energy_second)
+		//{
+		//	//First has more kinetic energy and is imparting it into the second
+		//	//1000 planet moving at 10 
+		//	double cannot_transfer_more_energy_than = 0.5*second_physics_comp->getMass()*(first_velocity_in_direction_of_tether-second_velocity_in_direction_of_tether)*
+		//																				 (first_velocity_in_direction_of_tether-second_velocity_in_direction_of_tether);
+		//	
+		//}
+		//else
+		//{
+		//	//Second has more kinetic energy
+		//}
 
 
 
@@ -93,12 +120,12 @@ void TetherComp::update(double dt)
 		//double tension_force_applied_to_second = (first_centripedal_velocity* first_centripedal_velocity)/tether_length* first_physics_comp->getMass();
 		//double tension_force_applied_to_first = (second_centripedal_velocity*second_centripedal_velocity)/tether_length* second_physics_comp->getMass();
 		
-		double radian_to_first_tether_angled = first_radian_to_tether+first_position_comp->getRotation();
-		double radian_to_second_tether = Vector2::ToMathRadian(displacement_to_first_tether_from_second_tether);
-		double direction_tether_pull_angled = radian_to_second_tether+first_position_comp->getRotation();
+	//	double radian_to_first_tether_angled = first_radian_to_tether+first_position_comp->getRotation();
+	//	double radian_to_second_tether = Vector2::ToMathRadian(displacement_to_first_tether_from_second_tether);
+	//	double direction_tether_pull_angled = radian_to_second_tether+first_position_comp->getRotation();
 
-		//It has to be negative because positive is a push, neg is a pull
-		first_physics_comp->addForceWithRadius(Force(radian_to_first_tether_angled,direction_tether_pull_angled,-tension_force_applied_to_first),first_radius);
-		second_physics_comp->addForceWithRadius(Force(second_radian_to_tether+second_position_comp->getRotation(),Vector2::ToMathRadian(displacement_to_first_tether_from_second_tether)+second_position_comp->getRotation(),-tension_force_applied_to_second),second_radius);
+	//	//It has to be negative because positive is a push, neg is a pull
+	//	first_physics_comp->addForceWithRadius(Force(radian_to_first_tether_angled,direction_tether_pull_angled,-tension_force_applied_to_first),first_radius);
+	//	second_physics_comp->addForceWithRadius(Force(second_radian_to_tether+second_position_comp->getRotation(),Vector2::ToMathRadian(displacement_to_first_tether_from_second_tether)+second_position_comp->getRotation(),-tension_force_applied_to_second),second_radius);
 	}
 };

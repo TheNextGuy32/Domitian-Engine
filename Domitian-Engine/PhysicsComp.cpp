@@ -131,7 +131,7 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 	the v^2 outputs a scalar so it works for any number of components
 	*/
 
-	bool push_enabled = true;
+	bool push_enabled = false;
 
 	bool collision = false;
 
@@ -149,85 +149,99 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 
 		//Find the distance and added radii
 		double distanceBetween = Vector2::getDistanceBetween(first_pos,second_pos);
-		
+
 		double addingRadii = first->getRadius()+second->getRadius();
 
 		//Collision
 		if(distanceBetween < addingRadii)
 		{
-			double radian_from_horizontal = Vector2::ToMathRadian((Vector2(second_pos.x-first_pos.x,second_pos.y-first_pos.y)));
 
 			//Make sure it doesnt collide with anythign else this tick
 			first->setCollided(true);
 			second->setCollided(true);
 
-			//Magnitude is multiplied by ratio
+			//Displacement vector and direction
 			Vector2 displacement = Vector2(	second_pos_comp->getPosition().x - first_pos_comp->getPosition().x,
 				second_pos_comp->getPosition().y - first_pos_comp->getPosition().y);
+
+			double radian_from_horizontal = Vector2::ToMathRadian((Vector2(second_pos.x-first_pos.x,second_pos.y-first_pos.y)));
 
 			double mathRadianDirectionTo = Vector2::ToMathRadian(displacement);
 			Vector2 normalizedDirectionTo = Vector2(displacement.x/distanceBetween,displacement.y/distanceBetween);
 
-
-			//Mass and acceleration
+			//Mass and Velocity
 			double first_mass = first_phys_comp->getMass();
 			Vector2 first_velocity = first_phys_comp->getVelocity();
 
 			double second_mass = second_phys_comp->getMass();
 			Vector2 second_velocity = second_phys_comp->getVelocity();
 
-			//1 is elastic, 0 is inelastic
-			double first_CoR = first_phys_comp->getCoefficientOfRestitution();
-			double second_CoR = second_phys_comp->getCoefficientOfRestitution();
-			double coefficient_of_restitution = (first_CoR+second_CoR)/2.0;
-
-			//One dimensional solution with elasticity
 			double both_masses= first_mass + second_mass;
 
-			//Dr Zacharakis solution
-			double atop_line = (first_mass-second_mass)*((first_velocity.x*cos(radian_from_horizontal))) +(first_velocity.y*sin(radian_from_horizontal)) + (2*second_mass*((second_velocity.x*cos(radian_from_horizontal))+(second_velocity.y*sin(radian_from_horizontal))));
-			double ainequality = atop_line/both_masses;
-			double ax = (ainequality *cos(radian_from_horizontal))-((first_velocity.x*sin(radian_from_horizontal))+(first_velocity.y*cos(radian_from_horizontal))*sin(radian_from_horizontal));
+			//Dr Zacharakis solution//
+			//						//
 
-			double atop_line_y = (first_mass-second_mass)*((first_velocity.x*cos(radian_from_horizontal))) +(first_velocity.y*sin(radian_from_horizontal)) + (2*second_mass*((second_velocity.x*cos(radian_from_horizontal))+(second_velocity.y*sin(radian_from_horizontal))));
-			double ainequality_y = atop_line/both_masses;
-			double ay = (ainequality *sin(radian_from_horizontal))-((first_velocity.x*sin(radian_from_horizontal))+(first_velocity.y*cos(radian_from_horizontal))*cos(radian_from_horizontal));
-				
+			double cos_rad_horiz = cos(radian_from_horizontal);
+			double sin_rad_horiz = sin(radian_from_horizontal);
+			double first_minus_second = (first_mass-second_mass);
+			double second_minus_first = (second_mass-first_mass);
+
+			double atop_line = (first_minus_second * ((first_velocity.x*cos_rad_horiz) + (first_velocity.y*sin_rad_horiz))) 
+							 + (2*second_mass*((second_velocity.x*cos_rad_horiz)+(second_velocity.y*sin_rad_horiz)));
+			double ainequality = atop_line/both_masses*cos_rad_horiz;
+			double ax = ainequality-((first_velocity.x*sin_rad_horiz)+(first_velocity.y*cos_rad_horiz)*sin_rad_horiz);
+
+			double atop_line_y = (first_minus_second*((first_velocity.x*cos_rad_horiz) +(first_velocity.y*sin_rad_horiz))) 
+				             + (2*second_mass*((second_velocity.x*cos_rad_horiz)+(second_velocity.y*sin_rad_horiz)));
+			double ainequality_y = atop_line/both_masses*sin_rad_horiz;
+			double ay = ainequality-((first_velocity.x*sin_rad_horiz)+(first_velocity.y*cos_rad_horiz)*cos_rad_horiz);
+
 			first_phys_comp->setVelocity(Vector2(ax,ay));
 
-			double btop_line = (second_mass-first_mass)*((second_velocity.x*cos(radian_from_horizontal))) +(second_velocity.y*sin(radian_from_horizontal)) + (2*first_mass*((first_velocity.x*cos(radian_from_horizontal))+(first_velocity.y*sin(radian_from_horizontal))));
-			double binequality = btop_line/both_masses;
-			double bx = (binequality *cos(radian_from_horizontal))-((second_velocity.x*sin(radian_from_horizontal))+(second_velocity.y*cos(radian_from_horizontal))*sin(radian_from_horizontal));
-				   
-			double btop_line_y = (second_mass-first_mass)*((second_velocity.x*cos(radian_from_horizontal))) +(second_velocity.y*sin(radian_from_horizontal)) + (2*first_mass*((first_velocity.x*cos(radian_from_horizontal))+(first_velocity.y*sin(radian_from_horizontal))));
-			double binequality_y = btop_line/both_masses;
-			double by = (binequality *sin(radian_from_horizontal))-((second_velocity.x*sin(radian_from_horizontal))+(second_velocity.y*cos(radian_from_horizontal))*cos(radian_from_horizontal));
-				
+			double btop_line = (second_minus_first*((second_velocity.x*cos_rad_horiz) +(second_velocity.y*sin_rad_horiz)))
+				             + (2*first_mass*((first_velocity.x*cos_rad_horiz)+(first_velocity.y*sin_rad_horiz)));
+			double binequality = btop_line/both_masses*cos_rad_horiz;
+			double bx = binequality -((second_velocity.x*sin_rad_horiz)+(second_velocity.y*cos_rad_horiz)*sin_rad_horiz);
+
+			double btop_line_y = (second_minus_first*((second_velocity.x*cos_rad_horiz) +(second_velocity.y*sin_rad_horiz))) 
+				             + (2*first_mass*((first_velocity.x*cos_rad_horiz)+(first_velocity.y*sin_rad_horiz)));
+			double binequality_y = btop_line/both_masses*sin_rad_horiz;
+			double by = binequality -((second_velocity.x*sin_rad_horiz)+(second_velocity.y*cos_rad_horiz)*cos_rad_horiz);
+
 			second_phys_comp->setVelocity(Vector2(bx,by));
 
-			//Wikipedia Solution
+			//Wikipedia Solution//
+			//					//
+
+			////1 is elastic, 0 is inelastic
+			//double first_CoR = first_phys_comp->getCoefficientOfRestitution();
+			//double second_CoR = second_phys_comp->getCoefficientOfRestitution();
+			//double coefficient_of_restitution =0;// (first_CoR+second_CoR)/2.0;
+
+			//first_phys_comp->setVelocity(Vector2(
+			//((coefficient_of_restitution*second_mass*(second_velocity.x-first_velocity.x))+(first_mass*first_velocity.x)+(second_mass*second_velocity.x))/(second_mass+first_mass),
+			//((coefficient_of_restitution*second_mass*(second_velocity.y-first_velocity.y))+(first_mass*first_velocity.y)+(second_mass*second_velocity.y))/(second_mass+first_mass)
+			//));
+
+			//second_phys_comp->setVelocity(Vector2(
+			//((coefficient_of_restitution*first_mass*(first_velocity.x-second_velocity.x))+(second_mass*second_velocity.x)+(first_mass*first_velocity.x))/(first_mass+second_mass),
+			//((coefficient_of_restitution*first_mass*(first_velocity.y-second_velocity.y))+(second_mass*second_velocity.y)+(first_mass*first_velocity.y))/(first_mass+second_mass)
+			//));
+
+			//Ramons solution is still one dimensional//
+			//									      //
+
 			/*first_phys_comp->setVelocity(Vector2(
-				((coefficient_of_restitution*second_mass*(second_velocity.x-first_velocity.x))+(first_mass*first_velocity.x)+(second_mass*second_velocity.x))/(second_mass+first_mass),
-				((coefficient_of_restitution*second_mass*(second_velocity.y-first_velocity.y))+(first_mass*first_velocity.y)+(second_mass*second_velocity.y))/(second_mass+first_mass)
-				));
+			((second_mass*(2*(second_velocity.x-first_velocity.x))) +(first_mass*first_phys_comp->getVelocity().x))/both_masses,
+			((second_mass*(2*(second_velocity.y-first_velocity.y))) +(first_mass*first_phys_comp->getVelocity().y))/both_masses
+			));
 
 			second_phys_comp->setVelocity(Vector2(
-				((coefficient_of_restitution*first_mass*(first_velocity.x-second_velocity.x))+(second_mass*second_velocity.x)+(first_mass*first_velocity.x))/(first_mass+second_mass),
-				((coefficient_of_restitution*first_mass*(first_velocity.y-second_velocity.y))+(second_mass*second_velocity.y)+(first_mass*first_velocity.y))/(first_mass+second_mass)
-				));*/
+			((first_mass*(2*(first_velocity.x-second_velocity.x))) +(second_mass*second_phys_comp->getVelocity().x))/both_masses,
+			((first_mass*(2*(first_velocity.y-second_velocity.y))) +(second_mass*second_phys_comp->getVelocity().y))/both_masses
+			));*/
 
-			//Ramons solution is still one dimensional
-			/*first_phys_comp->setVelocity(Vector2(
-				((second_mass*(2*(second_velocity.x-first_velocity.x))) +(first_mass*first_phys_comp->getVelocity().x))/both_masses,
-				((second_mass*(2*(second_velocity.y-first_velocity.y))) +(first_mass*first_phys_comp->getVelocity().y))/both_masses
-				));
 
-			second_phys_comp->setVelocity(Vector2(
-				((first_mass*(2*(first_velocity.x-second_velocity.x))) +(second_mass*second_phys_comp->getVelocity().x))/both_masses,
-				((first_mass*(2*(first_velocity.y-second_velocity.y))) +(second_mass*second_phys_comp->getVelocity().y))/both_masses
-				));*/
-
-			
 
 			////The force applied to second = magnitude of speed of first * its mass
 			////Does the force it exerts on the other object depend on the direction its facing
@@ -251,7 +265,7 @@ bool PhysicsComp::checkCollision(PhysicsComp* first, PhysicsComp* second)
 			if(push_enabled)
 			{
 				//Add 1 to push so that you arent perma colliding
-				double push = std::abs(addingRadii+1-distanceBetween);
+				double push = std::abs(addingRadii-distanceBetween);
 
 				if(first_phys_comp->getMass()<second_phys_comp->getMass())
 				{

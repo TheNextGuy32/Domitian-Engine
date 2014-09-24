@@ -112,7 +112,7 @@ void SpaceSim::CreateWorld()
 		CreateDebris();
 	}
 
-	spaceship = CreateSpaceship(300,-300);
+	spaceship = CreateSpaceship(300,-450);
 };
 Combiner* SpaceSim::CreateSpaceship(double x, double y)
 {
@@ -128,8 +128,19 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	spaceship->addComponent(spaceshipPos);
 	spaceship->addComponent(new SpriteComp(spaceship_bitmap,spaceshipPos));
 	spaceship->addComponent(new SpaceshipComp(30.0));
-	PhysicsComp* spaceship_Phys = new PhysicsComp(500,al_get_bitmap_width(spaceship_bitmap)/2+5,0.2,spaceshipPos);
+	PhysicsComp* spaceship_Phys = new PhysicsComp(100,al_get_bitmap_width(spaceship_bitmap)/2,0.2,spaceshipPos);
 	spaceship->addComponent(spaceship_Phys);
+
+	Entity* matcher = new Entity();
+	entities.push_back(matcher);
+	physics_entities.push_back(matcher);
+
+	PositionComp* matcherPos = new PositionComp(Vector3(x+300,y+200,15),0);
+	matcher->addComponent(matcherPos);
+	matcher->addComponent(new SpriteComp(spaceship_bitmap,matcherPos));
+	
+	PhysicsComp* matcher_Phys = new PhysicsComp(100000000000,al_get_bitmap_width(spaceship_bitmap)/2,0.2,matcherPos);
+	matcher->addComponent(matcher_Phys);
 
 	//TURRETS
 	Entity* turret_north = new Entity();
@@ -179,7 +190,7 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	ConnectedComp* main_thruster_connected = new ConnectedComp(PI,al_get_bitmap_width(spaceship_bitmap)/2,spaceshipPos,m_t_pos);
 	main_thruster_connected->attach(spaceshipPos,true);
 	main_thruster->addComponent(main_thruster_connected);
-	main_thruster->addComponent(new ThrusterComp(1000));
+	main_thruster->addComponent(new ThrusterComp(10000));
 
 	Entity* west_thruster = new Entity();
 	entities.push_back(west_thruster);
@@ -205,38 +216,38 @@ Combiner* SpaceSim::CreateSpaceship(double x, double y)
 	east_thruster->addComponent(east_thruster_connected);
 	east_thruster->addComponent(new ThrusterComp(1000));
 
-	Entity* spaceship_visual_tether = new Entity();
-	entities.push_back(spaceship_visual_tether);
-	PositionComp* spaceship_visual_tether_pos = new PositionComp(Vector3(0,0,16));
-	spaceship_visual_tether->addComponent(spaceship_visual_tether_pos);
-	spaceship_visual_tether->addComponent(new SpriteComp(tether_bitmap,spaceship_visual_tether_pos));
-	ConnectedComp* spaceship_visual_connect = new ConnectedComp(PI,30,spaceshipPos,spaceship_visual_tether_pos);
-	spaceship_visual_connect->attach(spaceshipPos,false);
-	spaceship_visual_tether->addComponent(spaceship_visual_connect);
+	//Entity* spaceship_visual_tether = new Entity();
+	//entities.push_back(spaceship_visual_tether);
+	//PositionComp* spaceship_visual_tether_pos = new PositionComp(Vector3(0,0,16));
+	//spaceship_visual_tether->addComponent(spaceship_visual_tether_pos);
+	//spaceship_visual_tether->addComponent(new SpriteComp(tether_bitmap,spaceship_visual_tether_pos));
+	//ConnectedComp* spaceship_visual_connect = new ConnectedComp(PI,30,spaceshipPos,spaceship_visual_tether_pos);
+	//spaceship_visual_connect->attach(spaceshipPos,false);
+	//spaceship_visual_tether->addComponent(spaceship_visual_connect);
 
-	//Creating thing its tugging
-	Entity* ball = new Entity(); 
-	entities.push_back(ball);
-	physics_entities.push_back(ball);
+	////Creating thing its tugging
+	//Entity* ball = new Entity(); 
+	//entities.push_back(ball);
+	//physics_entities.push_back(ball);
 
-	PositionComp* ast_pos = new PositionComp(Vector3 (x-50,y,10), 0);
-	ball->addComponent(ast_pos);		
-	ball->addComponent(new SpriteComp (asteroid_bitmap,ast_pos));
-	PhysicsComp* ast_phys = new PhysicsComp (10,al_get_bitmap_width(asteroid_bitmap)/2,0.3,ast_pos);
-	ball->addComponent(ast_phys);
+	//PositionComp* ast_pos = new PositionComp(Vector3 (x-50,y,10), 0);
+	//ball->addComponent(ast_pos);		
+	//ball->addComponent(new SpriteComp (asteroid_bitmap,ast_pos));
+	//PhysicsComp* ast_phys = new PhysicsComp (10,al_get_bitmap_width(asteroid_bitmap)/2,0.3,ast_pos);
+	//ball->addComponent(ast_phys);
 
-	Entity* ball_visual_tether = new Entity();
-	entities.push_back(ball_visual_tether);
-	PositionComp* ball_visual_tether_pos = new PositionComp(Vector3(0,0,16));
-	ball_visual_tether->addComponent(ball_visual_tether_pos);
-	ball_visual_tether->addComponent(new SpriteComp(tether_bitmap,ball_visual_tether_pos));
-	ConnectedComp* ball_visual_connect = new ConnectedComp(0,10,ast_pos,ball_visual_tether_pos);
-	ball_visual_connect->attach(ast_pos,false);
-	ball_visual_tether->addComponent(ball_visual_connect);
+	//Entity* ball_visual_tether = new Entity();
+	//entities.push_back(ball_visual_tether);
+	//PositionComp* ball_visual_tether_pos = new PositionComp(Vector3(0,0,16));
+	//ball_visual_tether->addComponent(ball_visual_tether_pos);
+	//ball_visual_tether->addComponent(new SpriteComp(tether_bitmap,ball_visual_tether_pos));
+	//ConnectedComp* ball_visual_connect = new ConnectedComp(0,10,ast_pos,ball_visual_tether_pos);
+	//ball_visual_connect->attach(ast_pos,false);
+	//ball_visual_tether->addComponent(ball_visual_connect);
 
-	Entity* tether = new Entity();
-	entities.push_back(tether);
-	tether->addComponent(new TetherComp(100,spaceshipPos,spaceship_Phys,30,PI, ast_pos,ast_phys,10,0));
+	//Entity* tether = new Entity();
+	//entities.push_back(tether);
+	//tether->addComponent(new TetherComp(100,spaceshipPos,spaceship_Phys,30,PI, ast_pos,ast_phys,10,0));
 
 	return spaceship_combiner;
 };
@@ -260,13 +271,13 @@ void SpaceSim::CreateDebris()
 	entities.push_back(debris);
 	physics_entities.push_back(debris);
 
-	double x = std::rand()%(screen_width-1300)+600;
-	double y = -(std::rand()%(screen_height-600)+300);
+	double x = std::rand()%(screen_width-800)+600;
+	double y = -(std::rand()%(screen_height-800)+300);
 
 	PositionComp* deb_pos = new PositionComp(Vector3 (x,y,10), 0);
 	debris->addComponent(deb_pos);		
 	debris->addComponent(new SpriteComp (debris_bitmap,deb_pos));
-	debris->addComponent(new PhysicsComp (0.1,al_get_bitmap_width(debris_bitmap)/2,0.7,deb_pos));
+	debris->addComponent(new PhysicsComp (0.00001,al_get_bitmap_width(debris_bitmap)/2,0.7,deb_pos));
 };
 
 void SpaceSim::UnloadContent()
